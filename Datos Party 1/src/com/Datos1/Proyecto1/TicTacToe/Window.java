@@ -4,7 +4,7 @@ import javax.swing.JFrame;
 
 public class Window extends JFrame{
 	public String player1,player2;
-	private final int width=800, length=500;
+	private final int width=850, length=510;
 	private GameBoard board;
 	
 	public Window (String player1, String player2) {
@@ -15,7 +15,7 @@ public class Window extends JFrame{
 	}
 	
 	public void createWindow() {
-		setTitle("Tic Tac Toe");
+		setTitle("Tic-Tac-Toe");
 		setSize(width,length);
 		setLocationRelativeTo(null);
 		setResizable(false);

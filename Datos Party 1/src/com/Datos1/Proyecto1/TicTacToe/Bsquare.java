@@ -5,15 +5,11 @@ import java.io.IOException;
 
 import javax.imageio.ImageIO;
 
-public class Xsquare extends Squares{
-	
-	/**
-	 * 
-	 */
+public class Bsquare extends Squares {
 	private static final long serialVersionUID = 1L;
-	
-	public Xsquare() {
-		path="images/Xs.jpg";
+
+	public Bsquare() {
+		path = "images/Bs.jpg";
 		try {
 			image = ImageIO.read(new File(path));
 		} catch (IOException e) {

@@ -6,7 +6,7 @@ import java.io.File;
 import java.io.IOException;
 import javax.imageio.ImageIO;
 
-public class Squares extends Component {
+public abstract class Squares extends Component {
 	/**
 	 * 
 	 */
@@ -17,27 +17,16 @@ public class Squares extends Component {
 	private int posy;
 
 	protected BufferedImage image;
-	protected String path="images/Xs.jpg";
-
-	
-
+	protected String path;
 	@Override
 	public void paint(Graphics g) {
 		g.drawImage(image, 0, 0, null);
 	}
 
-	public Squares() {
-		try {
-			image = ImageIO.read(new File(path));
-		} catch (IOException e) {
-			System.out.println("pedro");
-			e.printStackTrace();
-		}
-	}
 	@Override
 	public Dimension getPreferredSize() {
 		if (image == null) {
-			return new Dimension(100, 100);
+			return new Dimension(98, 98);
 		} else {
 			return new Dimension(image.getWidth(), image.getHeight());
 		}
