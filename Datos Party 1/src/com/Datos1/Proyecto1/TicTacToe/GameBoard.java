@@ -22,34 +22,34 @@ public class GameBoard extends JPanel {
 	 * 
 	 */
 	private Label infoLabel;
-	private Bsquare S1, S2, S3, S4, S5, S6, S7, S8, S9;
+	private Squares S1, S2, S3, S4, S5, S6, S7, S8, S9;
+	public boolean playerOne=true;
+	public boolean playerTwo=false;
+	
 
 	private static final long serialVersionUID = 1L;
 	final Image wallpaper = requestImage();
 
 	public GameBoard() {
-		setPanel();
-
+		S1 = new Squares(playerOne,playerTwo);
+		S2 = new Squares(playerOne,playerTwo);
+		S3 = new Squares(playerOne,playerTwo);
+		S4 = new Squares(playerOne,playerTwo);
+		S5 = new Squares(playerOne,playerTwo);
+		S6 = new Squares(playerOne,playerTwo);
+		S7 = new Squares(playerOne,playerTwo);
+		S8 = new Squares(playerOne,playerTwo);
+		S9 = new Squares(playerOne,playerTwo);
+		
 	}
 
-	public void setPanel() {
+	public void setPanel(Squares S1,Squares S2,Squares S3,Squares S4,Squares S5,Squares S6,Squares S7,Squares S8,Squares S9) {
 
 		GroupLayout layout = new GroupLayout(this);
 		setLayout(layout);
 
 		infoLabel = new Label();
 		infoLabel.setText("Information related to the status of the game");
-
-		S1 = new Bsquare();
-		S2 = new Bsquare();
-		S3 = new Bsquare();
-		S4 = new Bsquare();
-		S5 = new Bsquare();
-		S6 = new Bsquare();
-		S7 = new Bsquare();
-		S8 = new Bsquare();
-		S9 = new Bsquare();
-
 		layout.setAutoCreateGaps(true);
 		layout.setAutoCreateContainerGaps(true);
 
@@ -72,8 +72,6 @@ public class GameBoard extends JPanel {
 
 		);
 
-		//add(new Xsquare());
-		//add(new Osquare());
 
 	}
 
@@ -81,6 +79,8 @@ public class GameBoard extends JPanel {
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
 		g.drawImage(wallpaper, 0, 0, null);
+		setPanel(S1,S2,S3,S4,S5,S6,S7,S8,S9);
+		//removeAll();
 
 		/*
 		 * Graphics2D g2=(Graphics2D)g; g2.setColor(Color.black); g2.fill(new
@@ -99,4 +99,16 @@ public class GameBoard extends JPanel {
 		}
 		return image;
 	}
+	
+	public boolean getPlayerOne() {
+		if (playerOne==true) {
+			return true;
+		}
+		else {
+			return false;
+		}
+	}
+	
+	
+	
 }

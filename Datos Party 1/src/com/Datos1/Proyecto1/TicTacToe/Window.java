@@ -5,12 +5,16 @@ import javax.swing.JFrame;
 public class Window extends JFrame{
 	public String player1,player2;
 	private final int width=850, length=510;
-	private GameBoard board;
+	GameBoard board;
+	GameThread thread;
 	
 	public Window (String player1, String player2) {
 		this.player1=player1;
 		this.player2=player2;
 		createWindow();
+		thread = new GameThread(board);
+		thread.start();
+		
 		
 	}
 	
@@ -21,7 +25,6 @@ public class Window extends JFrame{
 		setResizable(false);
 		board=new GameBoard();
 		add(board);
-		
 		
 	}
 	
