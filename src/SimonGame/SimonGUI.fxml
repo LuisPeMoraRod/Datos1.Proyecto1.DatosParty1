@@ -9,8 +9,7 @@
 <?import java.lang.*?>
 <?import javafx.scene.layout.*?>
 
-
-<AnchorPane id="SimonWindow" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane id="SimonWindow" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="SimonGame.SimonController">
    <children>
       <ImageView fitHeight="500.0" fitWidth="800.0" pickOnBounds="true" preserveRatio="true">
          <image>
@@ -24,6 +23,11 @@
             <Button layoutX="185.0" layoutY="108.0" mnemonicParsing="false" prefHeight="94.0" prefWidth="196.0" style="-fx-background-color: #CDDC39;" />
             <Button layoutX="185.0" layoutY="209.0" mnemonicParsing="false" prefHeight="88.0" prefWidth="196.0" style="-fx-background-color: #FFA000;" />
             <Button layoutX="185.0" layoutY="303.0" mnemonicParsing="false" prefHeight="105.0" prefWidth="196.0" style="-fx-background-color: #00ACC1;" />
+            <ImageView fx:id="btn_Close" fitHeight="19.0" fitWidth="22.0" layoutX="417.0" layoutY="14.0" onMouseClicked="#closeWindow" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../Imagenes/close.png" />
+               </image>
+            </ImageView>
          </children>
       </Pane>
       <Pane prefHeight="500.0" prefWidth="350.0">
