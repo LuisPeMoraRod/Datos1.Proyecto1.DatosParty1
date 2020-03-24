@@ -9,9 +9,12 @@ import javafx.stage.StageStyle;
 
 public class SimonMain extends Application {
 
+    Stage simonWindow;
+
     @Override
     public void start(Stage primaryStage) throws Exception{
         Parent root = FXMLLoader.load(getClass().getResource("SimonGUI.fxml"));
+        simonWindow = primaryStage;
         primaryStage.setTitle("Simon");
         primaryStage.setScene(new Scene(root));
 
