@@ -1,12 +1,14 @@
 package com.Datos1.Proyecto1.TicTacToe;
 
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.Label;
 import java.awt.geom.Rectangle2D;
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 
@@ -21,25 +23,34 @@ public class GameBoard extends JPanel {
 	/**
 	 * 
 	 */
-	private Label infoLabel;
-	private Squares S1, S2, S3, S4, S5, S6, S7, S8, S9;
-	public boolean playerOne=true;
-	public boolean playerTwo=false;
+	private Label infoLabel = new Label();;
+	Squares S1 = new Squares();
+	Squares S2 = new Squares();
+	Squares S3 = new Squares();
+	Squares S4 = new Squares();
+	Squares S5 = new Squares();
+	Squares S6 = new Squares();
+	Squares S7 = new Squares();
+	Squares S8 = new Squares();
+	Squares S9 = new Squares();
+	
+	BufferedImage I1;
+	BufferedImage I2;
+	BufferedImage I3;
+	BufferedImage I4;
+	BufferedImage I5;
+	BufferedImage I6;
+	BufferedImage I7;
+	BufferedImage I8;
+	BufferedImage I9;
+	
 	
 
 	private static final long serialVersionUID = 1L;
 	final Image wallpaper = requestImage();
 
 	public GameBoard() {
-		S1 = new Squares(playerOne,playerTwo);
-		S2 = new Squares(playerOne,playerTwo);
-		S3 = new Squares(playerOne,playerTwo);
-		S4 = new Squares(playerOne,playerTwo);
-		S5 = new Squares(playerOne,playerTwo);
-		S6 = new Squares(playerOne,playerTwo);
-		S7 = new Squares(playerOne,playerTwo);
-		S8 = new Squares(playerOne,playerTwo);
-		S9 = new Squares(playerOne,playerTwo);
+		
 		
 	}
 
@@ -47,9 +58,8 @@ public class GameBoard extends JPanel {
 
 		GroupLayout layout = new GroupLayout(this);
 		setLayout(layout);
-
-		infoLabel = new Label();
 		infoLabel.setText("Information related to the status of the game");
+		
 		layout.setAutoCreateGaps(true);
 		layout.setAutoCreateContainerGaps(true);
 
@@ -78,8 +88,10 @@ public class GameBoard extends JPanel {
 	@Override
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
-		g.drawImage(wallpaper, 0, 0, null);
+		g.drawImage(wallpaper, 0, 0, null);	
+		update();		
 		setPanel(S1,S2,S3,S4,S5,S6,S7,S8,S9);
+		
 		//removeAll();
 
 		/*
@@ -100,15 +112,18 @@ public class GameBoard extends JPanel {
 		return image;
 	}
 	
-	public boolean getPlayerOne() {
-		if (playerOne==true) {
-			return true;
-		}
-		else {
-			return false;
-		}
-	}
 	
+	public void update() {
+		S1.setTypeSquare(MouseClickedEvent.isFirstPlayer);
+		S2.setTypeSquare(MouseClickedEvent.isFirstPlayer);
+		S3.setTypeSquare(MouseClickedEvent.isFirstPlayer);
+		S4.setTypeSquare(MouseClickedEvent.isFirstPlayer);
+		S5.setTypeSquare(MouseClickedEvent.isFirstPlayer);
+		S6.setTypeSquare(MouseClickedEvent.isFirstPlayer);
+		S7.setTypeSquare(MouseClickedEvent.isFirstPlayer);
+		S8.setTypeSquare(MouseClickedEvent.isFirstPlayer);
+		S9.setTypeSquare(MouseClickedEvent.isFirstPlayer);
+	}
 	
 	
 }
