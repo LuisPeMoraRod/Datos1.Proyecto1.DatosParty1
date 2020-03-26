@@ -29,15 +29,15 @@ public class GameBoard extends JPanel {
 	 */
 	public static boolean gameEnded = false;
 	private Label infoLabel = new Label();;
-	Squares S1 = new Squares();
-	Squares S2 = new Squares();
-	Squares S3 = new Squares();
-	Squares S4 = new Squares();
-	Squares S5 = new Squares();
-	Squares S6 = new Squares();
-	Squares S7 = new Squares();
-	Squares S8 = new Squares();
-	Squares S9 = new Squares();
+	static Squares S1 = new Squares();
+	static Squares S2 = new Squares();
+	static Squares S3 = new Squares();
+	static Squares S4 = new Squares();
+	static Squares S5 = new Squares();
+	static Squares S6 = new Squares();
+	static Squares S7 = new Squares();
+	static Squares S8 = new Squares();
+	static Squares S9 = new Squares();
 
 	static int gameStatus[][] = new int[3][3]; // Array that controls the status of the game and is used to determine if
 												// a player has won or of the game ended in a draw
@@ -57,6 +57,8 @@ public class GameBoard extends JPanel {
 	public GameBoard(String player1, String player2) {
 		this.player1 = player1;
 		this.player2 = player2;
+		setPanel(S1, S2, S3, S4, S5, S6, S7, S8, S9);
+		
 	}
 
 	/**
@@ -115,9 +117,8 @@ public class GameBoard extends JPanel {
 		g.drawImage(wallpaper, 0, 0, null);
 		Graphics2D g2 = (Graphics2D) g;
 		g2.setPaint(Color.WHITE);
-		update(g2);
-		setPanel(S1, S2, S3, S4, S5, S6, S7, S8, S9);
-
+		update();
+		
 		// removeAll();
 		/*
 		 * Graphics2D g2=(Graphics2D)g; g2.setColor(Color.black); g2.fill(new
@@ -126,8 +127,8 @@ public class GameBoard extends JPanel {
 	}
 
 	/**
-	 * Private method that reads a file (jpg) {@link ImageIO#read(File)}
-	 * 
+	 * Private method that reads a file (jpg) 
+	 * {@link ImageIO#read(File)}
 	 * @return Image object
 	 */
 	private Image requestImage() {
@@ -147,7 +148,7 @@ public class GameBoard extends JPanel {
 	 * @return void {@link Squares#setTypeSquare()}
 	 *         {@link GameBoard#setMatrix(Squares)}
 	 */
-	public void update(Graphics2D g2) {
+	public void update() {
 		S1.setTypeSquare();
 		setMatrix(S1);
 		S2.setTypeSquare();
@@ -168,12 +169,11 @@ public class GameBoard extends JPanel {
 		setMatrix(S9);
 		winner = checkVictory("1", "2");
 		if (winner != null) {
-			gameEnded = true;// Game ended with a winner
-			drawLine(g2);
+			GameBoard.gameEnded = true;// Game ended with a winner
+			
 		}
 		if (winner == null && cont > 8) {
-			gameEnded = true;
-			drawLine(g2);
+			GameBoard.gameEnded = true;
 			winner = "Draw";
 		}
 	}
@@ -220,6 +220,7 @@ public class GameBoard extends JPanel {
 		int pos22 = gameStatus[2][2];
 
 		if (pos00 == pos01 && pos00 == pos02 && pos00 != 0) {
+			
 			if (pos00 == 1) {
 				return player1;
 			} else {
@@ -286,10 +287,10 @@ public class GameBoard extends JPanel {
 		return null;
 	}
 
-	private void drawLine(Graphics2D g) {
-		Line2D.Double line = new Line2D.Double(getBounds().getCenterX(), 0, getBounds().getCenterX(),
-				getBounds().getMaxY());
+	private void drawLine(Graphics2D g, Squares S1, Squares S2) {
+		Line2D.Double line = new Line2D.Double(S1.getLocation().getX(), S1.getLocation().getY(), S2.getLocation().getX(), S2.getLocation().getY());
 		g.draw(line);
+	
 	}
 
 }

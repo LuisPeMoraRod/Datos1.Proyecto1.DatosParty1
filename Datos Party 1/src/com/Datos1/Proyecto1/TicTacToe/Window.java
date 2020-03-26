@@ -14,13 +14,13 @@ public class Window extends JFrame{
 	GameBoard board;
 	GameThread thread;
 	
+	
 	public Window (String player1, String player2) {
 		this.player1=player1;
 		this.player2=player2;
 		createWindow();
 		thread = new GameThread(board);
 		thread.start();
-		
 		
 	}
 	
@@ -29,7 +29,7 @@ public class Window extends JFrame{
 		setSize(width,length);
 		setLocationRelativeTo(null);
 		setResizable(false);
-		board=new GameBoard("Jugador 1", "Jugador 2");
+		board=new GameBoard("Jugador: 1", "Jugador: 2");
 		add(board);
 		
 	}

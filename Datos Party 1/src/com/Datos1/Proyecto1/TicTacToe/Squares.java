@@ -46,6 +46,7 @@ public class Squares extends Component{
 	@Override
 	public void paint(Graphics g) {
 		g.drawImage(getSquare(), 0, 0, null);
+
 	}
 	
 	
