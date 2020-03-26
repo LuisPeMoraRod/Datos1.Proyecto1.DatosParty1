@@ -8,7 +8,5 @@ public class Main {
 		Window tictactoe= new Window( "Me", "notMe");
 		tictactoe.setVisible(true);
 		tictactoe.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		
 	}
-
 }

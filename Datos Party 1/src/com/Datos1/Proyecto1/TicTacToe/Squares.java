@@ -10,20 +10,28 @@ import javax.imageio.ImageIO;
 
 public class Squares extends Component{
 	/**
-	 * 
+	 * Public class that creates the components that form the squares of the tic tac toe game
+	 * @author Luis Pedro Morales
+	 * @version First version
 	 */
 	private static final long serialVersionUID = 1L;
 	private BufferedImage image;
 	private String path;
 	public boolean hasChanged=false,isChanging=false;
+	public int whichPlayer;
 	
-	public int id = 1;
-
+	static int row=0;
+	static int column = 0;
+	int row1;
+	int column1;
+	
 	public Squares() {
+		row1=row;
+		column1=column;
 		this.addMouseListener(new MouseClickedEvent());
 		path="images/Bs.jpg";
 		changeImage();
-		
+		increaseIndex();
 	}
 	
 	public void changeImage() {
@@ -40,10 +48,11 @@ public class Squares extends Component{
 		g.drawImage(getSquare(), 0, 0, null);
 	}
 	
+	
 	@Override
 	public Dimension getPreferredSize() {
 		if (image == null) {
-			return new Dimension(98, 98);
+			return new Dimension(150, 150);
 		} else {
 			return new Dimension(image.getWidth(), image.getHeight());
 		}
@@ -52,26 +61,56 @@ public class Squares extends Component{
 	public BufferedImage getSquare() {
 		try {
 			image = ImageIO.read(new File(path));
-			
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 		return image;
 	}
 	
-	
 
-	public void setTypeSquare(boolean isPlayerOne) {
+	public void setTypeSquare() {
+		if (!GameBoard.gameEnded) {
+			boolean isPlayerOne=MouseClickedEvent.isFirstPlayer;
+			if (isPlayerOne && !hasChanged && isChanging) {
+				hasChanged=true;
+				whichPlayer=1;
+				path = "images/Xs.jpg";
+			}
+			if (!isPlayerOne && !hasChanged && isChanging) {
+				hasChanged=true;
+				whichPlayer=2;
+				path = "images/Os.jpg";
 		
-		if (isPlayerOne && !hasChanged && isChanging) {
-			hasChanged=true;
-			path = "images/Xs.jpg";
+			}
 		}
-		if (!isPlayerOne && !hasChanged && isChanging) {
-			hasChanged=true;
-			path = "images/Os.jpg";
+		
+	}
 	
+	public boolean isSquareSetted() {
+		if (hasChanged) {
+			return true;
+		}else {
+			return false;
 		}
+	}
+	
+	public boolean whichType() {
+		if (whichPlayer==1) {
+			return true;
+		}else {
+			return false;
+		}
+	}
+	
+	public void increaseIndex() {
+		if (column<=2) {
+			column++;
+		}
+		if (column>2 && row<=2) {
+			column=0;
+			row++;
+		}
+		
 	}
 
 

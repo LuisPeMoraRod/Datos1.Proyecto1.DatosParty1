@@ -3,8 +3,14 @@ package com.Datos1.Proyecto1.TicTacToe;
 import javax.swing.JFrame;
 
 public class Window extends JFrame{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
+	
 	public String player1,player2;
-	private final int width=850, length=510;
+	private final int width=850, length=570;
 	GameBoard board;
 	GameThread thread;
 	
@@ -23,7 +29,7 @@ public class Window extends JFrame{
 		setSize(width,length);
 		setLocationRelativeTo(null);
 		setResizable(false);
-		board=new GameBoard();
+		board=new GameBoard("Jugador 1", "Jugador 2");
 		add(board);
 		
 	}
