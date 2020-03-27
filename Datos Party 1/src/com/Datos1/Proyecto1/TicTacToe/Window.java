@@ -4,7 +4,8 @@ import javax.swing.JFrame;
 
 public class Window extends JFrame{
 	/**
-	 * 
+	 * @author Luis Pedro Morales Rodriguez
+	 * @version 25/3/2020
 	 */
 	private static final long serialVersionUID = 1L;
 
@@ -18,18 +19,18 @@ public class Window extends JFrame{
 	public Window (String player1, String player2) {
 		this.player1=player1;
 		this.player2=player2;
-		createWindow();
+		createWindow(player1,player2);
 		thread = new GameThread(board);
 		thread.start();
 		
 	}
 	
-	public void createWindow() {
+	public void createWindow(String player1, String player2) {
 		setTitle("Tic-Tac-Toe");
 		setSize(width,length);
 		setLocationRelativeTo(null);
 		setResizable(false);
-		board=new GameBoard("Jugador: 1", "Jugador: 2");
+		board=new GameBoard(player1, player2);
 		add(board);
 		
 	}

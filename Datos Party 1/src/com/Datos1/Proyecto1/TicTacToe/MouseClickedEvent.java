@@ -4,7 +4,13 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
 public class MouseClickedEvent extends MouseAdapter{
-	static boolean isFirstPlayer=false;
+	/**
+	 * Public class that handles the events that happen when an object is clicked
+	 * @author Luis Pedro Morales Rodriguez
+	 * @version 25/3/2020
+	 * {@link MouseAdapter}
+	 */
+	static boolean isFirstPlayer=true;
 
 	@Override
 	public void mouseClicked(MouseEvent e) {

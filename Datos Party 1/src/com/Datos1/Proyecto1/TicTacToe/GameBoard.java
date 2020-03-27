@@ -16,7 +16,9 @@ import java.io.IOException;
 import javax.imageio.ImageIO;
 import javax.swing.BoxLayout;
 import javax.swing.GroupLayout;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
+
 
 public class GameBoard extends JPanel {
 
@@ -28,7 +30,8 @@ public class GameBoard extends JPanel {
 	 * @version 25/3/2020
 	 */
 	public static boolean gameEnded = false;
-	private Label infoLabel = new Label();;
+	private JLabel infoLabel = new JLabel();
+	private JLabel turnLabel=new JLabel();
 	static Squares S1 = new Squares();
 	static Squares S2 = new Squares();
 	static Squares S3 = new Squares();
@@ -79,12 +82,21 @@ public class GameBoard extends JPanel {
 
 		GroupLayout layout = new GroupLayout(this);
 		setLayout(layout);
-		infoLabel.setText("Information related to the status of the game");
+		//String infoText = "<html><body><font size=6> <span style=\"color: #000080;\"><span style=\"color: #00ffff;\">Tic</span> <span style=\"color: #ff0000;\">Tac</span> <span style=\"color: #00ffff;\">Toe</span></span<br><br>Player 1: "+player1+"<br>Player 2: "+player2+" </font></body></html>";
+		String infoText = "<html><body><font size=6>TIC-TAC-TOE<br><br>Player 1: "+player1+"<br>Player 2: "+player2+" </font></body></html>";
+		infoLabel.setText(infoText);
+		infoLabel.setForeground(Color.white);
+
+		String turnText="<html><body ><font size=6><br>It's "+player1+"'s turn"+"  </font> </body></html>";
+		turnLabel.setText(turnText);
+		turnLabel.setForeground(Color.white);
 
 		layout.setAutoCreateGaps(true);
 		layout.setAutoCreateContainerGaps(true);
 
-		layout.setHorizontalGroup(layout.createSequentialGroup().addComponent(infoLabel).addGap(30)
+		layout.setHorizontalGroup(layout.createSequentialGroup()
+				.addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING).addComponent(infoLabel,0,GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+						.addComponent(turnLabel,0,GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)).addGap(30)
 				.addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING).addComponent(S1).addComponent(S4)
 						.addComponent(S7))
 				.addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING).addComponent(S2).addComponent(S5)
@@ -93,10 +105,10 @@ public class GameBoard extends JPanel {
 						.addComponent(S9)));
 
 		layout.setVerticalGroup(layout.createSequentialGroup()
-				.addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE).addComponent(infoLabel)
+				.addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE).addComponent(infoLabel,0,GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
 						.addComponent(S1).addComponent(S2).addComponent(S3))
-				.addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE).addComponent(S4).addComponent(S5)
-						.addComponent(S6))
+				.addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE).addComponent(turnLabel,0,GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+						.addComponent(S4).addComponent(S5).addComponent(S6))
 				.addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE).addComponent(S7).addComponent(S8)
 						.addComponent(S9))
 
@@ -167,15 +179,8 @@ public class GameBoard extends JPanel {
 		setMatrix(S8);
 		S9.setTypeSquare();
 		setMatrix(S9);
-		winner = checkVictory("1", "2");
-		if (winner != null) {
-			GameBoard.gameEnded = true;// Game ended with a winner
-			
-		}
-		if (winner == null && cont > 8) {
-			GameBoard.gameEnded = true;
-			winner = "Draw";
-		}
+		setTurnText(turnLabel);
+		
 	}
 
 	/**
@@ -286,11 +291,35 @@ public class GameBoard extends JPanel {
 
 		return null;
 	}
-
-	private void drawLine(Graphics2D g, Squares S1, Squares S2) {
-		Line2D.Double line = new Line2D.Double(S1.getLocation().getX(), S1.getLocation().getY(), S2.getLocation().getX(), S2.getLocation().getY());
-		g.draw(line);
 	
+	public void setTurnText(JLabel label) {
+		winner = checkVictory(player1, player2);
+		String text;
+		if (winner != null) {
+			GameBoard.gameEnded = true;// Game ended with a winner
+			text="<html><body><font size=6><br>Winner: "+winner+".</font> </body></html>";
+			turnLabel.setText(text);
+			
+		}
+		if (winner == null && cont > 8) {
+			GameBoard.gameEnded = true;
+			winner = "draw";
+			text="<html><body><font size=6><br>Game ended: "+winner+".</font> </body></html>";
+			turnLabel.setText(text);
+			
+		}
+		
+		if (!GameBoard.gameEnded) {
+			if (MouseClickedEvent.isFirstPlayer) {
+				text="<html><body><font size=6><br>It's "+player1+"'s turn</font> </body></html>";
+				turnLabel.setText(text);
+			}else {
+				text="<html><body><font size=6><br>It's "+player2+"'s turn</font> </body></html>";
+				turnLabel.setText(text);
+			}
+			
+		}
 	}
+
 
 }
