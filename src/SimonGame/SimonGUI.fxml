@@ -18,11 +18,11 @@
       </ImageView>
       <Pane layoutX="350.0" prefHeight="500.0" prefWidth="450.0">
          <children>
-            <Button layoutX="69.0" layoutY="108.0" mnemonicParsing="false" prefHeight="189.0" prefWidth="109.0" style="-fx-background-color: #CC3366;" />
-            <Button layoutX="69.0" layoutY="303.0" mnemonicParsing="false" prefHeight="105.0" prefWidth="109.0" style="-fx-background-color: #9B59B6;" />
-            <Button layoutX="185.0" layoutY="108.0" mnemonicParsing="false" prefHeight="94.0" prefWidth="196.0" style="-fx-background-color: #CDDC39;" />
-            <Button layoutX="185.0" layoutY="209.0" mnemonicParsing="false" prefHeight="88.0" prefWidth="196.0" style="-fx-background-color: #FFA000;" />
-            <Button layoutX="185.0" layoutY="303.0" mnemonicParsing="false" prefHeight="105.0" prefWidth="196.0" style="-fx-background-color: #00ACC1;" />
+            <Button fx:id="btn_Pink" layoutX="69.0" layoutY="108.0" mnemonicParsing="false" onAction="#pressButton" prefHeight="189.0" prefWidth="109.0" style="-fx-background-color: #96274c;" textFill="#96274c" />
+            <Button fx:id="btn_Purple" layoutX="69.0" layoutY="303.0" mnemonicParsing="false" onAction="#pressButton" prefHeight="105.0" prefWidth="109.0" style="-fx-background-color: #6f4082;" textFill="#6f4082" />
+            <Button fx:id="btn_Green" layoutX="185.0" layoutY="108.0" mnemonicParsing="false" onAction="#pressButton" prefHeight="94.0" prefWidth="196.0" style="-fx-background-color: #7d8622;" textFill="#7d8622" />
+            <Button fx:id="btn_Orange" layoutX="185.0" layoutY="209.0" mnemonicParsing="false" onAction="#pressButton" prefHeight="88.0" prefWidth="196.0" style="-fx-background-color: #9d6202;" textFill="#9d6202" />
+            <Button fx:id="btn_Blue" layoutX="185.0" layoutY="303.0" mnemonicParsing="false" onAction="#pressButton" prefHeight="105.0" prefWidth="196.0" style="-fx-background-color: #005c64;" textFill="#005c64" />
             <ImageView fx:id="btn_Close" fitHeight="19.0" fitWidth="22.0" layoutX="417.0" layoutY="14.0" onMouseClicked="#closeWindow" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="@../Imagenes/close.png" />
