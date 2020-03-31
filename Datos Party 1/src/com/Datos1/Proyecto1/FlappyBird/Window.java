@@ -10,20 +10,28 @@ import javax.swing.JRootPane;
 
 public class Window extends JFrame {
 	/**
+	 * Public class that creates the window where the game develops
 	 * @author Luis Pedro Morales Rodriguez
 	 * @version 25/3/2020
 	 */
 	private static final long serialVersionUID = 1L;
 
 	private int width, height;
-	GameBoard board;
+	public static int frameWidth=550,frameHeight=425;
+	public static GameBoard canvas1, canvas2,canvas3,canvas4;
+	
 
 	JDesktopPane desk;
-	JInternalFrame frame1, frame2, frame3, frame4;
-	JFrame frame;
+	public static JInternalFrame frame1, frame2, frame3, frame4;
 	Dimension sizeInternalFrame;
 	public int players;
 
+	/**
+	 * Constructor method. Creates an amount of internal frames depending on the number of players
+	 * @param players
+	 * {@link Window#setWindowSize(int)}
+	 * {@link Window#createWindow(int)}
+	 */
 	public Window(int players) {
 		this.players = players;
 		desk = new JDesktopPane();
@@ -32,18 +40,18 @@ public class Window extends JFrame {
 		setLocationRelativeTo(null);
 		setResizable(false);
 		// setUndecorated(true);
-		for (int i = 0; i < players; i++) {
+		for (int i = 1; i <= players; i++) {
 			createWindow(i);
 		}
-
+		// public void createWindow(int player) { board = new GameBoard(player);
+		// add(board);
 	}
-	/*
-	 * public void createWindow(int player) { board = new GameBoard(player);
-	 * add(board);
-	 * 
-	 * }
-	 */
 
+	/**
+	 * Public method that sets the size of the window depending on the number of
+	 * players
+	 * @param players : int
+	 */
 	public void setWindowSize(int players) {
 		if (players == 1) {
 			width = 555;
@@ -67,33 +75,42 @@ public class Window extends JFrame {
 		}
 	}
 
+	/**
+	 * Public method that creates the internal frames for each player. The maximum
+	 * amount of players is 4
+	 * @param player : int
+	 */
 	public void createWindow(int player) {
 
-		if (player == 0) {
+		if (player == 1) {
 			frame1 = new JInternalFrame("Frame1", true, true, true, true);
 			frame1.setVisible(true);
-			frame1.setSize(550, 425);
+			frame1.setSize(frameWidth, frameHeight);
 			frame1.setLocation(0, 0);
 			int x = frame1.getX();
 			int y = frame1.getY();
 			internalFrameProps(frame1, x, y);
 			desk.add(frame1);
+			canvas1=new GameBoard (player);
+			frame1.add(canvas1);
 
 		}
-		if (player == 1) {
+		if (player == 2) {
 			frame2 = new JInternalFrame("Frame2", true, true, true, true);
 			frame2.setVisible(true);
-			frame2.setSize(550, 425);
+			frame2.setSize(frameWidth, frameHeight);
 			frame2.setLocation(550, 0);
 			int x = frame2.getX();
 			int y = frame2.getY();
 			internalFrameProps(frame2, x, y);
 			desk.add(frame2);
+			canvas2=new GameBoard (player);
+			frame2.add(canvas2);
 		}
-		if (player == 2) {
+		if (player == 3) {
 			frame3 = new JInternalFrame("Frame3", true, true, true, true);
 			frame3.setVisible(true);
-			frame3.setSize(550, 425);
+			frame3.setSize(frameWidth, frameHeight);
 			if (players == 3) {
 				frame3.setLocation(1100, 0);
 			}
@@ -104,24 +121,34 @@ public class Window extends JFrame {
 			int y = frame3.getY();
 			internalFrameProps(frame3, x, y);
 			desk.add(frame3);
+			canvas3=new GameBoard (player);
+			frame3.add(canvas3);
 		}
-		if (player == 3) {
+		if (player == 4) {
 			frame4 = new JInternalFrame("Frame4", true, true, true, true);
 			frame4.setVisible(true);
-			frame4.setSize(550, 425);
+			frame4.setSize(frameWidth, frameHeight);
 			frame4.setLocation(550, 425);
 			int x = frame4.getX();
 			int y = frame4.getY();
 			// frame4.setMaximizable(false);
 			internalFrameProps(frame4, x, y);
 			desk.add(frame4);
-
+			canvas4=new GameBoard (player);
+			frame4.add(canvas4);
 		}
-
 		add(desk);
-
 	}
 
+	/**
+	 * Public method that sets the internal frames as undecorated (without the frame
+	 * border, maximum button, minimum button) and also prevents the internal frames
+	 * from being moved
+	 * 
+	 * @param frame : JInternalFrame
+	 * @param x     : int
+	 * @param y     : int
+	 */
 	public void internalFrameProps(JInternalFrame frame, int x, int y) {
 		frame.setClosable(false);
 		frame.putClientProperty("JInternalFrame.isPalette", Boolean.TRUE);
