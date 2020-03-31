@@ -33,8 +33,11 @@ public class GameBoard extends JPanel implements ActionListener {
 
 	public boolean gameOn;
 	public boolean gameOver;
+	
+	public  int x;
+	public  int y;
 
-	public int dy;
+	public int dy = 1;
 
 	public GameBoard(int player) {
 		this.player = player;
@@ -47,6 +50,9 @@ public class GameBoard extends JPanel implements ActionListener {
 
 		birdWidth = sprite.birdWidth;
 		birdHeight = sprite.birdHeight;
+		
+		x=(frameWidth / 2) - (birdWidth / 2);
+		y=(frameHeight / 2) - (birdHeight / 2);
 
 		gameOn = false;
 		gameOver = false;
@@ -56,25 +62,30 @@ public class GameBoard extends JPanel implements ActionListener {
 		timer.start();
 	}
 
-	public void print() {
-		System.out.println(player);
+	public void jump() {
+		if (!gameOver) {
+			if (dy > 0)
+			{
+				dy = 0;
+			}
+			dy -=15;
+		}
 	}
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		dy++;
+		if (gameOn) {
+			dy += 2;
+			y+=dy;
+		}
+		repaint();
 
 	}
 
 	@Override
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
-		if (gameOn) {
-			g.drawImage(image, (frameWidth / 2) - (birdWidth / 2), (frameHeight / 2) - (birdHeight / 2), null);
-
-		} else {
-			g.drawImage(image, (frameWidth / 2) - (birdWidth / 2), (frameHeight / 2) - (birdHeight / 2), null);
-		}
+		g.drawImage(image,x , y, null);
 
 	}
 

@@ -188,7 +188,10 @@ public class Window extends JFrame {
 				// TODO Auto-generated method stub
 				if (e.getKeyCode()==KeyEvent.VK_W) {
 					try {
-						canvas1.print();
+						if (!canvas1.gameOn) {
+							canvas1.gameOn=true;
+						}
+						canvas1.jump();
 					} catch (Exception e2) {
 						// TODO: handle exception
 					}
@@ -196,21 +199,29 @@ public class Window extends JFrame {
 				}
 				if (e.getKeyCode()==KeyEvent.VK_SPACE) {
 					try {
-						canvas2.print();
+						if (!canvas2.gameOn) {
+							canvas2.gameOn=true;
+						}
+						canvas2.jump();
 					} catch (Exception e2) {
 						// TODO: handle exception
 					}
 				}
 				if (e.getKeyCode()==KeyEvent.VK_P) {
 					try {
-						canvas3.print();
-					} catch (Exception e2) {
+						if (!canvas3.gameOn) {
+							canvas3.gameOn=true;
+						}
+						canvas3.jump();					} catch (Exception e2) {
 						// TODO: handle exception
 					}
 				}
 				if (e.getKeyCode()==38) {
 					try {
-						canvas4.print();
+						if (!canvas4.gameOn) {
+							canvas4.gameOn=true;
+						}
+						canvas4.jump();
 					} catch (Exception e2) {
 						// TODO: handle exception
 					}
