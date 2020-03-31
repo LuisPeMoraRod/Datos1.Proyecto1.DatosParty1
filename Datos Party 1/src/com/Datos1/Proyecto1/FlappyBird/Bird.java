@@ -18,7 +18,7 @@ public class Bird extends Component {
 	 * @version 30/3/2020
 	 */
 	private static final long serialVersionUID = 1L;
-	private int player;
+	public int player;
 	private String path;
 	private BufferedImage image;
 	public int birdWidth,birdHeight;

@@ -2,6 +2,8 @@ package com.Datos1.Proyecto1.FlappyBird;
 
 import java.awt.Dimension;
 import java.awt.event.ComponentEvent;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 
 import javax.swing.JDesktopPane;
 import javax.swing.JFrame;
@@ -11,15 +13,15 @@ import javax.swing.JRootPane;
 public class Window extends JFrame {
 	/**
 	 * Public class that creates the window where the game develops
+	 * 
 	 * @author Luis Pedro Morales Rodriguez
 	 * @version 25/3/2020
 	 */
 	private static final long serialVersionUID = 1L;
 
 	private int width, height;
-	public static int frameWidth=550,frameHeight=425;
-	public static GameBoard canvas1, canvas2,canvas3,canvas4;
-	
+	public static int frameWidth = 550, frameHeight = 425;
+	public static GameBoard canvas1, canvas2, canvas3, canvas4;
 
 	JDesktopPane desk;
 	public static JInternalFrame frame1, frame2, frame3, frame4;
@@ -27,10 +29,11 @@ public class Window extends JFrame {
 	public int players;
 
 	/**
-	 * Constructor method. Creates an amount of internal frames depending on the number of players
-	 * @param players
-	 * {@link Window#setWindowSize(int)}
-	 * {@link Window#createWindow(int)}
+	 * Constructor method. Creates an amount of internal frames depending on the
+	 * number of players
+	 * 
+	 * @param players {@link Window#setWindowSize(int)}
+	 *                {@link Window#createWindow(int)}
 	 */
 	public Window(int players) {
 		this.players = players;
@@ -39,6 +42,7 @@ public class Window extends JFrame {
 		setWindowSize(players);
 		setLocationRelativeTo(null);
 		setResizable(false);
+		handleKeyEvent(this);
 		// setUndecorated(true);
 		for (int i = 1; i <= players; i++) {
 			createWindow(i);
@@ -50,6 +54,7 @@ public class Window extends JFrame {
 	/**
 	 * Public method that sets the size of the window depending on the number of
 	 * players
+	 * 
 	 * @param players : int
 	 */
 	public void setWindowSize(int players) {
@@ -78,6 +83,7 @@ public class Window extends JFrame {
 	/**
 	 * Public method that creates the internal frames for each player. The maximum
 	 * amount of players is 4
+	 * 
 	 * @param player : int
 	 */
 	public void createWindow(int player) {
@@ -91,9 +97,10 @@ public class Window extends JFrame {
 			int y = frame1.getY();
 			internalFrameProps(frame1, x, y);
 			desk.add(frame1);
-			canvas1=new GameBoard (player);
-			frame1.add(canvas1);
-
+			canvas1=new GameBoard(player);
+			//canvas.setFocusable(true);
+			//canvas.requestFocusInWindow();
+			frame1.add(canvas1);	
 		}
 		if (player == 2) {
 			frame2 = new JInternalFrame("Frame2", true, true, true, true);
@@ -104,8 +111,8 @@ public class Window extends JFrame {
 			int y = frame2.getY();
 			internalFrameProps(frame2, x, y);
 			desk.add(frame2);
-			canvas2=new GameBoard (player);
-			frame2.add(canvas2);
+			canvas2=new GameBoard(player);
+			frame2.add(canvas2);	
 		}
 		if (player == 3) {
 			frame3 = new JInternalFrame("Frame3", true, true, true, true);
@@ -121,8 +128,8 @@ public class Window extends JFrame {
 			int y = frame3.getY();
 			internalFrameProps(frame3, x, y);
 			desk.add(frame3);
-			canvas3=new GameBoard (player);
-			frame3.add(canvas3);
+			canvas3=new GameBoard(player);
+			frame3.add(canvas3);	
 		}
 		if (player == 4) {
 			frame4 = new JInternalFrame("Frame4", true, true, true, true);
@@ -134,8 +141,8 @@ public class Window extends JFrame {
 			// frame4.setMaximizable(false);
 			internalFrameProps(frame4, x, y);
 			desk.add(frame4);
-			canvas4=new GameBoard (player);
-			frame4.add(canvas4);
+			canvas4=new GameBoard(player);
+			frame4.add(canvas4);	
 		}
 		add(desk);
 	}
@@ -164,7 +171,58 @@ public class Window extends JFrame {
 				frame.setLocation(x, y);
 			}
 		});
+		
 
+	}
+	public void handleKeyEvent(JFrame frame) {
+		frame.addKeyListener(new KeyListener() {
+
+			@Override
+			public void keyTyped(KeyEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+
+			@Override
+			public void keyPressed(KeyEvent e) {
+				// TODO Auto-generated method stub
+				if (e.getKeyCode()==KeyEvent.VK_W) {
+					try {
+						canvas1.print();
+					} catch (Exception e2) {
+						// TODO: handle exception
+					}
+					
+				}
+				if (e.getKeyCode()==KeyEvent.VK_SPACE) {
+					try {
+						canvas2.print();
+					} catch (Exception e2) {
+						// TODO: handle exception
+					}
+				}
+				if (e.getKeyCode()==KeyEvent.VK_P) {
+					try {
+						canvas3.print();
+					} catch (Exception e2) {
+						// TODO: handle exception
+					}
+				}
+				if (e.getKeyCode()==38) {
+					try {
+						canvas4.print();
+					} catch (Exception e2) {
+						// TODO: handle exception
+					}
+				}
+			}
+
+			@Override
+			public void keyReleased(KeyEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+        });
 	}
 
 }
