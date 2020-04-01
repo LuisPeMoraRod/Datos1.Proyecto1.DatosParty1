@@ -20,14 +20,14 @@ public class Window extends JFrame {
 	private static final long serialVersionUID = 1L;
 
 	private int width, height;
-	public static int frameWidth = 550, frameHeight = 425;
+	public static int frameWidth = 550, frameHeight = 503;
 	public static GameBoard canvas1, canvas2, canvas3, canvas4;
 
 	JDesktopPane desk;
 	public static JInternalFrame frame1, frame2, frame3, frame4;
 	Dimension sizeInternalFrame;
 	public int players;
-
+	
 	/**
 	 * Constructor method. Creates an amount of internal frames depending on the
 	 * number of players
@@ -60,22 +60,22 @@ public class Window extends JFrame {
 	public void setWindowSize(int players) {
 		if (players == 1) {
 			width = 555;
-			height = 445;
+			height = 542;
 			setSize(width, height);
 		}
 		if (players == 2) {
 			width = 1116;
-			height = 445;
+			height = 542;
 			setSize(width, height);
 		}
 		if (players == 3) {
 			width = 1666;
-			height = 445;
+			height = 542;
 			setSize(width, height);
 		}
 		if (players == 4) {
 			width = 1116;
-			height = 889;
+			height = 1045;//889
 			setSize(width, height);
 		}
 	}
@@ -98,6 +98,7 @@ public class Window extends JFrame {
 			internalFrameProps(frame1, x, y);
 			desk.add(frame1);
 			canvas1=new GameBoard(player);
+
 			//canvas.setFocusable(true);
 			//canvas.requestFocusInWindow();
 			frame1.add(canvas1);	
@@ -112,6 +113,7 @@ public class Window extends JFrame {
 			internalFrameProps(frame2, x, y);
 			desk.add(frame2);
 			canvas2=new GameBoard(player);
+
 			frame2.add(canvas2);	
 		}
 		if (player == 3) {
@@ -122,20 +124,21 @@ public class Window extends JFrame {
 				frame3.setLocation(1100, 0);
 			}
 			if (players == 4) {
-				frame3.setLocation(0, 425);
+				frame3.setLocation(0, 503);
 			}
 			int x = frame3.getX();
 			int y = frame3.getY();
 			internalFrameProps(frame3, x, y);
 			desk.add(frame3);
 			canvas3=new GameBoard(player);
+
 			frame3.add(canvas3);	
 		}
 		if (player == 4) {
 			frame4 = new JInternalFrame("Frame4", true, true, true, true);
 			frame4.setVisible(true);
 			frame4.setSize(frameWidth, frameHeight);
-			frame4.setLocation(550, 425);
+			frame4.setLocation(550, 503);
 			int x = frame4.getX();
 			int y = frame4.getY();
 			// frame4.setMaximizable(false);
@@ -188,8 +191,8 @@ public class Window extends JFrame {
 				// TODO Auto-generated method stub
 				if (e.getKeyCode()==KeyEvent.VK_W) {
 					try {
-						if (!canvas1.gameOn) {
-							canvas1.gameOn=true;
+						if (!GameBoard.gameOn) {
+							GameBoard.gameOn=true;
 						}
 						canvas1.jump();
 					} catch (Exception e2) {
@@ -199,8 +202,8 @@ public class Window extends JFrame {
 				}
 				if (e.getKeyCode()==KeyEvent.VK_SPACE) {
 					try {
-						if (!canvas2.gameOn) {
-							canvas2.gameOn=true;
+						if (!GameBoard.gameOn) {
+							GameBoard.gameOn=true;
 						}
 						canvas2.jump();
 					} catch (Exception e2) {
@@ -209,8 +212,8 @@ public class Window extends JFrame {
 				}
 				if (e.getKeyCode()==KeyEvent.VK_P) {
 					try {
-						if (!canvas3.gameOn) {
-							canvas3.gameOn=true;
+						if (!GameBoard.gameOn) {
+							GameBoard.gameOn=true;
 						}
 						canvas3.jump();					} catch (Exception e2) {
 						// TODO: handle exception
@@ -218,8 +221,8 @@ public class Window extends JFrame {
 				}
 				if (e.getKeyCode()==38) {
 					try {
-						if (!canvas4.gameOn) {
-							canvas4.gameOn=true;
+						if (!GameBoard.gameOn) {
+							GameBoard.gameOn=true;
 						}
 						canvas4.jump();
 					} catch (Exception e2) {
