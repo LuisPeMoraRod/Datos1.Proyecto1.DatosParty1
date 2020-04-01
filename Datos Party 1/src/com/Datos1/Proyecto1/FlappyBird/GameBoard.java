@@ -34,6 +34,7 @@ public class GameBoard extends JPanel implements ActionListener {
 
 	public static boolean gameOn;
 	public boolean gameOver;
+	public boolean crash;
 
 	public boolean createColumn = false;
 
@@ -75,8 +76,7 @@ public class GameBoard extends JPanel implements ActionListener {
 	}
 
 	public void createColumn() {
-		
-		int space = 120;
+		int space = 160;
 		int width = 90;
 		int height=columnHeights[columnIndex];
 		Rectangle rect1 = new Rectangle(frameWidth, 0, width, height);
@@ -136,15 +136,18 @@ public class GameBoard extends JPanel implements ActionListener {
 			if ((y + birdHeight) <= 0 || y >= (frameHeight)) {
 				gameOver = true;
 				System.out.println("Game Over");
+				repaint();
 				timer.stop();
 			}
 			
 			for (Rectangle column: columnsArray) {
 				if (column.intersects(x, y, birdWidth, birdHeight)) {
 					gameOver=true;
-					System.out.println("Game Over");
-					timer.stop();
+					crash=true;
 				}
+			}
+			if (crash==true) {
+				x-=speed;
 			}
 		}
 
@@ -156,9 +159,6 @@ public class GameBoard extends JPanel implements ActionListener {
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
 		g.drawImage(image, x, y, null);
-		g.setColor(Color.orange);
-		g.fillRect(0, frameHeight - 20, frameWidth, 120);
-
 		for (Rectangle column : columnsArray) {
 			paintColumn(g, column);
 		}
