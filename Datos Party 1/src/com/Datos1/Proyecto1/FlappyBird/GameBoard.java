@@ -22,7 +22,6 @@ public class GameBoard extends JPanel implements ActionListener {
 	/**
 	 * 
 	 */
-	public static int heightColumns;
 	private static final long serialVersionUID = 1L;
 	public int player;
 	public Bird sprite;
@@ -42,6 +41,8 @@ public class GameBoard extends JPanel implements ActionListener {
 	public int y;
 
 	public int dy = 1;
+	public int[] columnHeights;
+	public int columnIndex=0;
 
 	public int contTimer;
 	Timer timer;
@@ -61,9 +62,8 @@ public class GameBoard extends JPanel implements ActionListener {
 		x = (frameWidth / 3) - (birdWidth / 2);
 		y = (frameHeight / 2) - (birdHeight / 2);
 		
-		random=new Random();
-
 		columnsArray = new ArrayList<Rectangle>();
+		columnHeights=ColumnHeights.getInstance().heights; //Singleton instance
 
 		gameOn = false;
 		gameOver = false;
@@ -75,16 +75,23 @@ public class GameBoard extends JPanel implements ActionListener {
 	}
 
 	public void createColumn() {
+		
 		int space = 120;
 		int width = 90;
-		heightColumns = 20 + random.nextInt(350);   
-		Rectangle rect1 = new Rectangle(frameWidth, 0, width, heightColumns);
-		Rectangle rect2=new Rectangle(frameWidth,heightColumns+space,width,frameHeight-(heightColumns+space));
+		int height=columnHeights[columnIndex];
+		Rectangle rect1 = new Rectangle(frameWidth, 0, width, height);
+		Rectangle rect2=new Rectangle(frameWidth,height+space,width,frameHeight-(height+space));
 		columnsArray.add(rect1);
 		columnsArray.add(rect2);
-
+		columnIndex++;
+		if (columnIndex>99) {
+			columnIndex=0;
+		}
 	}
 
+	/**
+	 * Public method that makes the "bird" jump. Decreases the dy variable so that the image moves up.
+	 */
 	public void jump() {
 		if (!gameOver) {
 			if (dy > 0) {
@@ -95,7 +102,11 @@ public class GameBoard extends JPanel implements ActionListener {
 	}
 
 
-
+/**
+ * Public method that paints a rectangle column in the canvas
+ * @param g : Graphics
+ * @param column : Rectangle
+ */
 	public void paintColumn(Graphics g, Rectangle column) {
 		g.setColor(Color.black);
 		g.fillRect(column.x, column.y, column.width, column.height);
@@ -126,6 +137,14 @@ public class GameBoard extends JPanel implements ActionListener {
 				gameOver = true;
 				System.out.println("Game Over");
 				timer.stop();
+			}
+			
+			for (Rectangle column: columnsArray) {
+				if (column.intersects(x, y, birdWidth, birdHeight)) {
+					gameOver=true;
+					System.out.println("Game Over");
+					timer.stop();
+				}
 			}
 		}
 
