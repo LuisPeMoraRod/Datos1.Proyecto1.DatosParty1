@@ -20,14 +20,14 @@ public class Window extends JFrame {
 	private static final long serialVersionUID = 1L;
 
 	private int width, height;
-	public static int frameWidth = 550, frameHeight = 503;
+	public static int frameWidth = 615, frameHeight = 503;
 	public static GameBoard canvas1, canvas2, canvas3, canvas4;
 
 	JDesktopPane desk;
 	public static JInternalFrame frame1, frame2, frame3, frame4;
 	Dimension sizeInternalFrame;
 	public int players;
-	
+
 	/**
 	 * Constructor method. Creates an amount of internal frames depending on the
 	 * number of players
@@ -59,23 +59,23 @@ public class Window extends JFrame {
 	 */
 	public void setWindowSize(int players) {
 		if (players == 1) {
-			width = 555;
+			width = 620;// 555
 			height = 542;
 			setSize(width, height);
 		}
 		if (players == 2) {
-			width = 1116;
+			width = 1246;
 			height = 542;
 			setSize(width, height);
 		}
 		if (players == 3) {
-			width = 1666;
+			width = 1861;
 			height = 542;
 			setSize(width, height);
 		}
 		if (players == 4) {
-			width = 1116;
-			height = 1045;//889
+			width = 1246;
+			height = 1045;// 889
 			setSize(width, height);
 		}
 	}
@@ -97,31 +97,31 @@ public class Window extends JFrame {
 			int y = frame1.getY();
 			internalFrameProps(frame1, x, y);
 			desk.add(frame1);
-			canvas1=new GameBoard(player);
+			canvas1 = new GameBoard(player);
 
-			//canvas.setFocusable(true);
-			//canvas.requestFocusInWindow();
-			frame1.add(canvas1);	
+			// canvas.setFocusable(true);
+			// canvas.requestFocusInWindow();
+			frame1.add(canvas1);
 		}
 		if (player == 2) {
 			frame2 = new JInternalFrame("Frame2", true, true, true, true);
 			frame2.setVisible(true);
 			frame2.setSize(frameWidth, frameHeight);
-			frame2.setLocation(550, 0);
+			frame2.setLocation(615, 0);
 			int x = frame2.getX();
 			int y = frame2.getY();
 			internalFrameProps(frame2, x, y);
 			desk.add(frame2);
-			canvas2=new GameBoard(player);
+			canvas2 = new GameBoard(player);
 
-			frame2.add(canvas2);	
+			frame2.add(canvas2);
 		}
 		if (player == 3) {
 			frame3 = new JInternalFrame("Frame3", true, true, true, true);
 			frame3.setVisible(true);
 			frame3.setSize(frameWidth, frameHeight);
 			if (players == 3) {
-				frame3.setLocation(1100, 0);
+				frame3.setLocation(1230, 0);
 			}
 			if (players == 4) {
 				frame3.setLocation(0, 503);
@@ -130,22 +130,22 @@ public class Window extends JFrame {
 			int y = frame3.getY();
 			internalFrameProps(frame3, x, y);
 			desk.add(frame3);
-			canvas3=new GameBoard(player);
+			canvas3 = new GameBoard(player);
 
-			frame3.add(canvas3);	
+			frame3.add(canvas3);
 		}
 		if (player == 4) {
 			frame4 = new JInternalFrame("Frame4", true, true, true, true);
 			frame4.setVisible(true);
 			frame4.setSize(frameWidth, frameHeight);
-			frame4.setLocation(550, 503);
+			frame4.setLocation(615, 503);
 			int x = frame4.getX();
 			int y = frame4.getY();
 			// frame4.setMaximizable(false);
 			internalFrameProps(frame4, x, y);
 			desk.add(frame4);
-			canvas4=new GameBoard(player);
-			frame4.add(canvas4);	
+			canvas4 = new GameBoard(player);
+			frame4.add(canvas4);
 		}
 		add(desk);
 	}
@@ -174,57 +174,61 @@ public class Window extends JFrame {
 				frame.setLocation(x, y);
 			}
 		});
-		
 
 	}
+
 	public void handleKeyEvent(JFrame frame) {
 		frame.addKeyListener(new KeyListener() {
 
 			@Override
 			public void keyTyped(KeyEvent e) {
 				// TODO Auto-generated method stub
-				
+
 			}
 
 			@Override
 			public void keyPressed(KeyEvent e) {
 				// TODO Auto-generated method stub
-				if (e.getKeyCode()==KeyEvent.VK_W) {
+				if (e.getKeyCode() == KeyEvent.VK_W) {
 					try {
-						if (!GameBoard.gameOn) {
-							GameBoard.gameOn=true;
+						if (!canvas1.gameOn && !canvas1.gameOver) {
+							canvas1.gameOn = true;
 						}
 						canvas1.jump();
+
 					} catch (Exception e2) {
 						// TODO: handle exception
 					}
-					
+
 				}
-				if (e.getKeyCode()==KeyEvent.VK_SPACE) {
+				if (e.getKeyCode() == KeyEvent.VK_SPACE) {
 					try {
-						if (!GameBoard.gameOn) {
-							GameBoard.gameOn=true;
+						if (!canvas2.gameOn && !canvas2.gameOver) {
+							canvas2.gameOn = true;
 						}
 						canvas2.jump();
+
 					} catch (Exception e2) {
 						// TODO: handle exception
 					}
 				}
-				if (e.getKeyCode()==KeyEvent.VK_P) {
+				if (e.getKeyCode() == KeyEvent.VK_P) {
 					try {
-						if (!GameBoard.gameOn) {
-							GameBoard.gameOn=true;
+						if (!canvas3.gameOn && !canvas3.gameOver) {
+							canvas3.gameOn = true;
 						}
-						canvas3.jump();					} catch (Exception e2) {
+						canvas3.jump();
+					} catch (Exception e2) {
 						// TODO: handle exception
 					}
 				}
-				if (e.getKeyCode()==38) {
+				if (e.getKeyCode() == 38) {
 					try {
-						if (!GameBoard.gameOn) {
-							GameBoard.gameOn=true;
+						if (!canvas4.gameOn && !canvas4.gameOver) {
+							canvas4.gameOn = true;
 						}
 						canvas4.jump();
+
 					} catch (Exception e2) {
 						// TODO: handle exception
 					}
@@ -234,9 +238,9 @@ public class Window extends JFrame {
 			@Override
 			public void keyReleased(KeyEvent e) {
 				// TODO Auto-generated method stub
-				
+
 			}
-        });
+		});
 	}
 
 }

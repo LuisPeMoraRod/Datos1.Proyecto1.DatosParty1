@@ -17,7 +17,7 @@ public class ColumnHeights {
 		heights = new int[100];
 		random = new Random();
 		for (int i = 0; i < heights.length; i++) {
-			int height = 50 + random.nextInt(300);
+			int height = 50 + random.nextInt(260);
 			heights[i] = height;
 		}
 
