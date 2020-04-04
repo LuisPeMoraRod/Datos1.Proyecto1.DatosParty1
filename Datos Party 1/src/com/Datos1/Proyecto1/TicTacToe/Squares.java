@@ -26,6 +26,7 @@ public class Squares extends Component {
 	static int column = 0;
 	int row1;
 	int column1;
+	int transparency=7;
 
 	/**
 	 * Constructor method. Sets the image of the square. Adds mouse listener to the
@@ -36,13 +37,15 @@ public class Squares extends Component {
 		row1 = row;
 		column1 = column;
 		this.addMouseListener(new MouseClickedEvent());
+		changeTranparency();
 		path = "images/Bs.jpg";
 		changeImage();
 		increaseIndex();
 	}
 
 	/**
-	 * Public method that sets a boolean variable in true indicating that the object has been clicked
+	 * Public method that sets a boolean variable in true indicating that the object
+	 * has been clicked
 	 */
 	public void changeImage() {
 		this.addMouseListener(new MouseAdapter() {
@@ -52,18 +55,33 @@ public class Squares extends Component {
 			}
 		});
 	}
-	
+
+	public void changeTranparency() {
+		
+		this.addMouseListener(new MouseAdapter() {
+			public void mouseEntered(MouseEvent me) {
+				if (!GameBoard.gameEnded) {transparency=9;}
+			}
+		});
+		
+		 this.addMouseListener(new MouseAdapter() { 
+	          public void mouseExited(MouseEvent me) { 
+	        	  if (!GameBoard.gameEnded) {transparency=7;}
+	          } 
+	        }); 
+		
+
+	}
+
 	/**
-	 * Overrided method. Creates the squares of the game. Add transparency to the images.
-	 * {@link Graphics}
-	 * {@link AlphaComposite#getInstance(int)}
+	 * Overrided method. Creates the squares of the game. Add transparency to the
+	 * images. {@link Graphics} {@link AlphaComposite#getInstance(int)}
 	 */
 	@Override
 	public void paint(Graphics g) {
 		// g2d.drawImage(getSquare(), 0, 0, null);
 		Graphics2D g2d = (Graphics2D) g.create();
-		g2d.setPaint(Color.blue);
-		float alpha = (float) ((7) * 0.1f);
+		float alpha = (float) ((transparency) * 0.1f);
 		AlphaComposite alcom = AlphaComposite.getInstance(AlphaComposite.SRC_OVER, alpha);
 		g2d.setComposite(alcom);
 		g2d.drawImage(getSquare(), 0, 0, null);
@@ -71,7 +89,8 @@ public class Squares extends Component {
 	}
 
 	/**
-	 *Overrided public method that sets the dimension of the image
+	 * Overrided public method that sets the dimension of the image
+	 * 
 	 * @return Dimension
 	 */
 	@Override
@@ -85,6 +104,7 @@ public class Squares extends Component {
 
 	/**
 	 * Public method that reads a file and assigns it to a BufferdImage object
+	 * 
 	 * @return BufferedImage
 	 */
 	public BufferedImage getSquare() {
@@ -113,10 +133,11 @@ public class Squares extends Component {
 		}
 
 	}
-	
+
 	/**
 	 * Public method that determines if the squares has being already clicked
-	 * @return boolean 
+	 * 
+	 * @return boolean
 	 */
 	public boolean isSquareSetted() {
 		if (hasChanged) {
@@ -125,11 +146,13 @@ public class Squares extends Component {
 			return false;
 		}
 	}
-	
+
 	/**
-	 * Public method that determines if the squares was played by the first or second player
-	 * If it returns a true value, it's player 1 square. If it return false, it's a second player square
-	 * @return boolean 
+	 * Public method that determines if the squares was played by the first or
+	 * second player If it returns a true value, it's player 1 square. If it return
+	 * false, it's a second player square
+	 * 
+	 * @return boolean
 	 */
 	public boolean whichType() {
 		if (whichPlayer == 1) {
@@ -138,9 +161,10 @@ public class Squares extends Component {
 			return false;
 		}
 	}
-	
+
 	/**
-	 * Public method that increases the indexes of the matrix where every square is located.
+	 * Public method that increases the indexes of the matrix where every square is
+	 * located.
 	 */
 	public void increaseIndex() {
 		if (column <= 2) {

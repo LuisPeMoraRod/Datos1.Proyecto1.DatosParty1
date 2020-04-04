@@ -2,7 +2,7 @@ package com.Datos1.Proyecto1.TicTacToe;
 
 import javax.swing.JFrame;
 
-public class Main {
+public class MainTicTacToe {
 	/**
 	 * Main method that creates the window object
 	 * @author Luis Pedro Morales Rodriguez
