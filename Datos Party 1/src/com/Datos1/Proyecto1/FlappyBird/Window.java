@@ -47,8 +47,7 @@ public class Window extends JFrame {
 		for (int i = 1; i <= players; i++) {
 			createWindow(i);
 		}
-		// public void createWindow(int player) { board = new GameBoard(player);
-		// add(board);
+		
 	}
 
 	/**
@@ -177,6 +176,10 @@ public class Window extends JFrame {
 
 	}
 
+	/**
+	 * Public method that handles key events used to control the characters of the game
+	 * @param frame : JFrame
+	 */
 	public void handleKeyEvent(JFrame frame) {
 		frame.addKeyListener(new KeyListener() {
 
@@ -191,7 +194,7 @@ public class Window extends JFrame {
 				// TODO Auto-generated method stub
 				if (e.getKeyCode() == KeyEvent.VK_W) {
 					try {
-						if (!canvas1.gameOn && !canvas1.gameOver) {
+						if (!canvas1.gameOn && !canvas1.gameOver) {//w key pressed
 							canvas1.gameOn = true;
 						}
 						canvas1.jump();
@@ -201,7 +204,7 @@ public class Window extends JFrame {
 					}
 
 				}
-				if (e.getKeyCode() == KeyEvent.VK_SPACE) {
+				if (e.getKeyCode() == KeyEvent.VK_SPACE) {//space bar pressed
 					try {
 						if (!canvas2.gameOn && !canvas2.gameOver) {
 							canvas2.gameOn = true;
@@ -212,7 +215,7 @@ public class Window extends JFrame {
 						// TODO: handle exception
 					}
 				}
-				if (e.getKeyCode() == KeyEvent.VK_P) {
+				if (e.getKeyCode() == KeyEvent.VK_P) {//p key pressed
 					try {
 						if (!canvas3.gameOn && !canvas3.gameOver) {
 							canvas3.gameOn = true;
@@ -222,7 +225,7 @@ public class Window extends JFrame {
 						// TODO: handle exception
 					}
 				}
-				if (e.getKeyCode() == 38) {
+				if (e.getKeyCode() == 38) { //up key pressed
 					try {
 						if (!canvas4.gameOn && !canvas4.gameOver) {
 							canvas4.gameOn = true;
