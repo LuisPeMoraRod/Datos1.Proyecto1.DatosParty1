@@ -79,7 +79,6 @@ public class Squares extends Component {
 	 */
 	@Override
 	public void paint(Graphics g) {
-		// g2d.drawImage(getSquare(), 0, 0, null);
 		Graphics2D g2d = (Graphics2D) g.create();
 		float alpha = (float) ((transparency) * 0.1f);
 		AlphaComposite alcom = AlphaComposite.getInstance(AlphaComposite.SRC_OVER, alpha);
