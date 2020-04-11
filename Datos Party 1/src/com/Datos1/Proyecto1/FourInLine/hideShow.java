@@ -25,12 +25,12 @@ public class hideShow extends Thread {
 						GameBoard4IL.circlesArray[i2][j2].hide();
 						GameBoard4IL.circlesArray[i3][j3].hide();
 						GameBoard4IL.circlesArray[i4][j4].hide();
-						Thread.sleep(300);
+						Thread.sleep(400);
 						GameBoard4IL.circlesArray[i1][j1].show();
 						GameBoard4IL.circlesArray[i2][j2].show();
 						GameBoard4IL.circlesArray[i3][j3].show();
 						GameBoard4IL.circlesArray[i4][j4].show();
-						Thread.sleep(300);
+						Thread.sleep(400);
 					} catch (InterruptedException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();

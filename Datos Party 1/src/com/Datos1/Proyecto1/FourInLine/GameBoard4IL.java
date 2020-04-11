@@ -22,6 +22,7 @@ public class GameBoard4IL extends JPanel implements ActionListener {
 	private JLabel turnLabel = new JLabel();
 
 	public static boolean gameEnded;
+	public static boolean draw;
 	public static boolean playerOne = true;
 	public static int columnInPlay;
 	public static int rowToken;
@@ -101,6 +102,8 @@ public class GameBoard4IL extends JPanel implements ActionListener {
 		String turn;
 		if (!GameBoard4IL.gameEnded) {
 			turn = "It's " + currentPlayer + "'s turn.";
+		} else if (draw) {
+			turn = "Game ended in draw";
 		} else {
 			turn = "Winner: " + currentPlayer;
 		}
@@ -199,8 +202,10 @@ public class GameBoard4IL extends JPanel implements ActionListener {
 			for (int j = 0; j < c[i].length; j++) {
 				if (c[i][j].player == player && player != 0) {
 					line4[cont][0] = i;
-					line4[cont][1] = j-1;
-					cont++;
+					line4[cont][1] = j - 1;
+					if (j - 1 >= 0) {
+						cont++;
+					}
 					if (cont == 3) {
 						line4[cont][0] = i;
 						line4[cont][1] = j;
@@ -215,9 +220,11 @@ public class GameBoard4IL extends JPanel implements ActionListener {
 		for (int j = 0; j < c.length; j++) {
 			for (int i = 0; i < c[j].length; i++) {
 				if (c[i][j].player == player && player != 0) {
-					line4[cont][0] = i-1;
+					line4[cont][0] = i - 1;
 					line4[cont][1] = j;
-					cont++;
+					if (i - 1 >= 1) {
+						cont++;
+					}
 					if (cont == 3) {
 						line4[cont][0] = i;
 						line4[cont][1] = j;
@@ -245,9 +252,11 @@ public class GameBoard4IL extends JPanel implements ActionListener {
 		} else if (i < 1) {
 			return checksDiagUp1(i0 + 1, j0, i0 + 1, 0, 0, player, c);
 		} else if (c[i][j].player == player && player != 0) {
-			line4[cont][0] = i+1;
-			line4[cont][1] = j-1;
-			cont++;
+			line4[cont][0] = i + 1;
+			line4[cont][1] = j - 1;
+			if (i + 1 <= 6 && j - 1 >= 0) {
+				cont++;
+			}
 			if (cont == 3) {
 				line4[cont][0] = i;
 				line4[cont][1] = j;
@@ -271,9 +280,11 @@ public class GameBoard4IL extends JPanel implements ActionListener {
 		} else if (j > 6) {
 			return checksDiagUp2(i0, j0 + 1, i0, j0 + 1, 0, player, c);
 		} else if (c[i][j].player == player && player != 0) {
-			line4[cont][0] = i+1;
-			line4[cont][1] = j-1;
-			cont++;
+			line4[cont][0] = i + 1;
+			line4[cont][1] = j - 1;
+			if (i + 1 <= 6 && j - 1 >= 0) {
+				cont++;
+			}
 			if (cont == 3) {
 				line4[cont][0] = i;
 				line4[cont][1] = j;
@@ -297,9 +308,11 @@ public class GameBoard4IL extends JPanel implements ActionListener {
 		} else if (i < 1) {
 			return checksDiagDown1(i0 + 1, j0, i0 + 1, 6, 0, player, c);
 		} else if (c[i][j].player == player && player != 0) {
-			line4[cont][0] = i+1;
-			line4[cont][1] = j+1;
-			cont++;
+			line4[cont][0] = i + 1;
+			line4[cont][1] = j + 1;
+			if (i + 1 <= 6 && j + 1 <= 6) {
+				cont++;
+			}
 			if (cont == 3) {
 				line4[cont][0] = i;
 				line4[cont][1] = j;
@@ -323,9 +336,11 @@ public class GameBoard4IL extends JPanel implements ActionListener {
 		} else if (j < 0) {
 			return checksDiagDown2(i0, j0 - 1, i0, j0 - 1, 0, player, c);
 		} else if (c[i][j].player == player && player != 0) {
-			line4[cont][0] = i+1;
-			line4[cont][1] = j+1;
-			cont++;
+			line4[cont][0] = i + 1;
+			line4[cont][1] = j + 1;
+			if (i + 1 <= 6 && j + 1 <= 6) {
+				cont++;
+			}
 			if (cont == 3) {
 				line4[cont][0] = i;
 				line4[cont][1] = j;
@@ -343,6 +358,17 @@ public class GameBoard4IL extends JPanel implements ActionListener {
 
 	}
 
+	public boolean isDraw(Circles[][] c) {
+		for (int i = 1; i < c.length; i++) {
+			for (int j = 0; j < c.length; j++) {
+				if (c[i][j].player == 0) {
+					return false;
+				}
+			}
+		}
+		return true;
+	}
+
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		// TODO Auto-generated method stub
@@ -356,21 +382,20 @@ public class GameBoard4IL extends JPanel implements ActionListener {
 			timer.stop();
 			printArray(circlesArray);
 			gameEnded = checksWin(circlesArray);
+			draw = isDraw(circlesArray);
 			System.out.println(gameEnded);
 			print4(line4);
-			if (!gameEnded) {
+			if (!gameEnded && !draw) {
 				playerOne = !playerOne;
-			}else {
-				thread=new hideShow(line4);
+			} else if (draw) {
+				gameEnded = true;
+			} else {
+				thread = new hideShow(line4);
 				thread.start();
 			}
 
 		}
 
-	}
-
-	public static void hideShow(int[][] indexes) {
-		
 	}
 
 	public void print4(int[][] c) {
