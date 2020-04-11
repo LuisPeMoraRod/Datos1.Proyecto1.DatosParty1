@@ -28,7 +28,7 @@ public class GameBoard4IL extends JPanel implements ActionListener {
 	public int[][] line4 = new int[4][2];
 
 	public Color lightYellow;
-
+	public Thread thread;
 	public Timer timer;
 
 	public GameBoard4IL(String player1, String player2) {
@@ -98,15 +98,17 @@ public class GameBoard4IL extends JPanel implements ActionListener {
 		} else {
 			currentPlayer = player2;
 		}
+		String turn;
+		if (!GameBoard4IL.gameEnded) {
+			turn = "It's " + currentPlayer + "'s turn.";
+		} else {
+			turn = "Winner: " + currentPlayer;
+		}
 		String playersText = "<html><body><font size=6>Player 1: " + player1
-				+ "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; It's " + currentPlayer
-				+ "'s turn.<br>Player 2: " + player2 + " </font></body></html>";
+				+ "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; " + turn + "<br>Player 2: "
+				+ player2 + " </font></body></html>";
 		playersLabel.setText(playersText);
 		playersLabel.setForeground(Color.black);
-
-		String turn = "<html><body><font size=6>It's " + player1 + "'s turn. </font></body></html>";
-		turnLabel.setText(turn);
-		turnLabel.setForeground(Color.white);
 
 		layout.setAutoCreateGaps(true);
 		layout.setAutoCreateContainerGaps(true);
@@ -196,8 +198,12 @@ public class GameBoard4IL extends JPanel implements ActionListener {
 		for (int i = 0; i < c.length; i++) {
 			for (int j = 0; j < c[i].length; j++) {
 				if (c[i][j].player == player && player != 0) {
+					line4[cont][0] = i;
+					line4[cont][1] = j-1;
 					cont++;
 					if (cont == 3) {
+						line4[cont][0] = i;
+						line4[cont][1] = j;
 						return true;
 					}
 				} else if (c[i][j].player != player) {
@@ -209,8 +215,12 @@ public class GameBoard4IL extends JPanel implements ActionListener {
 		for (int j = 0; j < c.length; j++) {
 			for (int i = 0; i < c[j].length; i++) {
 				if (c[i][j].player == player && player != 0) {
+					line4[cont][0] = i-1;
+					line4[cont][1] = j;
 					cont++;
 					if (cont == 3) {
+						line4[cont][0] = i;
+						line4[cont][1] = j;
 						return true;
 					}
 				} else if (c[i][j].player != player) {
@@ -235,8 +245,12 @@ public class GameBoard4IL extends JPanel implements ActionListener {
 		} else if (i < 1) {
 			return checksDiagUp1(i0 + 1, j0, i0 + 1, 0, 0, player, c);
 		} else if (c[i][j].player == player && player != 0) {
+			line4[cont][0] = i+1;
+			line4[cont][1] = j-1;
 			cont++;
 			if (cont == 3) {
+				line4[cont][0] = i;
+				line4[cont][1] = j;
 				return true;
 			} else {
 				return checksDiagUp1(i0, j0, i - 1, j + 1, cont, player, c);
@@ -255,20 +269,24 @@ public class GameBoard4IL extends JPanel implements ActionListener {
 		if (j0 > 3) {
 			return false;
 		} else if (j > 6) {
-			return checksDiagUp1(i0, j0 + 1, i0, j0 + 1, 0, player, c);
+			return checksDiagUp2(i0, j0 + 1, i0, j0 + 1, 0, player, c);
 		} else if (c[i][j].player == player && player != 0) {
+			line4[cont][0] = i+1;
+			line4[cont][1] = j-1;
 			cont++;
 			if (cont == 3) {
+				line4[cont][0] = i;
+				line4[cont][1] = j;
 				return true;
 			} else {
-				return checksDiagUp1(i0, j0, i - 1, j + 1, cont, player, c);
+				return checksDiagUp2(i0, j0, i - 1, j + 1, cont, player, c);
 			}
 		} else if (c[i][j].player != player) {
 			player = c[i][j].player;
 			cont = 0;
-			return checksDiagUp1(i0, j0, i - 1, j + 1, cont, player, c);
+			return checksDiagUp2(i0, j0, i - 1, j + 1, cont, player, c);
 		} else {
-			return checksDiagUp1(i0, j0, i - 1, j + 1, cont, player, c);
+			return checksDiagUp2(i0, j0, i - 1, j + 1, cont, player, c);
 		}
 
 	}
@@ -279,8 +297,12 @@ public class GameBoard4IL extends JPanel implements ActionListener {
 		} else if (i < 1) {
 			return checksDiagDown1(i0 + 1, j0, i0 + 1, 6, 0, player, c);
 		} else if (c[i][j].player == player && player != 0) {
+			line4[cont][0] = i+1;
+			line4[cont][1] = j+1;
 			cont++;
 			if (cont == 3) {
+				line4[cont][0] = i;
+				line4[cont][1] = j;
 				return true;
 			} else {
 				return checksDiagDown1(i0, j0, i - 1, j - 1, cont, player, c);
@@ -301,8 +323,12 @@ public class GameBoard4IL extends JPanel implements ActionListener {
 		} else if (j < 0) {
 			return checksDiagDown2(i0, j0 - 1, i0, j0 - 1, 0, player, c);
 		} else if (c[i][j].player == player && player != 0) {
+			line4[cont][0] = i+1;
+			line4[cont][1] = j+1;
 			cont++;
 			if (cont == 3) {
+				line4[cont][0] = i;
+				line4[cont][1] = j;
 				return true;
 			} else {
 				return checksDiagDown2(i0, j0, i - 1, j - 1, cont, player, c);
@@ -327,11 +353,40 @@ public class GameBoard4IL extends JPanel implements ActionListener {
 		if (stops) {
 			rowToken = 0;
 			Circles.fallingToken = false;
-			playerOne = !playerOne;
 			timer.stop();
 			printArray(circlesArray);
 			gameEnded = checksWin(circlesArray);
 			System.out.println(gameEnded);
+			print4(line4);
+			if (!gameEnded) {
+				playerOne = !playerOne;
+			}else {
+				thread=new hideShow(line4);
+				thread.start();
+			}
+
+		}
+
+	}
+
+	public static void hideShow(int[][] indexes) {
+		
+	}
+
+	public void print4(int[][] c) {
+		System.out.println("  ");
+		for (int i = 0; i < c.length; i++) {
+			int element = c[i][0];
+			System.out.print(element);
+			for (int j = 1; j < c[i].length; j++) {
+				int element1 = c[i][j];
+				if (j == c[i].length - 1) {
+					System.out.println(" " + element1);
+				} else {
+					System.out.print(" " + element1);
+				}
+
+			}
 		}
 
 	}

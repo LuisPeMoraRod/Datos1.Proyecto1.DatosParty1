@@ -45,7 +45,7 @@ public class Circles extends Component {
 		Graphics2D g2d = (Graphics2D) g;
 		if (player==0) {
 			if (i == 0) {
-				if (GameBoard4IL.columnInPlay == j && !fallingToken) {
+				if (GameBoard4IL.columnInPlay == j && !fallingToken && !GameBoard4IL.gameEnded) {
 					if (GameBoard4IL.playerOne) {
 						g2d.setColor(blue);
 					}else {
@@ -54,7 +54,7 @@ public class Circles extends Component {
 				} else {
 					g2d.setColor(lightYellow);
 				}
-			} else if(GameBoard4IL.rowToken == i && GameBoard4IL.columnInPlay == j && fallingToken){
+			} else if(GameBoard4IL.rowToken == i && GameBoard4IL.columnInPlay == j && fallingToken && !GameBoard4IL.gameEnded){
 				if (GameBoard4IL.playerOne) {
 					g2d.setColor(blue);
 				}else {
