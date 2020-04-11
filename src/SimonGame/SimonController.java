@@ -109,8 +109,7 @@ public class SimonController {
     }
 
 
-
-    public void pressButton(ActionEvent actionEvent) {
+    public void pressButton(ActionEvent actionEvent, ArrayList<String> buttonsClicked) throws InterruptedException {
 
         buttonPressed = (Button)actionEvent.getSource();
         String buttonID = buttonPressed.getId();
@@ -118,30 +117,45 @@ public class SimonController {
         if (buttonID.equals("btn_Pink")){
 
             buttonPressed.setStyle("-fx-background-color: #CC3366; ");
+            buttonsClicked.add("btn_Pink");
+            TimeUnit.SECONDS.sleep(1);
+            buttonPressed.setStyle("-fx-background-color: #96274c; ");
 
         }
 
         else if (buttonID.equals("btn_Purple")) {
 
             buttonPressed.setStyle("-fx-background-color: #9B59B6; ");
+            buttonsClicked.add("btn_Purple");
+            TimeUnit.SECONDS.sleep(1);
+            buttonPressed.setStyle("-fx-background-color: #6f4082; ");
 
         }
 
         else if (buttonID.equals("btn_Green")) {
 
             buttonPressed.setStyle("-fx-background-color: #CDDC39; ");
+            buttonsClicked.add("btn_Green");
+            TimeUnit.SECONDS.sleep(1);
+            buttonPressed.setStyle("-fx-background-color: #7d8622; ");
 
         }
 
         else if(buttonID.equals("btn_Orange")) {
 
             buttonPressed.setStyle("-fx-background-color: #FFA000; ");
+            buttonsClicked.add("btn_Orange");
+            TimeUnit.SECONDS.sleep(1);
+            buttonPressed.setStyle("-fx-background-color: #9d6202; ");
 
         }
 
         else if(buttonID.equals("btn_Blue")) {
 
             buttonPressed.setStyle("-fx-background-color: #00ACC1; ");
+            buttonsClicked.add("btn_Blue");
+            TimeUnit.SECONDS.sleep(1);
+            buttonPressed.setStyle("-fx-background-color: #005c64; ");
 
         }
     }
