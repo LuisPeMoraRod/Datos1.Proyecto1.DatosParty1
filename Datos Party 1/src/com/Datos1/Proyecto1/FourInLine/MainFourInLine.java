@@ -2,7 +2,6 @@ package com.Datos1.Proyecto1.FourInLine;
 
 import javax.swing.JFrame;
 
-import com.Datos1.Proyecto1.TicTacToe.WindowTTT;
 
 public class MainFourInLine {
 	/**

@@ -19,7 +19,9 @@ public class GameBoard4IL extends JPanel implements ActionListener {
 	public String player1, player2, currentPlayer;
 	public static Circles[][] circlesArray = new Circles[7][7];
 	private JLabel playersLabel = new JLabel();
+
 	private JLabel turnLabel = new JLabel();
+
 
 	public static boolean gameEnded;
 	public static boolean draw;
@@ -82,6 +84,7 @@ public class GameBoard4IL extends JPanel implements ActionListener {
 
 	}
 
+
 	private void drawCircles(Circles[][] circles, Graphics g, Color color) {
 		for (int i = 0; i < circles.length; i++) {
 			for (int j = 0; j < circles[i].length; j++) {
@@ -90,6 +93,7 @@ public class GameBoard4IL extends JPanel implements ActionListener {
 		}
 
 	}
+
 
 	public void setCircles(Circles[][] c) {
 		GroupLayout layout = new GroupLayout(this);
@@ -205,6 +209,10 @@ public class GameBoard4IL extends JPanel implements ActionListener {
 					line4[cont][1] = j - 1;
 					if (j - 1 >= 0) {
 						cont++;
+
+					} else {
+						cont = 0;
+
 					}
 					if (cont == 3) {
 						line4[cont][0] = i;
@@ -224,6 +232,10 @@ public class GameBoard4IL extends JPanel implements ActionListener {
 					line4[cont][1] = j;
 					if (i - 1 >= 1) {
 						cont++;
+
+					} else {
+						cont = 0;
+
 					}
 					if (cont == 3) {
 						line4[cont][0] = i;
@@ -256,6 +268,10 @@ public class GameBoard4IL extends JPanel implements ActionListener {
 			line4[cont][1] = j - 1;
 			if (i + 1 <= 6 && j - 1 >= 0) {
 				cont++;
+
+			} else {
+				cont = 0;
+
 			}
 			if (cont == 3) {
 				line4[cont][0] = i;
@@ -284,6 +300,10 @@ public class GameBoard4IL extends JPanel implements ActionListener {
 			line4[cont][1] = j - 1;
 			if (i + 1 <= 6 && j - 1 >= 0) {
 				cont++;
+
+			} else {
+				cont = 0;
+
 			}
 			if (cont == 3) {
 				line4[cont][0] = i;
@@ -312,6 +332,10 @@ public class GameBoard4IL extends JPanel implements ActionListener {
 			line4[cont][1] = j + 1;
 			if (i + 1 <= 6 && j + 1 <= 6) {
 				cont++;
+
+			} else {
+				cont = 0;
+
 			}
 			if (cont == 3) {
 				line4[cont][0] = i;
@@ -340,6 +364,10 @@ public class GameBoard4IL extends JPanel implements ActionListener {
 			line4[cont][1] = j + 1;
 			if (i + 1 <= 6 && j + 1 <= 6) {
 				cont++;
+
+			} else {
+				cont = 0;
+
 			}
 			if (cont == 3) {
 				line4[cont][0] = i;
@@ -390,8 +418,13 @@ public class GameBoard4IL extends JPanel implements ActionListener {
 			} else if (draw) {
 				gameEnded = true;
 			} else {
+
 				thread = new hideShow(line4);
 				thread.start();
+
+				//thread = new hideShow(line4);
+				//thread.start();
+
 			}
 
 		}
