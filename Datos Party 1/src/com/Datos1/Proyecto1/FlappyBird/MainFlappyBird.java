@@ -16,7 +16,7 @@ public class MainFlappyBird {
 	
 	public static void main (String[] args) {
 		MainFlappyBird main=new MainFlappyBird(players);
-		Window window=new Window(players);
+		WindowFP window=new WindowFP(players);
 		window.setVisible(true);
 		window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	}
