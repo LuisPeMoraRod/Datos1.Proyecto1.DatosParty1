@@ -9,16 +9,11 @@ public class MainFlappyBird {
 	 * @version 3/30/2020
 	 */
 	public static int players=3;
-
 	
 	public MainFlappyBird(int players) {
 		this.players=players;
 	}
 	
-	/**
-	 * Main method that creates the amount of windows required depending on the amount of players
-	 * @param args
-	 */
 	public static void main (String[] args) {
 		MainFlappyBird main=new MainFlappyBird(players);
 		Window window=new Window(players);

@@ -59,8 +59,8 @@ public class GameBoard extends JPanel implements ActionListener {
 		image = sprite.getBird();
 		wallpaper = getWallpaper();
 
-		frameWidth = WindowFP.frameWidth;
-		frameHeight = WindowFP.frameHeight;
+		frameWidth = Window.frameWidth;
+		frameHeight = Window.frameHeight;
 
 		birdWidth = sprite.birdWidth;
 		birdHeight = sprite.birdHeight;

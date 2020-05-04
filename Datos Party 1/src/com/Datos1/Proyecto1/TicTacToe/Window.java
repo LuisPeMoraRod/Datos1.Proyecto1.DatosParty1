@@ -2,7 +2,7 @@ package com.Datos1.Proyecto1.TicTacToe;
 
 import javax.swing.JFrame;
 
-public class WindowTTT extends JFrame{
+public class Window extends JFrame{
 	/**
 	 * @author Luis Pedro Morales Rodriguez
 	 * @version 25/3/2020
@@ -16,7 +16,7 @@ public class WindowTTT extends JFrame{
 	GameThread thread;
 	
 	
-	public WindowTTT (String player1, String player2) {
+	public Window (String player1, String player2) {
 		this.player1=player1;
 		this.player2=player2;
 		createWindow(player1,player2);
