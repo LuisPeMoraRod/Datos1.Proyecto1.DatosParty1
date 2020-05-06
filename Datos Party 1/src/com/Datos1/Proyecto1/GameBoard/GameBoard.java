@@ -26,13 +26,13 @@ public class GameBoard extends JPanel {
 
 	public void createLinkedList() {
 		Box head = new BlueBox();
-		mainLinkedList.insertHead(head,0);
+		mainLinkedList.insertHead(head, 0);
 		for (int i = 0; i < 40; i++) {
 			Box box = new BlueBox();
-			mainLinkedList.insertEnd(box,i+1);
-			
+			mainLinkedList.insertEnd(box, i + 1);
+
 		}
-		
+
 	}
 
 	@Override
@@ -55,57 +55,68 @@ public class GameBoard extends JPanel {
 		layout.setAutoCreateContainerGaps(true);
 
 		layout.setHorizontalGroup(layout.createSequentialGroup()
-				.addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING).addComponent(mainLinkedList.get(0)))
-				.addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING).addComponent(mainLinkedList.get(1)))
-				.addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING).addComponent(mainLinkedList.get(2)))
+				.addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING).addComponent(mainLinkedList.get(0))
+						.addComponent(mainLinkedList.get(36)))
+				.addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING).addComponent(mainLinkedList.get(1))
+						.addComponent(mainLinkedList.get(35)))
+				.addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING).addComponent(mainLinkedList.get(2))
+						.addComponent(mainLinkedList.get(34)))
 				.addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING).addComponent(mainLinkedList.get(3))
-						.addComponent(mainLinkedList.get(17)).addComponent(mainLinkedList.get(18))
-						.addComponent(mainLinkedList.get(19)))
+						.addComponent(mainLinkedList.get(33)))
 				.addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING).addComponent(mainLinkedList.get(4))
-						.addComponent(mainLinkedList.get(16)).addComponent(mainLinkedList.get(20)))
+						.addComponent(mainLinkedList.get(16)).addComponent(mainLinkedList.get(17))
+						.addComponent(mainLinkedList.get(18)).addComponent(mainLinkedList.get(32)))
 				.addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING).addComponent(mainLinkedList.get(5))
-						.addComponent(mainLinkedList.get(15)).addComponent(mainLinkedList.get(21)))
+						.addComponent(mainLinkedList.get(15)).addComponent(mainLinkedList.get(19))
+						.addComponent(mainLinkedList.get(31)))
 				.addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING).addComponent(mainLinkedList.get(6))
-						.addComponent(mainLinkedList.get(14)).addComponent(mainLinkedList.get(22)))
+						.addComponent(mainLinkedList.get(14)).addComponent(mainLinkedList.get(20))
+						.addComponent(mainLinkedList.get(30)))
 				.addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING).addComponent(mainLinkedList.get(7))
-						.addComponent(mainLinkedList.get(13)).addComponent(mainLinkedList.get(23)))
+						.addComponent(mainLinkedList.get(13)).addComponent(mainLinkedList.get(21))
+						.addComponent(mainLinkedList.get(29)))
 				.addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING).addComponent(mainLinkedList.get(8))
-						.addComponent(mainLinkedList.get(12)).addComponent(mainLinkedList.get(24)))
+						.addComponent(mainLinkedList.get(12)).addComponent(mainLinkedList.get(22))
+						.addComponent(mainLinkedList.get(28)))
 				.addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING).addComponent(mainLinkedList.get(9))
 						.addComponent(mainLinkedList.get(10)).addComponent(mainLinkedList.get(11))
+						.addComponent(mainLinkedList.get(23)).addComponent(mainLinkedList.get(24))
 						.addComponent(mainLinkedList.get(25)).addComponent(mainLinkedList.get(26))
-						.addComponent(mainLinkedList.get(27)).addComponent(mainLinkedList.get(29))
-						.addComponent(mainLinkedList.get(28)))
+						.addComponent(mainLinkedList.get(27)))
 
 		);
 
 		layout.setVerticalGroup(layout.createSequentialGroup()
 				.addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING).addComponent(mainLinkedList.get(0))
 						.addComponent(mainLinkedList.get(1)).addComponent(mainLinkedList.get(2))
-						.addComponent(mainLinkedList.get(1)).addComponent(mainLinkedList.get(3))
-						.addComponent(mainLinkedList.get(4)).addComponent(mainLinkedList.get(5))
-						.addComponent(mainLinkedList.get(6)).addComponent(mainLinkedList.get(7))
-						.addComponent(mainLinkedList.get(8)).addComponent(mainLinkedList.get(9)))
+						.addComponent(mainLinkedList.get(3)).addComponent(mainLinkedList.get(4))
+						.addComponent(mainLinkedList.get(5)).addComponent(mainLinkedList.get(6))
+						.addComponent(mainLinkedList.get(7)).addComponent(mainLinkedList.get(8))
+						.addComponent(mainLinkedList.get(9)))
 				.addGroup(
 						layout.createParallelGroup(GroupLayout.Alignment.LEADING).addComponent(mainLinkedList.get(10)))
-				.addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING).addComponent(mainLinkedList.get(17))
-						.addComponent(mainLinkedList.get(16)).addComponent(mainLinkedList.get(15))
-						.addComponent(mainLinkedList.get(14)).addComponent(mainLinkedList.get(13))
-						.addComponent(mainLinkedList.get(12)).addComponent(mainLinkedList.get(11)))
+				.addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING).addComponent(mainLinkedList.get(16))
+						.addComponent(mainLinkedList.get(15)).addComponent(mainLinkedList.get(14))
+						.addComponent(mainLinkedList.get(13)).addComponent(mainLinkedList.get(12))
+						.addComponent(mainLinkedList.get(11)))
 				.addGroup(
-						layout.createParallelGroup(GroupLayout.Alignment.LEADING).addComponent(mainLinkedList.get(18)))
-				.addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING).addComponent(mainLinkedList.get(19))
-						.addComponent(mainLinkedList.get(20)).addComponent(mainLinkedList.get(21))
-						.addComponent(mainLinkedList.get(22)).addComponent(mainLinkedList.get(23))
-						.addComponent(mainLinkedList.get(24)).addComponent(mainLinkedList.get(25)))
+						layout.createParallelGroup(GroupLayout.Alignment.LEADING).addComponent(mainLinkedList.get(17)))
+				.addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING).addComponent(mainLinkedList.get(18))
+						.addComponent(mainLinkedList.get(19)).addComponent(mainLinkedList.get(20))
+						.addComponent(mainLinkedList.get(21)).addComponent(mainLinkedList.get(22))
+						.addComponent(mainLinkedList.get(23)))
+				.addGroup(
+						layout.createParallelGroup(GroupLayout.Alignment.LEADING).addComponent(mainLinkedList.get(24)))
+				.addGroup(
+						layout.createParallelGroup(GroupLayout.Alignment.LEADING).addComponent(mainLinkedList.get(25)))
 				.addGroup(
 						layout.createParallelGroup(GroupLayout.Alignment.LEADING).addComponent(mainLinkedList.get(26)))
-				.addGroup(
-						layout.createParallelGroup(GroupLayout.Alignment.LEADING).addComponent(mainLinkedList.get(27)))
-				.addGroup(
-						layout.createParallelGroup(GroupLayout.Alignment.LEADING).addComponent(mainLinkedList.get(28)))
-				.addGroup(
-						layout.createParallelGroup(GroupLayout.Alignment.LEADING).addComponent(mainLinkedList.get(29)))
+				.addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING).addComponent(mainLinkedList.get(27))
+						.addComponent(mainLinkedList.get(28)).addComponent(mainLinkedList.get(29))
+						.addComponent(mainLinkedList.get(30)).addComponent(mainLinkedList.get(31))
+						.addComponent(mainLinkedList.get(32)).addComponent(mainLinkedList.get(33))
+						.addComponent(mainLinkedList.get(34)).addComponent(mainLinkedList.get(35))
+						.addComponent(mainLinkedList.get(36)))
 
 		);
 	}
