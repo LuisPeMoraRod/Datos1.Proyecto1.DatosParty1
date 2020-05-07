@@ -1,22 +1,29 @@
 package com.Datos1.Proyecto1.GameBoard;
 
 public class LinkedList {
-	Node head = null;
+	Node head;
 	private class Node {
 		public Box box;
-		public Node next = null;
+		public Node next;
+		public int id;
 		
-		public Node(Box box) {
+		public Node(Box box, int id) {
 			this.box=box;
+			this.id=id;
+			next=null;
 		}
+	}
+	
+	public LinkedList() {
+		head=null;
 	}
 	
 	/**
 	 * Public method. Inserts a node at the very beginning of the linked list.
 	 * @param newBox : Box
 	 */
-	public void insertHead(Box newBox) {
-		Node newNode = new Node (newBox);
+	public void insertHead(Box newBox, int id) {
+		Node newNode = new Node (newBox, id);
 		newNode.next=head;
 		head = newNode;
 	}
@@ -25,8 +32,8 @@ public class LinkedList {
 	 * Public method. Inserts a note at the very end of the linked list.
 	 * @param newBox : Box
 	 */
-	public void insertEnd(Box newBox) {
-		Node newNode = new Node (newBox);
+	public void insertEnd(Box newBox, int id) {
+		Node newNode = new Node (newBox, id);
 		Node pointer = head;
 		while(pointer.next!=null) {
 			pointer=pointer.next;
@@ -40,8 +47,8 @@ public class LinkedList {
 	 * @param index : int
 	 * @param newBox : Box
 	 */
-	public void insert (int index, Box newBox) {
-		Node newNode = new Node (newBox);
+	public void insert (int index, Box newBox, int id) {
+		Node newNode = new Node (newBox, id);
 		if (head == null) {
 			head = newNode;
 		}else {

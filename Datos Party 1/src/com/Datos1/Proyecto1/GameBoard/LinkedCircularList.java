@@ -1,9 +1,9 @@
 package com.Datos1.Proyecto1.GameBoard;
 
 public class LinkedCircularList {
-	Node first = null;
-	Node last = null;
-	int size = 0;
+	protected Node start;
+	protected Node end;
+	public int size;
 
 	public class Node {
 
@@ -18,6 +18,12 @@ public class LinkedCircularList {
 		}
 
 	}
+	
+	public LinkedCircularList(){
+		start=null;
+		end=null;
+		size=0;
+	}
 
 	/**
 	 * Public method. Asks if the linked list is empty
@@ -25,7 +31,7 @@ public class LinkedCircularList {
 	 * @return true if the first node doesn't point to any other node
 	 */
 	public boolean isEmpty() {
-		return first == null;
+		return start == null;
 	}
 
 	/**
@@ -45,13 +51,13 @@ public class LinkedCircularList {
 	public void insertEnd(Box newBox, int id) {
 		Node newNode = new Node(newBox, id);
 		if (isEmpty()) {
-			first = newNode;
-			last = newNode;
-			last.next = first;
+			start = newNode;
+			end = newNode;
+			end.next = start;
 		} else {
-			last.next = newNode;
-			newNode.next = first;
-			last = newNode;
+			end.next = newNode;
+			newNode.next = start;
+			end = newNode;
 		}
 		size++;
 
@@ -65,13 +71,13 @@ public class LinkedCircularList {
 	public void insertHead(Box newBox, int id) {
 		Node newNode = new Node(newBox, id);
 		if (isEmpty()) {
-			first = newNode;
-			last = newNode;
-			last.next = first;
+			start = newNode;
+			end = newNode;
+			end.next = start;
 		} else {
-			newNode.next = first;
-			first = newNode;
-			last.next = first;
+			newNode.next = start;
+			start = newNode;
+			end.next = start;
 		}
 
 		size++;
@@ -86,7 +92,7 @@ public class LinkedCircularList {
 	public void insert(int index, Box newBox, int id) {
 		Node newNode = new Node(newBox, id);
 		if (index >= 0 && index <= size) {
-			Node pointer = first;
+			Node pointer = start;
 			int cont = 0;
 			if (index == 0) {
 				insertHead(newBox, id);
@@ -114,9 +120,9 @@ public class LinkedCircularList {
 	 */
 	public Square get(int i){
 		if (i >= 0 && i < size) {
-			Node pointer = first;
+			Node pointer = start;
 			int cont = 0;
-			while (cont < i && pointer != last) {
+			while (cont < i && pointer != end) {
 				pointer = pointer.next;
 				cont++;
 			}
@@ -135,9 +141,9 @@ public class LinkedCircularList {
 	 */
 	public Node getNode(int i){
 		if (i >= 0 && i < size) {
-			Node pointer = first;
+			Node pointer = start;
 			int cont = 0;
-			while (cont < i && pointer != last) {
+			while (cont < i && pointer != end) {
 				pointer = pointer.next;
 				cont++;
 			}
