@@ -1,6 +1,6 @@
 package com.Datos1.Proyecto1.GameBoard;
 
-public class LinkedCircularList {
+public class CircularLinkedList {
 	protected Node start;
 	protected Node end;
 	public int size;
@@ -19,7 +19,7 @@ public class LinkedCircularList {
 
 	}
 	
-	public LinkedCircularList(){
+	public CircularLinkedList(){
 		start=null;
 		end=null;
 		size=0;
