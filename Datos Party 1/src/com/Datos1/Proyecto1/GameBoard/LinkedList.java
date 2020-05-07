@@ -21,6 +21,7 @@ public class LinkedList {
 	/**
 	 * Public method. Inserts a node at the very beginning of the linked list.
 	 * @param newBox : Box
+	 * @param id : id
 	 */
 	public void insertHead(Box newBox, int id) {
 		Node newNode = new Node (newBox, id);
@@ -29,8 +30,9 @@ public class LinkedList {
 	}
 	
 	/**
-	 * Public method. Inserts a note at the very end of the linked list.
+	 * Public method. Inserts a node at the very end of the linked list.
 	 * @param newBox : Box
+	 * @param id : int
 	 */
 	public void insertEnd(Box newBox, int id) {
 		Node newNode = new Node (newBox, id);
@@ -46,6 +48,7 @@ public class LinkedList {
 	 * Public method. Inserts a node in a certain index
 	 * @param index : int
 	 * @param newBox : Box
+	 * @param id : int
 	 */
 	public void insert (int index, Box newBox, int id) {
 		Node newNode = new Node (newBox, id);
