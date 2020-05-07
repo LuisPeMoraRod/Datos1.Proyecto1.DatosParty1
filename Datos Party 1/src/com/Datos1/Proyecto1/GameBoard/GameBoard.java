@@ -19,11 +19,13 @@ public class GameBoard extends JPanel {
 	private Color lightYellow = new Color(250, 249, 222);
 	private LinkedCircularList mainLinkedList = new LinkedCircularList();
 	private LinkedList phaseA = new LinkedList();
+	private CircularDoublyLinkedList phaseD = new CircularDoublyLinkedList();
 
 	public GameBoard() {
 		setBackground(lightYellow);
 		createLinkedCircularList();
 		createPhaseA();
+		createPhaseD();
 	}
 
 	public void createLinkedCircularList() {
@@ -40,9 +42,18 @@ public class GameBoard extends JPanel {
 	public void createPhaseA() {
 		Box head = new GreenBox();
 		phaseA.insertHead(head, 0);
-		for (int i = 1; i <= 10; i++) {
+		for (int i = 1; i <= 6; i++) {
 			Box box = new GreenBox();
 			phaseA.insertEnd(box, i);
+		}
+	}
+
+	public void createPhaseD() {
+		Box first = new RedBox();
+		phaseD.insertHead(first, 0);
+		for (int i = 1; i <= 13; i++) {
+			Box newBox = new RedBox();
+			phaseD.insertEnd(newBox, i);
 		}
 	}
 
@@ -100,9 +111,19 @@ public class GameBoard extends JPanel {
 				.addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING).addComponent(phaseA.get(0))
 						.addComponent(phaseA.get(6)))
 				.addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING).addComponent(phaseA.get(1))
-						.addComponent(phaseA.get(5)))
+						.addComponent(phaseA.get(5)).addComponent(phaseD.get(0)).addComponent(phaseD.get(13))
+						.addComponent(phaseD.get(12)))
 				.addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING).addComponent(phaseA.get(2))
-						.addComponent(phaseA.get(3)).addComponent(phaseA.get(4)))
+						.addComponent(phaseA.get(3)).addComponent(phaseA.get(4)).addComponent(phaseD.get(1))
+						.addComponent(phaseD.get(11)))
+				.addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING).addComponent(phaseD.get(2))
+						.addComponent(phaseD.get(10)))
+				.addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING).addComponent(phaseD.get(3))
+						.addComponent(phaseD.get(9)))
+				.addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING).addComponent(phaseD.get(4))
+						.addComponent(phaseD.get(8)))
+				.addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING).addComponent(phaseD.get(5))
+						.addComponent(phaseD.get(6)).addComponent(phaseD.get(7)))
 
 		);
 
@@ -130,15 +151,18 @@ public class GameBoard extends JPanel {
 				.addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING).addComponent(mainLinkedList.get(39))
 						.addComponent(mainLinkedList.get(24)))
 				.addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING).addComponent(mainLinkedList.get(38))
-						.addComponent(mainLinkedList.get(25)))
+						.addComponent(mainLinkedList.get(25)).addComponent(phaseD.get(0)).addComponent(phaseD.get(1))
+						.addComponent(phaseD.get(2)).addComponent(phaseD.get(3)).addComponent(phaseD.get(4))
+						.addComponent(phaseD.get(5)))
 				.addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING).addComponent(mainLinkedList.get(37))
-						.addComponent(mainLinkedList.get(26)))
+						.addComponent(mainLinkedList.get(26)).addComponent(phaseD.get(13)).addComponent(phaseD.get(6)))
 				.addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING).addComponent(mainLinkedList.get(27))
 						.addComponent(mainLinkedList.get(28)).addComponent(mainLinkedList.get(29))
 						.addComponent(mainLinkedList.get(30)).addComponent(mainLinkedList.get(31))
 						.addComponent(mainLinkedList.get(32)).addComponent(mainLinkedList.get(33))
 						.addComponent(mainLinkedList.get(34)).addComponent(mainLinkedList.get(35))
-						.addComponent(mainLinkedList.get(36)))
+						.addComponent(mainLinkedList.get(36)).addComponent(phaseD.get(12)).addComponent(phaseD.get(11)).addComponent(phaseD.get(10))
+						.addComponent(phaseD.get(9)).addComponent(phaseD.get(8)).addComponent(phaseD.get(7)))
 
 		);
 	}

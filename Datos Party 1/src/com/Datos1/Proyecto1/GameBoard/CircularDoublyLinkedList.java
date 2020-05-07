@@ -1,5 +1,7 @@
 package com.Datos1.Proyecto1.GameBoard;
 
+
+
 public class CircularDoublyLinkedList {
 	protected Node start;
 	protected Node end;
@@ -114,5 +116,21 @@ public class CircularDoublyLinkedList {
 			pointer=pointer.next;
 		}
 		size++;
+	}
+	
+	/**
+	 * Public method. Returns the component of the list's square requested by its index.
+	 * 
+	 * @param i : int, index of the element of the list that is returned.
+	 * @return Square type object
+	 */
+	public Square get (int i) {
+		Node pointer=start;
+		int cont=0;
+		while (cont<i && pointer != end) {
+			pointer=pointer.next;
+			cont++;
+		}
+		return pointer.box.getBox();
 	}
 }

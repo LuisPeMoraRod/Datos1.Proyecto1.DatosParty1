@@ -10,7 +10,7 @@ public class Window extends JFrame{
 	 * @version 3/5/2020
 	 */
 	private static final long serialVersionUID = 1L;
-	private int width = 1500;
+	private int width = 1550;
 	private int height = 1000;
 	
 	private GameBoard canvas;

@@ -63,6 +63,12 @@ public class LinkedList {
 		}
 	}
 	
+	/**
+	 * Public method. Returns the component of the list's square requested by its index.
+	 * 
+	 * @param i : int, index of the element of the list that is returned.
+	 * @return Square type object
+	 */
 	public Square get (int i) {
 		Node pointer=head;
 		int cont=0;
