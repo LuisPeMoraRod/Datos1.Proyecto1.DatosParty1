@@ -21,9 +21,11 @@ public class Simon implements ActionListener, MouseListener {
 
     public int ticks, dark, clickCounts;
 
-    public int reference=1, indexPattern, round=1;
+    public int reference=1, indexPattern, round=1,correct;
 
     public boolean creatingPattern = true;
+
+    public boolean gameOver = false;
 
     public ArrayList<Integer> pattern;
 
@@ -46,7 +48,7 @@ public class Simon implements ActionListener, MouseListener {
         frame.add(simonRenderer);
         frame.setSize(WIDTH, HEIGHT);
         frame.setLocation(x, y);
-        //frame.setUndecorated(true);
+        frame.setUndecorated(true);
         frame.setVisible(true);
         frame.addMouseListener(this);
         frame.setResizable(false);
@@ -81,6 +83,8 @@ public class Simon implements ActionListener, MouseListener {
 
             flashed=0;
 
+        if (!gameOver){
+
             if (creatingPattern && dark<=0){
                 if (reference >pattern.size()){
 
@@ -104,7 +108,15 @@ public class Simon implements ActionListener, MouseListener {
                 dark = 2;
             }
 
-            dark--;
+
+        }
+
+        else if(gameOver && dark<=0){
+            flashed = correct;
+            dark = 2;
+        }
+
+        dark--;
 
         }
 
@@ -169,8 +181,15 @@ public class Simon implements ActionListener, MouseListener {
         g.fillRoundRect(WIDTH/2+240,HEIGHT/4+120, 100,100,10,10);
 
         g.setColor(Color.WHITE);
-        g.setFont(new Font("Arial",1,40));
+        g.setFont(new Font("Arial", Font.PLAIN,40));
         g.drawString("Round " + round, 540,100);
+
+        if(gameOver){
+            g.setColor(Color.WHITE);
+            g.setFont(new Font("Arial",Font.PLAIN,40));
+            g.drawString("Game over", 520,450);
+        }
+
     }
 
     /**
@@ -194,49 +213,100 @@ public class Simon implements ActionListener, MouseListener {
 
         int mouseX = e.getX(), mouseY = e.getY();
 
-        if(!creatingPattern && clickCounts< reference){
+        if (!gameOver){
+
+            if(!creatingPattern && clickCounts< reference){
 
                 if (mouseX>WIDTH/2 && mouseX<WIDTH/2+100 && mouseY > HEIGHT/4 && mouseY<HEIGHT/4+100){
                     flashed = 1;
                     ticks=1;
                     clickCounts++;
 
+                    if(flashed!=pattern.get(indexPattern)){
+                        gameOver=true;
+                        correct = pattern.get(indexPattern);
+                    }
+
+                    indexPattern++;
+
                 }
                 else if (mouseX>WIDTH/2 + 120 && mouseX<WIDTH/2+220 && mouseY > HEIGHT/4 && mouseY<HEIGHT/4+100){
                     flashed = 2;
                     ticks=1;
                     clickCounts++;
+
+                    if(flashed!=pattern.get(indexPattern)){
+                        gameOver=true;
+                        correct = pattern.get(indexPattern);
+                    }
+
+                    indexPattern++;
                 }
                 else if(mouseX>WIDTH/2 + 240 && mouseX<WIDTH/2+340 && mouseY > HEIGHT/4 && mouseY<HEIGHT/4+100){
                     flashed = 3;
                     ticks=1;
                     clickCounts++;
+
+                    if(flashed!=pattern.get(indexPattern)){
+                        gameOver=true;
+                        correct = pattern.get(indexPattern);
+                    }
+
+                    indexPattern++;
                 }
                 else if(mouseX>WIDTH/2 && mouseX<WIDTH/2+100 && mouseY > HEIGHT/4 +120 && mouseY<HEIGHT/4+220){
                     flashed = 4;
                     ticks=1;
                     clickCounts++;
+
+                    if(flashed!=pattern.get(indexPattern)){
+                        gameOver=true;
+                        correct = pattern.get(indexPattern);
+                    }
+
+                    indexPattern++;
                 }
                 else if(mouseX>WIDTH/2 +120 && mouseX<WIDTH/2+220 && mouseY > HEIGHT/4 +120 && mouseY<HEIGHT/4+220){
                     flashed = 5;
                     ticks=1;
                     clickCounts++;
+
+                    if(flashed!=pattern.get(indexPattern)){
+                        gameOver=true;
+                        correct = pattern.get(indexPattern);
+                    }
+
+                    indexPattern++;
                 }
                 else if(mouseX>WIDTH/2 + 240 && mouseX<WIDTH/2+340 && mouseY > HEIGHT/4 +120 && mouseY<HEIGHT/4+220){
                     flashed = 6;
                     ticks=1;
                     clickCounts++;
+
+                    if(flashed!=pattern.get(indexPattern)){
+                        gameOver=true;
+                        correct = pattern.get(indexPattern);
+                    }
+
+                    indexPattern++;
                 }
 
 
 
                 if (clickCounts== reference){
-                creatingPattern = true;
-                round++;
-                dark=2;
-            }
+                    creatingPattern = true;
 
+                    if(!gameOver){
+                        round++;
+                    }
+                    dark=2;
+                    indexPattern=0;
+                }
+
+            }
         }
+
+
 
 
 
