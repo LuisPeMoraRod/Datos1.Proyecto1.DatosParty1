@@ -19,9 +19,11 @@ public class Simon implements ActionListener, MouseListener {
 
     public int flashed = 0;
 
-    public int ticks, indexPattern;
+    public int ticks, dark, clickCounts;
 
-    public boolean creatingPattern;
+    public int reference=1, indexPattern, round=1;
+
+    public boolean creatingPattern = true;
 
     public ArrayList<Integer> pattern;
 
@@ -79,9 +81,32 @@ public class Simon implements ActionListener, MouseListener {
 
             flashed=0;
 
+            if (creatingPattern && dark<=0){
+                if (reference >pattern.size()){
+
+                    flashed = 1 + random.nextInt(6);
+                    pattern.add(flashed);
+                    creatingPattern = false;
+                    indexPattern=0;
+                    clickCounts = 0;
+
+                }
+                else{
+
+                    flashed = pattern.get(indexPattern);
+                    indexPattern++;
+
+                    if (indexPattern == pattern.size()){
+                        reference++;
+                    }
+                }
+
+                dark = 2;
+            }
+
+            dark--;
+
         }
-
-
 
         simonRenderer.repaint();
 
@@ -101,7 +126,7 @@ public class Simon implements ActionListener, MouseListener {
         else{
             g.setColor(new Color(139, 28, 113));
         }
-        g.fillRect(WIDTH/2,HEIGHT/4, 100,100);
+        g.fillRoundRect(WIDTH/2,HEIGHT/4, 100,100,10,10);
 
         if (flashed == 2){
             g.setColor(new Color(107, 233, 39));
@@ -109,7 +134,7 @@ public class Simon implements ActionListener, MouseListener {
         else{
             g.setColor(new Color(106, 131, 25));
         }
-        g.fillRect(WIDTH/2+120,HEIGHT/4, 100,100);
+        g.fillRoundRect(WIDTH/2+120,HEIGHT/4, 100,100,10,10);
 
         if(flashed == 3){
             g.setColor(new Color(48, 241, 247));
@@ -117,7 +142,7 @@ public class Simon implements ActionListener, MouseListener {
         else{
             g.setColor(new Color(28, 136, 139));
         }
-        g.fillRect(WIDTH/2+240,HEIGHT/4, 100,100);
+        g.fillRoundRect(WIDTH/2+240,HEIGHT/4, 100,100,10,10);
 
         if(flashed==4){
             g.setColor(new Color(255, 144, 41));
@@ -125,7 +150,7 @@ public class Simon implements ActionListener, MouseListener {
         else{
             g.setColor(new Color(141, 80, 24));
         }
-        g.fillRect(WIDTH/2,HEIGHT/4+120, 100,100);
+        g.fillRoundRect(WIDTH/2,HEIGHT/4+120, 100,100,10,10);
 
         if(flashed == 5){
             g.setColor(new Color(227, 250, 42));
@@ -133,7 +158,7 @@ public class Simon implements ActionListener, MouseListener {
         else{
             g.setColor(new Color(128, 141, 24));
         }
-        g.fillRect(WIDTH/2+120,HEIGHT/4+120, 100,100);
+        g.fillRoundRect(WIDTH/2+120,HEIGHT/4+120, 100,100,10,10);
 
         if(flashed == 6){
             g.setColor(new Color(141, 40, 237));
@@ -141,8 +166,11 @@ public class Simon implements ActionListener, MouseListener {
         else{
             g.setColor(new Color(77, 22, 129));
         }
-        g.fillRect(WIDTH/2+240,HEIGHT/4+120, 100,100);
+        g.fillRoundRect(WIDTH/2+240,HEIGHT/4+120, 100,100,10,10);
 
+        g.setColor(Color.WHITE);
+        g.setFont(new Font("Arial",1,40));
+        g.drawString("Round " + round, 540,100);
     }
 
     /**
@@ -166,32 +194,51 @@ public class Simon implements ActionListener, MouseListener {
 
         int mouseX = e.getX(), mouseY = e.getY();
 
-        if(!creatingPattern){
-            if (mouseX>WIDTH/2 && mouseX<WIDTH/2+100 && mouseY > HEIGHT/4 && mouseY<HEIGHT/4+100){
-                flashed = 1;
-                ticks=1;
+        if(!creatingPattern && clickCounts< reference){
+
+                if (mouseX>WIDTH/2 && mouseX<WIDTH/2+100 && mouseY > HEIGHT/4 && mouseY<HEIGHT/4+100){
+                    flashed = 1;
+                    ticks=1;
+                    clickCounts++;
+
+                }
+                else if (mouseX>WIDTH/2 + 120 && mouseX<WIDTH/2+220 && mouseY > HEIGHT/4 && mouseY<HEIGHT/4+100){
+                    flashed = 2;
+                    ticks=1;
+                    clickCounts++;
+                }
+                else if(mouseX>WIDTH/2 + 240 && mouseX<WIDTH/2+340 && mouseY > HEIGHT/4 && mouseY<HEIGHT/4+100){
+                    flashed = 3;
+                    ticks=1;
+                    clickCounts++;
+                }
+                else if(mouseX>WIDTH/2 && mouseX<WIDTH/2+100 && mouseY > HEIGHT/4 +120 && mouseY<HEIGHT/4+220){
+                    flashed = 4;
+                    ticks=1;
+                    clickCounts++;
+                }
+                else if(mouseX>WIDTH/2 +120 && mouseX<WIDTH/2+220 && mouseY > HEIGHT/4 +120 && mouseY<HEIGHT/4+220){
+                    flashed = 5;
+                    ticks=1;
+                    clickCounts++;
+                }
+                else if(mouseX>WIDTH/2 + 240 && mouseX<WIDTH/2+340 && mouseY > HEIGHT/4 +120 && mouseY<HEIGHT/4+220){
+                    flashed = 6;
+                    ticks=1;
+                    clickCounts++;
+                }
+
+
+
+                if (clickCounts== reference){
+                creatingPattern = true;
+                round++;
+                dark=2;
             }
-            else if (mouseX>WIDTH/2 + 120 && mouseX<WIDTH/2+220 && mouseY > HEIGHT/4 && mouseY<HEIGHT/4+100){
-                flashed = 2;
-                ticks=1;
-            }
-            else if(mouseX>WIDTH/2 + 240 && mouseX<WIDTH/2+340 && mouseY > HEIGHT/4 && mouseY<HEIGHT/4+100){
-                flashed = 3;
-                ticks=1;
-            }
-            else if(mouseX>WIDTH/2 && mouseX<WIDTH/2+100 && mouseY > HEIGHT/4 +120 && mouseY<HEIGHT/4+220){
-                flashed = 4;
-                ticks=1;
-            }
-            else if(mouseX>WIDTH/2 +120 && mouseX<WIDTH/2+220 && mouseY > HEIGHT/4 +120 && mouseY<HEIGHT/4+220){
-                flashed = 5;
-                ticks=1;
-            }
-            else if(mouseX>WIDTH/2 + 240 && mouseX<WIDTH/2+340 && mouseY > HEIGHT/4 +120 && mouseY<HEIGHT/4+220){
-                flashed = 6;
-                ticks=1;
-            }
+
         }
+
+
 
 
     }
