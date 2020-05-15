@@ -7,11 +7,11 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 
-import static java.lang.Thread.*;
-
 public class PongBoard extends JPanel {
 
     Ball ball = new Ball(0,0);
+    PongPallets pallet1 = new PongPallets(20,200);
+    PongPallets pallet2 = new PongPallets(960,200);
     BufferedImage imgBackground = ImageIO.read(new File("images/bgPong.png"));
 
     public PongBoard() throws IOException {
@@ -30,6 +30,9 @@ public class PongBoard extends JPanel {
         drawElement(g2);
         updateElement();
 
+        g2.setColor(Color.WHITE);
+        g2.fill(pallet1.getPallet());
+        g2.fill(pallet2.getPallet());
 
 
     }
@@ -42,10 +45,10 @@ public class PongBoard extends JPanel {
         ball.moveBall(getBounds());
     }
 
-    public void interateGame() throws InterruptedException {
+  /*  public void interateGame() throws InterruptedException {
         while(true){
             repaint();
             Thread.sleep(6);
         }
-    }
+    }*/
 }

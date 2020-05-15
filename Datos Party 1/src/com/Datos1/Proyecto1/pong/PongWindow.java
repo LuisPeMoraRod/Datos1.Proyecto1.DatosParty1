@@ -5,7 +5,7 @@ import java.io.IOException;
 
 public class PongWindow extends JFrame {
 
-    private static final int width =1000,height=600;
+    public static final int width =1000,height=600;
 
     private PongBoard pongBoard;
 
