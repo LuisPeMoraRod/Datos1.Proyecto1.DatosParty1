@@ -7,7 +7,6 @@ import java.awt.Graphics2D;
 import javax.swing.GroupLayout;
 import javax.swing.JPanel;
 
-import com.Datos1.Proyecto1.GameBoard.CircularLinkedList.Node;
 
 public class GameBoard extends JPanel {
 

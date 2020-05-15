@@ -5,20 +5,6 @@ public class CircularLinkedList {
 	protected Node end;
 	public int size;
 
-	public class Node {
-
-		public Box box;
-		public Node next;
-		public int id;
-
-		public Node(Box box, int id) {
-			this.box = box;
-			this.next = null;
-			this.id = id;
-		}
-
-	}
-	
 	public CircularLinkedList(){
 		start=null;
 		end=null;
@@ -49,14 +35,17 @@ public class CircularLinkedList {
 	 * @param newBox : Box
 	 */
 	public void insertEnd(Box newBox, int id) {
-		Node newNode = new Node(newBox, id);
+		Node newNode = Node.builder()
+				.withBox(newBox)
+				.withId(id)
+				.build();
 		if (isEmpty()) {
 			start = newNode;
 			end = newNode;
-			end.next = start;
+			end.setNext(start);
 		} else {
-			end.next = newNode;
-			newNode.next = start;
+			end.setNext(newNode);
+			newNode.setNext(start);
 			end = newNode;
 		}
 		size++;
@@ -69,15 +58,18 @@ public class CircularLinkedList {
 	 * @param newBox : Box
 	 */
 	public void insertHead(Box newBox, int id) {
-		Node newNode = new Node(newBox, id);
+		Node newNode = Node.builder()
+				.withBox(newBox)
+				.withId(id)
+				.build();
 		if (isEmpty()) {
 			start = newNode;
 			end = newNode;
-			end.next = start;
+			end.setNext(start);
 		} else {
-			newNode.next = start;
+			newNode.setNext(start);
 			start = newNode;
-			end.next = start;
+			end.setNext(start);
 		}
 
 		size++;
@@ -90,7 +82,10 @@ public class CircularLinkedList {
 	 * @param newBox : Box
 	 */
 	public void insert(int index, Box newBox, int id) {
-		Node newNode = new Node(newBox, id);
+		Node newNode = Node.builder()
+				.withBox(newBox)
+				.withId(id)
+				.build();
 		if (index >= 0 && index <= size) {
 			Node pointer = start;
 			int cont = 0;
@@ -101,11 +96,11 @@ public class CircularLinkedList {
 			} else {
 				while (cont < index - 1) { // Runs through the list until the component before the index is reached
 					cont++;
-					pointer = pointer.next;
+					pointer = pointer.getNext();
 				}
-				Node nextNode = pointer.next;// Copy of the next pointer's next element
-				pointer.next = newNode;
-				newNode.next = nextNode;
+				Node nextNode = pointer.getNext();// Copy of the next pointer's next element
+				pointer.setNext(newNode);
+				newNode.setNext(nextNode);
 			}
 			size++;
 		}
@@ -123,7 +118,7 @@ public class CircularLinkedList {
 			Node pointer = start;
 			int cont = 0;
 			while (cont < i && pointer != end) {
-				pointer = pointer.next;
+				pointer = pointer.getNext();
 				cont++;
 			}
 			return pointer.box.getBox();
@@ -144,7 +139,7 @@ public class CircularLinkedList {
 			Node pointer = start;
 			int cont = 0;
 			while (cont < i && pointer != end) {
-				pointer = pointer.next;
+				pointer = pointer.getNext();
 				cont++;
 			}
 			return pointer;

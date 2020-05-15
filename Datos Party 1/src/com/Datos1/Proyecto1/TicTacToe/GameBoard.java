@@ -147,7 +147,7 @@ public class GameBoard extends JPanel {
 		Image image = null;
 
 		try {
-			image = ImageIO.read(new File("images/Wallpaper.jpg"));
+			image = ImageIO.read(new File("Datos Party 1/images/Wallpaper.jpg"));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

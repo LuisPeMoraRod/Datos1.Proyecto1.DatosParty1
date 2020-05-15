@@ -2,17 +2,7 @@ package com.Datos1.Proyecto1.GameBoard;
 
 public class LinkedList {
 	Node head;
-	private class Node {
-		public Box box;
-		public Node next;
-		public int id;
-		
-		public Node(Box box, int id) {
-			this.box=box;
-			this.id=id;
-			next=null;
-		}
-	}
+	
 	
 	public LinkedList() {
 		head=null;
@@ -24,8 +14,11 @@ public class LinkedList {
 	 * @param id : id
 	 */
 	public void insertHead(Box newBox, int id) {
-		Node newNode = new Node (newBox, id);
-		newNode.next=head;
+		Node newNode = Node.builder()
+				.withBox(newBox)
+				.withId(id)
+				.build();
+		newNode.setNext(head);
 		head = newNode;
 	}
 	
@@ -35,13 +28,16 @@ public class LinkedList {
 	 * @param id : int
 	 */
 	public void insertEnd(Box newBox, int id) {
-		Node newNode = new Node (newBox, id);
+		Node newNode = Node.builder()
+				.withBox(newBox)
+				.withId(id)
+				.build();
 		Node pointer = head;
-		while(pointer.next!=null) {
-			pointer=pointer.next;
+		while(pointer.getNext()!=null) {
+			pointer=pointer.getNext();
 		}
 	
-		pointer.next = newNode;
+		pointer.setNext(newNode);
 	}
 	
 	/**
@@ -51,18 +47,21 @@ public class LinkedList {
 	 * @param id : int
 	 */
 	public void insert (int index, Box newBox, int id) {
-		Node newNode = new Node (newBox, id);
+		Node newNode = Node.builder()
+				.withBox(newBox)
+				.withId(id)
+				.build();
 		if (head == null) {
 			head = newNode;
 		}else {
 			int cont = 0;
 			Node pointer = head;
-			while (cont< index && pointer.next != null) {
+			while (cont< index && pointer.getNext() != null) {
 				cont++;
-				pointer= pointer.next;
+				pointer= pointer.getNext();
 			}
-			newNode.next=pointer.next;
-			pointer.next=newNode;
+			newNode.setNext(pointer.getNext());
+			pointer.setNext(newNode);
 		}
 	}
 	
@@ -76,7 +75,7 @@ public class LinkedList {
 		Node pointer=head;
 		int cont=0;
 		while (cont<i && pointer != null) {
-			pointer=pointer.next;
+			pointer=pointer.getNext();
 			cont++;
 		}
 		return pointer.box.getBox();

@@ -1,42 +1,10 @@
 package com.Datos1.Proyecto1.GameBoard;
 
-import com.Datos1.Proyecto1.GameBoard.CircularDoublyLinkedList.Node;
-
 public class DoublyLinkedList {
 	protected Node start;
 	protected Node end;
 	public int size;
 
-	public class Node {
-		public Box box;
-		public Node next, prev;
-		public int id;
-
-		/**
-		 * Constructor method
-		 * 
-		 * @param box
-		 */
-		public Node(Box box) {
-			this.box = box;
-			next = null;
-			prev = null;
-		}
-
-		/**
-		 * Constructor method
-		 * 
-		 * @param box  : Box
-		 * @param next : Node
-		 * @param prev : Node
-		 */
-		public Node(Box box, Node next, Node prev, int id) {
-			this.box = box;
-			this.next = next;
-			this.prev = prev;
-			this.id = id;
-		}
-	}
 
 	/**
 	 * Constructor method
@@ -73,13 +41,18 @@ public class DoublyLinkedList {
 	 * @param id     : id
 	 */
 	public void insertHead(Box newBox, int id) {
-		Node newNode = new Node(newBox, null, null, id);
+		//Node newNode = new Node(newBox, null, null, id);
+		Node newNode = Node.builder()
+				.withBox(newBox)
+				.withId(id)
+				.build();
+		
 		if (isEmpty()) {
 			start = newNode;
 			end = newNode;
 		} else {
-			start.prev = newNode;
-			newNode.next = start;
+			start.setPrev(newNode);
+			newNode.setNext(start);
 			start = newNode;
 		}
 		size++;
@@ -92,13 +65,16 @@ public class DoublyLinkedList {
 	 * @param id     : int
 	 */
 	public void insertEnd(Box newBox, int id) {
-		Node newNode = new Node(newBox, null, null, id);
+		Node newNode = Node.builder()
+				.withBox(newBox)
+				.withId(id)
+				.build();
 		if (isEmpty()) {
 			start = newNode;
 			end = newNode;
 		} else {
-			end.next = newNode;
-			newNode.prev = end;
+			end.setNext(newNode);
+			newNode.setPrev(end);
 			end = newNode;
 		}
 		size++;
@@ -111,7 +87,10 @@ public class DoublyLinkedList {
 	 * @param id : int
 	 */
 	public void insert(Box newBox, int index, int id) {
-		Node newNode = new Node(newBox, null, null, id);
+		Node newNode = Node.builder()
+				.withBox(newBox)
+				.withId(id)
+				.build();
 		if (index == 0) {
 			insertHead(newBox, id);
 			return;
@@ -119,14 +98,14 @@ public class DoublyLinkedList {
 		Node pointer = start;
 		for (int i = 1; i < size; i++) {
 			if (i == index) {
-				Node aux = pointer.prev;
-				aux.next = newNode;
-				newNode.prev = aux;
+				Node aux = pointer.getPrev();
+				aux.setNext(newNode);
+				newNode.setPrev(aux);
 
-				pointer.prev = newNode;
-				newNode.next = pointer;
+				pointer.setPrev(newNode);
+				newNode.setNext(pointer);
 			}
-			pointer = pointer.next;
+			pointer = pointer.getNext();
 		}
 		size++;
 	}
@@ -141,7 +120,7 @@ public class DoublyLinkedList {
 		Node pointer=start;
 		int cont=0;
 		while (cont<i && pointer != end) {
-			pointer=pointer.next;
+			pointer=pointer.getNext();
 			cont++;
 		}
 		return pointer.box.getBox();
@@ -151,12 +130,12 @@ public class DoublyLinkedList {
 		Node pointer=start;
 		for (int i = 0 ; i<size; i++) {
 			try {
-				System.out.println(pointer.prev.id+"<---Nodo: "+pointer.id+"--->"+pointer.next.id);
+				System.out.println(pointer.getPrev().getId()+"<---Nodo: "+pointer.getId()+"--->"+pointer.getNext().getId());
 			} catch (Exception e) {
 				System.out.println(e);
 			}
 			
-			pointer=pointer.next;
+			pointer=pointer.getNext();
 		}
 	}
 
