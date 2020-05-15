@@ -20,6 +20,7 @@ public class PongWindow extends JFrame {
 
         pongBoard = new PongBoard();
         add(pongBoard);
+        addKeyListener(new PalletEvent());
         setVisible(true);
 
         pongThread = new PongThread(pongBoard);

@@ -5,7 +5,7 @@ import java.io.IOException;
 public class PongMain {
 
 
-    public static void main(String[] args) throws IOException, InterruptedException {
+    public static void main(String[] args) throws IOException {
 
         PongWindow pongWindow = new PongWindow();
 

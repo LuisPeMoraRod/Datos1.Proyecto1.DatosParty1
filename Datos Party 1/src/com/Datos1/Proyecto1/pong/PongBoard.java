@@ -43,6 +43,8 @@ public class PongBoard extends JPanel {
 
     public void updateElement(){
         ball.moveBall(getBounds());
+        pallet1.movePallet1(getBounds());
+        pallet2.movePallet2(getBounds());
     }
 
   /*  public void interateGame() throws InterruptedException {
