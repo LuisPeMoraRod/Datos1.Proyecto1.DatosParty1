@@ -5,10 +5,10 @@ public class CircularLinkedList {
 	protected Node end;
 	public int size;
 
-	public CircularLinkedList(){
-		start=null;
-		end=null;
-		size=0;
+	public CircularLinkedList() {
+		start = null;
+		end = null;
+		size = 0;
 	}
 
 	/**
@@ -35,10 +35,7 @@ public class CircularLinkedList {
 	 * @param newBox : Box
 	 */
 	public void insertEnd(Box newBox, int id) {
-		Node newNode = Node.builder()
-				.withBox(newBox)
-				.withId(id)
-				.build();
+		Node newNode = Node.builder().withBox(newBox).withId(id).build();
 		if (isEmpty()) {
 			start = newNode;
 			end = newNode;
@@ -58,10 +55,7 @@ public class CircularLinkedList {
 	 * @param newBox : Box
 	 */
 	public void insertHead(Box newBox, int id) {
-		Node newNode = Node.builder()
-				.withBox(newBox)
-				.withId(id)
-				.build();
+		Node newNode = Node.builder().withBox(newBox).withId(id).build();
 		if (isEmpty()) {
 			start = newNode;
 			end = newNode;
@@ -82,10 +76,7 @@ public class CircularLinkedList {
 	 * @param newBox : Box
 	 */
 	public void insert(int index, Box newBox, int id) {
-		Node newNode = Node.builder()
-				.withBox(newBox)
-				.withId(id)
-				.build();
+		Node newNode = Node.builder().withBox(newBox).withId(id).build();
 		if (index >= 0 && index <= size) {
 			Node pointer = start;
 			int cont = 0;
@@ -108,12 +99,13 @@ public class CircularLinkedList {
 	}
 
 	/**
-	 * Public method. Returns the component of the list's square requested by its index.
+	 * Public method. Returns the component of the list's square requested by its
+	 * index.
 	 * 
 	 * @param i : int, index of the element of the list that is returned.
 	 * @return Square type object
 	 */
-	public Square get(int i){
+	public Square get(int i) {
 		if (i >= 0 && i < size) {
 			Node pointer = start;
 			int cont = 0;
@@ -121,20 +113,24 @@ public class CircularLinkedList {
 				pointer = pointer.getNext();
 				cont++;
 			}
-			return pointer.box.getBox();
-		}else {
+			if (pointer.getHasPointer()) {
+				return pointer.box.getEdgedBox();
+			} else {
+				return pointer.box.getBox();
+			}
+		} else {
 			return null;
 		}
-		
+
 	}
-	
+
 	/**
 	 * Public method. Returns the component list requested by its index.
 	 * 
 	 * @param i : int, index of the element of the list thats returned
 	 * @return pointer : Node
 	 */
-	public Node getNode(int i){
+	public Node getNode(int i) {
 		if (i >= 0 && i < size) {
 			Node pointer = start;
 			int cont = 0;
@@ -145,7 +141,7 @@ public class CircularLinkedList {
 			return pointer;
 		}
 		return null;
-		
+
 	}
 
 }

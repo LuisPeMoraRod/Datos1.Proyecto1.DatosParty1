@@ -11,6 +11,7 @@ public class Node {
 	private Node next;
 	private Node prev;
 	private int id;
+	private boolean hasPointer;
 
 	/**
 	 * Constructor method. Receives Builder object and initializes its attributes with the builder parameters.
@@ -24,8 +25,15 @@ public class Node {
 		this.next = builder.next;
 		this.prev = builder.prev;
 		this.id = builder.id;
+		this.hasPointer= builder.hasPointer;
 	}
 	
+	/*
+	 * Nodes' box setter
+	 */
+	public void setBox(Box box) {
+		this.box=box;
+	}
 	/**
 	 * Previous node getter
 	 * @return prev : Node
@@ -65,6 +73,22 @@ public class Node {
 		return this.id;
 	}
 	
+	/**
+	 * Boolean hasPointer setter
+	 * @param hasPointer
+	 */
+	public void setHasPointer(boolean hasPointer) {
+		this.hasPointer=hasPointer;
+	}
+	
+	/**
+	 * Boolean hasPointer getter
+	 * @return hasPointer : boolean
+	 */
+	public boolean getHasPointer() {
+		return this.hasPointer;
+	}
+	
 	
 	public static Builder builder() {
 		return new Builder();
@@ -79,11 +103,16 @@ public class Node {
 		private Box box;
 		private Node next, prev;
 		private int id;
+		private boolean hasPointer;
 		
 		public Node build() {
 			return new Node(this);
 		}
 		
+		public Builder withPointer(boolean hasPointer) {
+			this.hasPointer=hasPointer;
+			return this;
+		}
 		public Builder withBox(Box box) {
 			this.box=box;
 			return this;

@@ -3,34 +3,42 @@ package com.Datos1.Proyecto1.GameBoard;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.image.BufferedImage;
 
 import javax.swing.GroupLayout;
 import javax.swing.JPanel;
 
 
 public class GameBoard extends JPanel {
-
 	/**
-	 * 
+	 * Public class. Represents the structure of the game's GUI
+	 * @author Luis Pedro Morales Rodriguez
+	 * @version 25/3/2020
 	 */
+	
 	private static final long serialVersionUID = 1L;
-	public String[] players;
-	private Color lightYellow = new Color(250, 249, 222);
-	private CircularLinkedList mainLinkedList = new CircularLinkedList();
-	private LinkedList phaseA = new LinkedList();
-	private LinkedList phaseB = new LinkedList();
-	private DoublyLinkedList phaseC = new DoublyLinkedList();
-	private CircularDoublyLinkedList phaseD = new CircularDoublyLinkedList();
+	static CircularLinkedList mainLinkedList = new CircularLinkedList();
+	static LinkedList phaseA = new LinkedList();
+	static LinkedList phaseB = new LinkedList();
+	static DoublyLinkedList phaseC = new DoublyLinkedList();
+	static CircularDoublyLinkedList phaseD = new CircularDoublyLinkedList();
+	private Player[] players = new Player[4];
 
 	public GameBoard() {
-		setBackground(lightYellow);
+		
+		setBackground(Color.white);
 		createLinkedCircularList();
 		createPhaseA();
 		createPhaseB();
 		createPhaseC();
 		createPhaseD();
+		players[0]= new Player("Pedro",1);
+		
 	}
 
+	/**
+	 * Creates the linked circular list which is the main path of the game.
+	 */
 	public void createLinkedCircularList() {
 		Box first = new BlueBox();
 		mainLinkedList.insertHead(first, 0);
@@ -39,9 +47,11 @@ public class GameBoard extends JPanel {
 			mainLinkedList.insertEnd(box, i);
 
 		}
-
 	}
 
+	/**
+	 * Creates phase A: a simple linked list
+	 */
 	public void createPhaseA() {
 		Box head = new GreenBox();
 		phaseA.insertHead(head, 0);
@@ -51,6 +61,9 @@ public class GameBoard extends JPanel {
 		}
 	}
 
+	/**
+	 * Creates phase B: a simple linked list
+	 */
 	public void createPhaseB() {
 		Box head = new GreenBox();
 		phaseB.insertHead(head, 0);
@@ -60,6 +73,9 @@ public class GameBoard extends JPanel {
 		}
 	}
 
+	/**
+	 * Creates phase C: a doubly linked list
+	 */
 	public void createPhaseC() {
 		Box head = new YellowBox();
 		phaseC.insertHead(head, 0);
@@ -70,6 +86,9 @@ public class GameBoard extends JPanel {
 		phaseC.printList();
 	}
 
+	/**
+	 * Creates phase D: a doubly circular linked list
+	 */
 	public void createPhaseD() {
 		Box first = new RedBox();
 		phaseD.insertHead(first, 0);
@@ -82,14 +101,16 @@ public class GameBoard extends JPanel {
 	@Override
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
-		Graphics2D g2d = (Graphics2D) g;
 		try {
 			setBoxes();
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-
+		Graphics2D g2d = (Graphics2D) g.create();
+		g2d.drawImage(players[0].getSprite(),100,70,this);
+		
+		g2d.dispose();
 	}
 
 	/**

@@ -7,14 +7,25 @@ public class BlueBox implements Box {
 	 * Creates blue boxes
 	 */
 	
-	public Square square;
+	public Square solidSquare;
+	public Square edgedSquare;
+	
+	/**
+	 * Constructor method. Sets solidSquare as a filled square and edgedSqaure as an empty square.
+	 */
 	public BlueBox() {
-		square= new Square(blue);
+		solidSquare= new Square(blue);
+		edgedSquare = new Square(blue, true);
 	}
 	
 	@Override
 	public Square getBox() {
 		// TODO Auto-generated method stub
-		return square;
+		return solidSquare;
+	}
+	
+	@Override
+	public Square getEdgedBox() {
+		return edgedSquare;
 	}
 }

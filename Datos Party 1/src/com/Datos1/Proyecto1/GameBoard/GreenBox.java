@@ -6,14 +6,22 @@ public class GreenBox implements Box{
 	 * Creates blue boxes
 	 */
 	
-	public Square square;
+	public Square solidSquare;
+	public Square edgedSquare;
 	public GreenBox() {
-		square= new Square(green);
+		solidSquare= new Square(green);
+		edgedSquare = new Square(green, true);
 	}
 	
 	@Override
 	public Square getBox() {
 		// TODO Auto-generated method stub
-		return square;
+		return solidSquare;
+	}
+
+	@Override
+	public Square getEdgedBox() {
+		// TODO Auto-generated method stub
+		return edgedSquare;
 	}
 }

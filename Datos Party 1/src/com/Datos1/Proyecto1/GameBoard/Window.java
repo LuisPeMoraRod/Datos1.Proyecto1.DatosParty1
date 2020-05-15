@@ -10,10 +10,11 @@ public class Window extends JFrame{
 	 * @version 3/5/2020
 	 */
 	private static final long serialVersionUID = 1L;
-	private int width = 1550;
+	private int width = 1650;
 	private int height = 1000;
 	
 	private GameBoard canvas;
+	private GameThread thread;
 	
 	/**
 	 * Constructor method. Instantiates a GameBoard object
@@ -22,7 +23,9 @@ public class Window extends JFrame{
 	public Window() {
 		createWindow();
 		canvas = new GameBoard();
-		this.add(canvas);		
+		this.add(canvas);	
+		thread = new GameThread(canvas);
+		thread.start();
 	}
 	
 	

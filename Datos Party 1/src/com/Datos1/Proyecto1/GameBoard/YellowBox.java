@@ -6,14 +6,24 @@ public class YellowBox implements Box{
 	 * Creates blue boxes
 	 */
 	
-	public Square square;
+	public Square solidSquare;
+	public Square edgedSqaure;
 	public YellowBox() {
-		square= new Square(yellow);
+		solidSquare= new Square(yellow);
+		edgedSqaure = new Square(yellow, true);
 	}
 	
 	@Override
 	public Square getBox() {
 		// TODO Auto-generated method stub
-		return square;
+		return solidSquare;
 	}
+
+	@Override
+	public Square getEdgedBox() {
+		// TODO Auto-generated method stub
+		return edgedSqaure;
+	}
+	
+	
 }

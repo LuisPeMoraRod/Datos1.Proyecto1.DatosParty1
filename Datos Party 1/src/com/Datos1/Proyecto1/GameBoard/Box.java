@@ -14,4 +14,5 @@ public interface Box{
 	 * compose the game board. These boxes differ by their colors.
 	 */
 	Square getBox();
+	Square getEdgedBox();
 }
