@@ -19,38 +19,57 @@ public class Ball{
     }
 
     public Rectangle2D getBall(){
+
         return new Rectangle2D.Double(x,y,width,height);
     }
 
-    public void moveBall(Rectangle limits, boolean collisionP1, boolean collisionP2){
-        x+=dx;
-        y+=dy;
+    public void moveBall(Rectangle limits, boolean collisionP1, boolean collisionP2, int scoreP1, int scoreP2){
 
-        if(collisionP1){
-            dx = -dx;
-            x = 55;
+        if(scoreP1 == 5 || scoreP2 == 5){
+            stopBall();
         }
 
-        if (collisionP2) {
-            dx = -dx;
-            x = 935;
+        else{
+
+            x+=dx;
+            y+=dy;
+
+            if(collisionP1){
+                dx = -dx;
+                x = 55;
+            }
+
+            if (collisionP2) {
+                dx = -dx;
+                x = 935;
+            }
+
+
+            if (x>=limits.getMaxX()-width){
+                dx = -dx;
+            }
+
+            if (x<=0){
+                dx=-dx;
+            }
+
+            if(y>limits.getMaxY()-height){
+                dy = -dy;
+            }
+
+            if (y<0){
+                dy=-dy;
+            }
+
         }
 
 
-        if (x>=limits.getMaxX()-width){
-            dx = -dx;
-        }
+    }
 
-        if (x<=0){
-            dx=-dx;
-        }
+    public void stopBall(){
 
-        if(y>limits.getMaxY()-height){
-            dy = -dy;
-        }
+        x = 490;
+        y=290;
 
-        if (y<0){
-            dy=-dy;
-        }
     }
 }

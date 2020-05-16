@@ -10,9 +10,9 @@ import java.io.IOException;
 
 public class PongBoard extends JPanel {
 
-    Ball ball = new Ball(0,0);
-    PongPallets pallet1 = new PongPallets(20,200);
-    PongPallets pallet2 = new PongPallets(960,200);
+    Ball ball = new Ball(490,290);
+    PongPallets pallet1 = new PongPallets(20,275);
+    PongPallets pallet2 = new PongPallets(960,275);
     BufferedImage imgBackground = ImageIO.read(new File("images/bgPong.png"));
     public PongScore pongScore;
     public int scoreP1, scoreP2;
@@ -43,14 +43,20 @@ public class PongBoard extends JPanel {
         g2.drawString(String.valueOf(scoreP1),250,50);
         g2.drawString(String.valueOf(scoreP2),750,50);
 
+        if(scoreP2 == 5 || scoreP1 == 5){
+            g.setFont(new Font("Lao Sangam LM", Font.BOLD,40));
+            g.drawString("Game over", 400,280);
+        }
+
     }
 
     public void drawElement(Graphics2D g){
+
         g.fill(ball.getBall());
     }
 
     public void updateElement(){
-        ball.moveBall(getBounds(), collision(pallet1.getPallet()), collision(pallet2.getPallet()));
+        ball.moveBall(getBounds(), collision(pallet1.getPallet()), collision(pallet2.getPallet()),scoreP1,scoreP2);
         pallet1.movePallet1(getBounds());
         pallet2.movePallet2(getBounds());
         setScore();
