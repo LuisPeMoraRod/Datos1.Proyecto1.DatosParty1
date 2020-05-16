@@ -6,11 +6,15 @@ import java.awt.geom.Rectangle2D;
 public class PongPallets {
 
     private int x, y;
-    private final int width = 20, height=200;
+    private final int width, height;
 
     public PongPallets(int x, int y){
+
         this.x = x;
         this.y = y;
+
+        width = 20;
+        height = 50;
 
     }
 
@@ -24,7 +28,7 @@ public class PongPallets {
             y--;
         }
 
-        else if(PalletEvent.s && y < limits.getMaxY()-200){
+        else if(PalletEvent.s && y < limits.getMaxY()-height){
             y++;
         }
 
@@ -36,7 +40,7 @@ public class PongPallets {
             y--;
         }
 
-        else if(PalletEvent.down && y < limits.getMaxY()-200){
+        else if(PalletEvent.down && y < limits.getMaxY()-height){
             y++;
         }
 

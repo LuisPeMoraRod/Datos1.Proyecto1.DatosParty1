@@ -1,5 +1,6 @@
 package com.Datos1.Proyecto1.pong;
 
+
 public class PongThread extends Thread {
 
     PongBoard pongBoard;

@@ -5,30 +5,43 @@ import java.awt.geom.Rectangle2D;
 
 public class Ball{
 
-    private int x, y;
+    public int x, y;
 
-    private final int height = 20, width=20;
+    private final int height, width;
     private int dx=1, dy=1;
 
     public Ball(int x, int y){
 
         this.x = x;
         this.y = y;
+        this.height = 20;
+        this.width = 20;
     }
 
     public Rectangle2D getBall(){
         return new Rectangle2D.Double(x,y,width,height);
     }
 
-    public void moveBall(Rectangle limits){
+    public void moveBall(Rectangle limits, boolean collisionP1, boolean collisionP2){
         x+=dx;
         y+=dy;
 
-        if (x>limits.getMaxX()-width){
+        if(collisionP1){
+            dx = -dx;
+            x = 55;
+        }
+
+        if (collisionP2) {
+            dx = -dx;
+            x = 935;
+        }
+
+
+        if (x>=limits.getMaxX()-width){
             dx = -dx;
         }
 
-        if (x<0){
+        if (x<=0){
             dx=-dx;
         }
 

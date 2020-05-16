@@ -8,8 +8,8 @@ public class PongWindow extends JFrame {
     public static final int width =1000,height=600;
 
     private PongBoard pongBoard;
-
     private PongThread pongThread;
+
 
     public PongWindow() throws IOException {
 
@@ -21,7 +21,6 @@ public class PongWindow extends JFrame {
         pongBoard = new PongBoard();
         add(pongBoard);
         addKeyListener(new PalletEvent());
-        setVisible(true);
 
         pongThread = new PongThread(pongBoard);
         pongThread.start();

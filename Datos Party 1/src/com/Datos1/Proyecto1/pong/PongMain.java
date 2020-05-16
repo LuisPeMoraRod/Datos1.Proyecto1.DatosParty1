@@ -5,10 +5,10 @@ import java.io.IOException;
 public class PongMain {
 
 
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) throws IOException, InterruptedException {
 
         PongWindow pongWindow = new PongWindow();
-
+        pongWindow.setVisible(true);
 
     }
 
