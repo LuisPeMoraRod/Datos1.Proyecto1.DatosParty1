@@ -11,7 +11,17 @@ public class SnakeBoard extends JPanel {
 
     private BufferedImage imgBackground = ImageIO.read(new File("images/SnakeBackground.jpg"));
 
+    private SnakeFood food;
+
+    private boolean creatingFood1,  creatingFood2, creatingFood3, creatingFood4;
+
     public SnakeBoard() throws IOException {
+
+        food = new SnakeFood();
+        creatingFood1 = true;
+        creatingFood2 = true;
+        creatingFood3 = true;
+        creatingFood4 = true;
 
     }
 
@@ -22,8 +32,14 @@ public class SnakeBoard extends JPanel {
 
         g2.drawImage(imgBackground,0,0,1000,600,this);
 
-        g2.setColor(Color.YELLOW);
-        g2.fillRect(0,0,20,20);
+        g2.setColor(new Color(205, 220, 57));
+        g2.fill(food.getFood1());
+        g2.fill(food.getFood2());
+        g2.fill(food.getFood3());
+        g2.fill(food.getFood4());
 
     }
+
+
+
 }
