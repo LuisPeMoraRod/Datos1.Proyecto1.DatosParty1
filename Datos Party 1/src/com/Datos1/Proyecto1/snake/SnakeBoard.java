@@ -17,7 +17,6 @@ public class SnakeBoard extends JPanel {
 
     private boolean creatingFood1,  creatingFood2, creatingFood3, creatingFood4;
 
-    public int headX, headY;
 
     public BufferedImage snakeHead;
 
@@ -29,10 +28,8 @@ public class SnakeBoard extends JPanel {
         creatingFood3 = true;
         creatingFood4 = true;
 
-        headX = 80;
-        headY = 80;
 
-        snake = new Snake(headX,headY);
+        snake = new Snake(80,80);
 
     }
 
@@ -50,8 +47,9 @@ public class SnakeBoard extends JPanel {
         g2.fill(food.getFood4());
 
         createSnake();
+        updateSnake();
 
-        g2.drawImage(snakeHead,headX, headY,20,20,this);
+        g2.drawImage(snakeHead,snake.getHeadX(), snake.getHeadY(),20,20,this);
 
 
     }
@@ -59,6 +57,11 @@ public class SnakeBoard extends JPanel {
     public void createSnake(){
 
         snakeHead = snake.getSnakeHead();
+    }
+
+    public void updateSnake(){
+
+        snake.moveSnake();
     }
 
 

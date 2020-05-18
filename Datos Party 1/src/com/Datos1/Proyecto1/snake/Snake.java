@@ -1,6 +1,7 @@
 package com.Datos1.Proyecto1.snake;
 
 import javax.imageio.ImageIO;
+import java.awt.*;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -8,10 +9,10 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 public class Snake {
-    public int headX, headY;
+    private int headX, headY;
     public ArrayList<Rectangle2D> tail;
     public BufferedImage snakeHead;
-    protected final int  width, height;
+    protected final int width, height;
     int position;
     int tailX, tailY;
 
@@ -25,15 +26,42 @@ public class Snake {
         this.height = 20;
         tail = new ArrayList<>();
         snakeHead = ImageIO.read(new File("images/P4.png"));
-        tail.add( new Rectangle2D.Double(headX-22, headY -22, width, height));
+        tail.add(new Rectangle2D.Double(headX - 22, headY - 22, width, height));
 
     }
 
-    public BufferedImage getSnakeHead(){
+    public BufferedImage getSnakeHead() {
 
         return snakeHead;
 
     }
 
+    public int getHeadX(){
+        return headX;
+    }
+
+    public int getHeadY(){
+        return headY;
+    }
+
+    public void moveSnake(){
+
+        if(SnakeEvent.up){
+            headY--;
+        }
+
+        else if(SnakeEvent.down){
+            headY++;
+        }
+
+        else if(SnakeEvent.right){
+            headX++;
+        }
+
+        else if(SnakeEvent.left){
+            headX--;
+        }
+
+    }
 
 }

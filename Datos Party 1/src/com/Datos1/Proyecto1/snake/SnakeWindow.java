@@ -20,6 +20,11 @@ public class SnakeWindow extends JFrame {
         snakeBoard = new SnakeBoard();
         add(snakeBoard);
 
+        addKeyListener(new SnakeEvent());
+
+        SnakeThread snakeThread = new SnakeThread(snakeBoard);
+        snakeThread.start();
+
     }
 
 
