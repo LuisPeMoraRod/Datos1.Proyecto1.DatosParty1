@@ -15,7 +15,11 @@ public class SnakeBoard extends JPanel {
 
     private Snake snake;
 
+    public int tailX, tailY, lastY, lastX;
+
     private boolean creatingFood1,  creatingFood2, creatingFood3, creatingFood4;
+
+    boolean beginGame;
 
 
     public BufferedImage snakeHead;
@@ -30,6 +34,9 @@ public class SnakeBoard extends JPanel {
 
 
         snake = new Snake(80,80);
+
+        tailX = snake.getHeadX()-25;
+        tailY = snake.getHeadY();
 
     }
 
@@ -48,8 +55,11 @@ public class SnakeBoard extends JPanel {
 
         createSnake();
         updateSnake();
+        moveSnake();
 
         g2.drawImage(snakeHead,snake.getHeadX(), snake.getHeadY(),20,20,this);
+        g2.setColor(new Color(124, 60, 171));
+        g2.fill(snake.fistTail(tailX, tailY));
 
 
     }
@@ -62,6 +72,73 @@ public class SnakeBoard extends JPanel {
     public void updateSnake(){
 
         snake.moveSnake();
+
+    }
+
+    public void moveSnake(){
+
+        if(SnakeEvent.up){
+
+            lastX = snake.getHeadX();
+
+            if(tailX<lastX){
+                tailX++;
+            }
+            else if(tailX>lastX){
+                tailX--;
+            }
+            else if (tailX == lastX){
+                tailY--;
+            }
+
+        }
+
+        else if(SnakeEvent.down){
+            lastX = snake.getHeadX();
+
+            if(tailX<lastX){
+                tailX++;
+            }
+            else if(tailX>lastX){
+                tailX--;
+            }
+            else if (tailX == lastX){
+                tailY++;
+            }
+
+        }
+
+        else if(SnakeEvent.right){
+            lastX = snake.getHeadX();
+            lastY = snake.getHeadY();
+
+            if(tailY<lastY){
+                tailY++;
+            }
+            else if(tailY>lastY){
+                tailY--;
+            }
+            else if (tailY == lastY){
+                tailX++;
+            }
+
+        }
+
+        else if(SnakeEvent.left){
+            lastX = snake.getHeadX();
+            lastY = snake.getHeadY();
+
+            if(tailY<lastY){
+                tailY++;
+            }
+            else if(tailY>lastY){
+                tailY--;
+            }
+            else if (tailY == lastY){
+                tailX--;
+            }
+
+        }
     }
 
 

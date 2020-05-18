@@ -10,23 +10,18 @@ import java.util.ArrayList;
 
 public class Snake {
     private int headX, headY;
-    public ArrayList<Rectangle2D> tail;
     public BufferedImage snakeHead;
     protected final int width, height;
-    int position;
-    int tailX, tailY;
-
-    Rectangle2D lastTail;
 
     public Snake(int headX, int headY) throws IOException {
 
         this.headX = headX;
         this.headY = headY;
+
         this.width = 20;
         this.height = 20;
-        tail = new ArrayList<>();
+
         snakeHead = ImageIO.read(new File("images/P4.png"));
-        tail.add(new Rectangle2D.Double(headX - 22, headY - 22, width, height));
 
     }
 
@@ -48,20 +43,30 @@ public class Snake {
 
         if(SnakeEvent.up){
             headY--;
+
         }
 
         else if(SnakeEvent.down){
             headY++;
+
         }
 
         else if(SnakeEvent.right){
             headX++;
+
         }
 
         else if(SnakeEvent.left){
             headX--;
+
         }
 
     }
+
+    public Rectangle2D fistTail(int tailX, int tailY){
+
+        return new Rectangle2D.Double(tailX, tailY, width, height);
+    }
+
 
 }

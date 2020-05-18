@@ -7,16 +7,23 @@ public class SnakeEvent extends KeyAdapter {
 
     static boolean up, right, left, down;
 
+    public SnakeEvent(){
+
+        right = true;
+    }
+
     @Override
     public void keyPressed(KeyEvent e) {
         super.keyPressed(e);
 
         int id = e.getKeyCode();
 
+
         if(id == KeyEvent.VK_DOWN && !up){
             down = true;
             right = false;
             left = false;
+
         }
 
         else if (id == KeyEvent.VK_UP && !down){
@@ -41,24 +48,6 @@ public class SnakeEvent extends KeyAdapter {
     @Override
     public void keyReleased(KeyEvent e) {
         super.keyReleased(e);
-
-       /* int id = e.getKeyCode();
-
-        if(id == KeyEvent.VK_DOWN){
-            down = false;
-        }
-
-        else if (id == KeyEvent.VK_UP){
-            up = false;
-        }
-
-        else if (id == KeyEvent.VK_RIGHT){
-            right = false;
-        }
-
-        else if(id == KeyEvent.VK_LEFT){
-            left = false;
-        }*/
 
 
     }
