@@ -13,7 +13,13 @@ public class SnakeBoard extends JPanel {
 
     private SnakeFood food;
 
+    private Snake snake;
+
     private boolean creatingFood1,  creatingFood2, creatingFood3, creatingFood4;
+
+    public int headX, headY;
+
+    public BufferedImage snakeHead;
 
     public SnakeBoard() throws IOException {
 
@@ -22,6 +28,11 @@ public class SnakeBoard extends JPanel {
         creatingFood2 = true;
         creatingFood3 = true;
         creatingFood4 = true;
+
+        headX = 80;
+        headY = 80;
+
+        snake = new Snake(headX,headY);
 
     }
 
@@ -38,6 +49,16 @@ public class SnakeBoard extends JPanel {
         g2.fill(food.getFood3());
         g2.fill(food.getFood4());
 
+        createSnake();
+
+        g2.drawImage(snakeHead,headX, headY,20,20,this);
+
+
+    }
+
+    public void createSnake(){
+
+        snakeHead = snake.getSnakeHead();
     }
 
 
