@@ -8,7 +8,6 @@ import java.io.IOException;
 
 import javax.imageio.ImageIO;
 
-import com.Datos1.Proyecto1.FlappyBird.MainFlappyBird;
 
 public class Player extends Component {
 
@@ -34,8 +33,21 @@ public class Player extends Component {
 		spriteWidth = 20;
 		spriteHeight = 20;
 		pointer=GameBoard.mainLinkedList.start;
-		pointer.setHasPointer(true);
-		
+	}
+	
+	/**
+	 * Getter of the player's pointer to the node where it's located in the list
+	 * @return pointer : Node
+	 */
+	public Node getPointer() {
+		return this.pointer;
+	}
+	
+	/**
+	 * Setter of the player's pointer to the node where it's located in the list
+	 */
+	public void setPointer (Node pointer) {
+		this.pointer= pointer;
 	}
 
 	/**

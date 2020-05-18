@@ -34,8 +34,8 @@ public class CircularLinkedList {
 	 * 
 	 * @param newBox : Box
 	 */
-	public void insertEnd(Box newBox, int id) {
-		Node newNode = Node.builder().withBox(newBox).withId(id).build();
+	public void insertEnd(Box newBox, int i,int j) {
+		Node newNode = Node.builder().withBox(newBox).withIndex(i,j).build();
 		if (isEmpty()) {
 			start = newNode;
 			end = newNode;
@@ -54,8 +54,8 @@ public class CircularLinkedList {
 	 * 
 	 * @param newBox : Box
 	 */
-	public void insertHead(Box newBox, int id) {
-		Node newNode = Node.builder().withBox(newBox).withId(id).build();
+	public void insertHead(Box newBox, int i, int j) {
+		Node newNode = Node.builder().withBox(newBox).withIndex(i,j).build();
 		if (isEmpty()) {
 			start = newNode;
 			end = newNode;
@@ -75,15 +75,15 @@ public class CircularLinkedList {
 	 * @param index  : int
 	 * @param newBox : Box
 	 */
-	public void insert(int index, Box newBox, int id) {
-		Node newNode = Node.builder().withBox(newBox).withId(id).build();
+	public void insert(int index, Box newBox, int i , int j) {
+		Node newNode = Node.builder().withBox(newBox).withIndex(i,j).build();
 		if (index >= 0 && index <= size) {
 			Node pointer = start;
 			int cont = 0;
 			if (index == 0) {
-				insertHead(newBox, id);
+				insertHead(newBox, i,j);
 			} else if (index == size) {
-				insertEnd(newBox, id);
+				insertEnd(newBox, i, j);
 			} else {
 				while (cont < index - 1) { // Runs through the list until the component before the index is reached
 					cont++;
@@ -133,7 +133,11 @@ public class CircularLinkedList {
 	public Node getNode(int i) {
 		if (i >= 0 && i < size) {
 			Node pointer = start;
-			int cont = 0;
+			if (i==0) {
+				return pointer;
+			}
+			pointer=pointer.getNext();
+			int cont=1;
 			while (cont < i && pointer != end) {
 				pointer = pointer.getNext();
 				cont++;
@@ -142,6 +146,20 @@ public class CircularLinkedList {
 		}
 		return null;
 
+	}
+	
+	/**
+	 * Public method. Prints the indexes i , j of all the nodes in the circular linked list.
+	 */
+	public void printIndexes () {
+		Node pointer = start;
+		System.out.println(pointer.getIndex().x+" "+pointer.getIndex().y);
+		pointer = pointer.getNext();
+		while (pointer != end.getNext()) {
+			System.out.println(pointer.getIndex().x+" "+pointer.getIndex().y);
+			pointer = pointer.getNext();
+		}
+		
 	}
 
 }

@@ -37,14 +37,11 @@ public class CircularDoublyLinkedList {
 	 * list.
 	 * 
 	 * @param newBox : Box
-	 * @param id     : id
+	 * @param i      : int
 	 */
-	public void insertHead(Box newBox, int id) {
-		//Node newNode = new Node(newBox, null, null, id);
-		Node newNode = Node.builder()
-				.withBox(newBox)
-				.withId(id)
-				.build();
+	public void insertHead(Box newBox, int i, int j) {
+		// Node newNode = new Node(newBox, null, null, id);
+		Node newNode = Node.builder().withBox(newBox).withIndex(i, j).build();
 		if (start == null) {
 			newNode.setNext(newNode);
 			newNode.setPrev(newNode);
@@ -67,13 +64,10 @@ public class CircularDoublyLinkedList {
 	 * @param newBox : Box
 	 * @param id     : int
 	 */
-	public void insertEnd(Box newBox, int id) {
-		//Node newNode = new Node(newBox, null, null, id);
-		Node newNode = Node.builder()
-				.withBox(newBox)
-				.withId(id)
-				.build();
-		
+	public void insertEnd(Box newBox, int i, int j) {
+		// Node newNode = new Node(newBox, null, null, id);
+		Node newNode = Node.builder().withBox(newBox).withIndex(i, j).build();
+
 		if (isEmpty()) {
 			newNode.setNext(newNode);
 			newNode.setPrev(newNode);
@@ -96,21 +90,18 @@ public class CircularDoublyLinkedList {
 	 * @param newBox : Box
 	 * @param id     : int
 	 */
-	public void insert(Box box, int index, int id) {
+	public void insert(Box box, int index, int i, int j) {
 		// Node newNode = new Node(box,null,null,id);
-		Node newNode = Node.builder()
-				.withBox(box)
-				.withId(id)
-				.build();
-		
+		Node newNode = Node.builder().withBox(box).withIndex(i, j).build();
+
 		if (index == 0) {
-			insertHead(box, id);
+			insertHead(box, i, j);
 			return;
 		}
 
 		Node pointer = start;
-		for (int i = 1; i < size; i++) {
-			if (i == index) {
+		for (int i1 = 1; i1 < size; i1++) {
+			if (i1 == index) {
 				Node temp = pointer.getPrev();
 				pointer.setPrev(newNode);
 				newNode.setNext(pointer);
@@ -122,6 +113,30 @@ public class CircularDoublyLinkedList {
 		}
 		size++;
 	}
+	
+	/**
+	 * Public method. Returns the component list requested by its index.
+	 * 
+	 * @param i : int, index of the element of the list thats returned
+	 * @return pointer : Node
+	 */
+	public Node getNode(int i) {
+		if (i >= 0 && i < size) {
+			Node pointer = start;
+			if (i==0) {
+				return pointer;
+			}
+			pointer=pointer.getNext();
+			int cont=1;
+			while (cont < i && pointer != end.getNext()) {
+				pointer = pointer.getNext();
+				cont++;
+			}
+			return pointer;
+		}
+		return null;
+
+	}
 
 	/**
 	 * Public method. Returns the component of the list's square requested by its
@@ -131,12 +146,19 @@ public class CircularDoublyLinkedList {
 	 * @return Square type object
 	 */
 	public Square get(int i) {
-		Node pointer = start;
-		int cont = 0;
-		while (cont < i && pointer != end) {
-			pointer = pointer.getNext();
-			cont++;
-		}
-		return pointer.box.getBox();
+		if (i >= 0 && i < size) {
+			Node pointer = start;
+			int cont = 0;
+			while (cont < i && pointer != end) {
+				pointer = pointer.getNext();
+				cont++;
+			}
+			if (pointer.getHasPointer()) {
+				return pointer.box.getEdgedBox();
+			}
+			else{
+				return pointer.box.getBox();
+			}
+		}else {return null;}
 	}
 }

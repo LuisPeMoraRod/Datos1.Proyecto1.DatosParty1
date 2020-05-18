@@ -5,7 +5,6 @@ public class DoublyLinkedList {
 	protected Node end;
 	public int size;
 
-
 	/**
 	 * Constructor method
 	 */
@@ -40,13 +39,10 @@ public class DoublyLinkedList {
 	 * @param newBox : Box
 	 * @param id     : id
 	 */
-	public void insertHead(Box newBox, int id) {
-		//Node newNode = new Node(newBox, null, null, id);
-		Node newNode = Node.builder()
-				.withBox(newBox)
-				.withId(id)
-				.build();
-		
+	public void insertHead(Box newBox, int i, int j) {
+		// Node newNode = new Node(newBox, null, null, id);
+		Node newNode = Node.builder().withBox(newBox).withIndex(i, j).build();
+
 		if (isEmpty()) {
 			start = newNode;
 			end = newNode;
@@ -64,11 +60,8 @@ public class DoublyLinkedList {
 	 * @param newBox : Box
 	 * @param id     : int
 	 */
-	public void insertEnd(Box newBox, int id) {
-		Node newNode = Node.builder()
-				.withBox(newBox)
-				.withId(id)
-				.build();
+	public void insertEnd(Box newBox, int i, int j) {
+		Node newNode = Node.builder().withBox(newBox).withIndex(i, j).build();
 		if (isEmpty()) {
 			start = newNode;
 			end = newNode;
@@ -82,22 +75,20 @@ public class DoublyLinkedList {
 
 	/**
 	 * Public method. Inserts a node in a certain index
-	 * @param index : int
+	 * 
+	 * @param index  : int
 	 * @param newBox : Box
-	 * @param id : int
+	 * @param id     : int
 	 */
-	public void insert(Box newBox, int index, int id) {
-		Node newNode = Node.builder()
-				.withBox(newBox)
-				.withId(id)
-				.build();
+	public void insert(Box newBox, int index, int i, int j) {
+		Node newNode = Node.builder().withBox(newBox).withIndex(i, j).build();
 		if (index == 0) {
-			insertHead(newBox, id);
+			insertHead(newBox, i, j);
 			return;
 		}
 		Node pointer = start;
-		for (int i = 1; i < size; i++) {
-			if (i == index) {
+		for (int i1 = 1; i1 < size; i1++) {
+			if (i1 == index) {
 				Node aux = pointer.getPrev();
 				aux.setNext(newNode);
 				newNode.setPrev(aux);
@@ -111,31 +102,65 @@ public class DoublyLinkedList {
 	}
 	
 	/**
-	 * Public method. Returns the component of the list's square requested by its index.
+	 * Public method. Returns the component list requested by its index.
+	 * 
+	 * @param i : int, index of the element of the list thats returned
+	 * @return pointer : Node
+	 */
+	public Node getNode(int i) {
+		if (i >= 0 && i < size) {
+			Node pointer = start;
+			if (i==0) {
+				return pointer;
+			}
+			pointer=pointer.getNext();
+			int cont=1;
+			while (cont < i && pointer != end.getNext()) {
+				pointer = pointer.getNext();
+				cont++;
+			}
+			return pointer;
+		}
+		return null;
+
+	}
+
+	/**
+	 * Public method. Returns the component of the list's square requested by its
+	 * index.
 	 * 
 	 * @param i : int, index of the element of the list that is returned.
 	 * @return Square type object
 	 */
-	public Square get (int i) {
-		Node pointer=start;
-		int cont=0;
-		while (cont<i && pointer != end) {
-			pointer=pointer.getNext();
-			cont++;
+	public Square get(int i) {
+		if (i >= 0 && i < size) {
+			Node pointer = start;
+			int cont = 0;
+			while (cont < i && pointer != null) {
+				pointer = pointer.getNext();
+				cont++;
+			}
+			if (pointer.getHasPointer()) {
+				return pointer.box.getEdgedBox();
+			} else {
+				return pointer.box.getBox();
+			}
+		} else {
+			return null;
 		}
-		return pointer.box.getBox();
 	}
-	
+
 	public void printList() {
-		Node pointer=start;
-		for (int i = 0 ; i<size; i++) {
+		Node pointer = start;
+		for (int i = 0; i < size; i++) {
 			try {
-				System.out.println(pointer.getPrev().getId()+"<---Nodo: "+pointer.getId()+"--->"+pointer.getNext().getId());
+				System.out.println(pointer.getPrev().getId() + "<---Nodo: " + pointer.getId() + "--->"
+						+ pointer.getNext().getId());
 			} catch (Exception e) {
 				System.out.println(e);
 			}
-			
-			pointer=pointer.getNext();
+
+			pointer = pointer.getNext();
 		}
 	}
 

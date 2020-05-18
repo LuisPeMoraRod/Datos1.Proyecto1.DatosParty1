@@ -3,19 +3,21 @@ package com.Datos1.Proyecto1.GameBoard;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.Point;
 import java.awt.image.BufferedImage;
 
 import javax.swing.GroupLayout;
 import javax.swing.JPanel;
-
+import javax.swing.SwingUtilities;
 
 public class GameBoard extends JPanel {
 	/**
 	 * Public class. Represents the structure of the game's GUI
+	 * 
 	 * @author Luis Pedro Morales Rodriguez
 	 * @version 25/3/2020
 	 */
-	
+
 	private static final long serialVersionUID = 1L;
 	static CircularLinkedList mainLinkedList = new CircularLinkedList();
 	static LinkedList phaseA = new LinkedList();
@@ -25,39 +27,96 @@ public class GameBoard extends JPanel {
 	private Player[] players = new Player[4];
 
 	public GameBoard() {
-		
+
 		setBackground(Color.white);
 		createLinkedCircularList();
 		createPhaseA();
 		createPhaseB();
 		createPhaseC();
 		createPhaseD();
-		players[0]= new Player("Pedro",1);
-		
+		players[0] = new Player("Pedro", 1);
+
 	}
 
 	/**
-	 * Creates the linked circular list which is the main path of the game.
+	 * Creates the linked circular list which is the main path of the game. Uses i &
+	 * j as indexes of an imaginary matrix where all the components are located in
+	 * the matrix
 	 */
 	public void createLinkedCircularList() {
+		int i = 0, j = 0;
 		Box first = new BlueBox();
-		mainLinkedList.insertHead(first, 0);
-		for (int i = 1; i < 44; i++) {
+		mainLinkedList.insertHead(first, i, j);
+		j++;
+		
+		for (int j1 = j; j1 < 10; j1++) {
 			Box box = new BlueBox();
-			mainLinkedList.insertEnd(box, i);
-
+			mainLinkedList.insertEnd(box, i, j1);
+			j = j1;
 		}
+		i++;
+		Box box1 = new BlueBox();
+		mainLinkedList.insertEnd(box1, i, j);
+		i++;
+
+		for (int j1 = j; j1 > 3; j1--) {
+			Box box = new BlueBox();
+			mainLinkedList.insertEnd(box, i, j1);
+			j = j1;
+		}
+
+		i++;
+		Box box2 = new BlueBox();
+		mainLinkedList.insertEnd(box2, i, j);
+		i++;
+		for (int j1 = j; j1 < 10; j1++) {
+			Box box = new BlueBox();
+			mainLinkedList.insertEnd(box, i, j1);
+			j = j1;
+		}
+		i++;
+		for (int i1 = i; i1 < 9; i1++) {
+			Box box = new BlueBox();
+			mainLinkedList.insertEnd(box, i1, j);
+			i = i1;
+		}
+		j--;
+		for (int j1 = j; j1 >= 0; j1--) {
+			Box box = new BlueBox();
+			mainLinkedList.insertEnd(box, i, j1);
+			j = j1;
+		}
+		i--;
+		for (int i1 = i; i1 > 0; i1--) {
+			Box box = new BlueBox();
+			mainLinkedList.insertEnd(box, i1, j);
+			i = i1;
+		}
+		mainLinkedList.printIndexes();
 	}
 
 	/**
 	 * Creates phase A: a simple linked list
 	 */
 	public void createPhaseA() {
+		int i = 2;
+		int j = 10;
 		Box head = new GreenBox();
-		phaseA.insertHead(head, 0);
-		for (int i = 1; i <= 6; i++) {
+		phaseA.insertHead(head, i, j);
+		j++;
+		Box box1 = new GreenBox();
+		phaseA.insertEnd(box1, i, j);
+		j++;
+		for (int i1 = i; i1 <= 3; i1++) {
 			Box box = new GreenBox();
-			phaseA.insertEnd(box, i);
+			phaseA.insertEnd(box, i1, j);
+			i = i1;
+		}
+		i++;
+		for (int j1 = j; j1 > 9; j1--) {
+			Box box = new GreenBox();
+			phaseA.insertEnd(box, i, j1);
+			j = j1;
 		}
 	}
 
@@ -65,11 +124,18 @@ public class GameBoard extends JPanel {
 	 * Creates phase B: a simple linked list
 	 */
 	public void createPhaseB() {
+		int i = 7;
+		int j = 6;
 		Box head = new GreenBox();
-		phaseB.insertHead(head, 0);
-		for (int i = 1; i <= 6; i++) {
-			Box box = new GreenBox();
-			phaseB.insertEnd(box, i);
+		phaseB.insertHead(head, i, j);
+		i--;
+		Box box = new GreenBox();
+		phaseB.insertEnd(box, i, j);
+		j--;
+		for (int j1 = j; j1 > 0; j1--) {
+			Box box1 = new GreenBox();
+			phaseB.insertEnd(box1, i, j1);
+			j = j1;
 		}
 	}
 
@@ -77,40 +143,60 @@ public class GameBoard extends JPanel {
 	 * Creates phase C: a doubly linked list
 	 */
 	public void createPhaseC() {
+		int i=4;int j=1;
 		Box head = new YellowBox();
-		phaseC.insertHead(head, 0);
-		for (int i = 1; i <= 2; i++) {
+		phaseC.insertHead(head, i, j);
+		j++;
+		while(j<5) {
 			Box box = new YellowBox();
-			phaseC.insertEnd(box, i);
+			phaseC.insertEnd(box, i, j);
+			j++;
 		}
-		phaseC.printList();
+		// phaseC.printList();
 	}
 
 	/**
 	 * Creates phase D: a doubly circular linked list
 	 */
 	public void createPhaseD() {
+		int i=6; int j = 11;
 		Box first = new RedBox();
-		phaseD.insertHead(first, 0);
-		for (int i = 1; i <= 13; i++) {
+		phaseD.insertHead(first, i, j);
+		j++;
+		for (int j1 = j; j1 <17; j1++) {
 			Box newBox = new RedBox();
-			phaseD.insertEnd(newBox, i);
+			phaseD.insertEnd(newBox, i, j1);
+			j=j1;
 		}
+		i++;
+		Box box = new RedBox();
+		phaseD.insertEnd(box, i, j);
+		i++;
+		for (int j1 = j; j1 >10; j1--) {
+			Box newBox = new RedBox();
+			phaseD.insertEnd(newBox, i, j1);
+			j=j1;
+		}
+		i--;
+		Box box1 = new RedBox();
+		phaseD.insertEnd(box1, i, j);
 	}
 
 	@Override
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
+
+		Graphics2D g2d = (Graphics2D) g.create();
+		setPlayers(g2d);
+		g2d.dispose();
+
 		try {
 			setBoxes();
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		Graphics2D g2d = (Graphics2D) g.create();
-		g2d.drawImage(players[0].getSprite(),100,70,this);
-		
-		g2d.dispose();
+
 	}
 
 	/**
@@ -130,8 +216,8 @@ public class GameBoard extends JPanel {
 						.addComponent(mainLinkedList.get(41)).addComponent(mainLinkedList.get(40))
 						.addComponent(mainLinkedList.get(39)).addComponent(mainLinkedList.get(38))
 						.addComponent(mainLinkedList.get(37)).addComponent(mainLinkedList.get(36)))
-				.addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING).addComponent(mainLinkedList.get(1)).addComponent(phaseC.get(0))
-						.addComponent(phaseB.get(6)).addComponent(mainLinkedList.get(35)))
+				.addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING).addComponent(mainLinkedList.get(1))
+						.addComponent(phaseC.get(0)).addComponent(phaseB.get(6)).addComponent(mainLinkedList.get(35)))
 				.addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING).addComponent(mainLinkedList.get(2))
 						.addComponent(phaseC.get(1)).addComponent(phaseB.get(5)).addComponent(mainLinkedList.get(34)))
 				.addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING).addComponent(mainLinkedList.get(3))
@@ -219,6 +305,29 @@ public class GameBoard extends JPanel {
 						.addComponent(phaseD.get(7)))
 
 		);
+
+		/**
+		 * GroupLayout spritesLayout = new GroupLayout(this); setLayout(spritesLayout);
+		 * spritesLayout.setAutoCreateGaps(true);
+		 * spritesLayout.setAutoCreateContainerGaps(true);
+		 * 
+		 * spritesLayout.setHorizontalGroup(spritesLayout.createSequentialGroup()
+		 * .addGroup(spritesLayout.createParallelGroup(GroupLayout.Alignment.LEADING).addComponent(players[0])));
+		 * spritesLayout.setVerticalGroup(spritesLayout.createSequentialGroup()
+		 * .addGroup(spritesLayout.createParallelGroup(GroupLayout.Alignment.LEADING).addComponent(players[0])));
+		 */
+	}
+
+	@SuppressWarnings("deprecation")
+	public void setPlayers(Graphics2D g2d) {
+		Node pointer = players[0].getPointer();
+		pointer=mainLinkedList.getNode(43);
+		pointer.setHasPointer(true);
+		Point pt = new Point(pointer.getIndex());
+		System.out.println(pt.x+" "+pt.y);
+		// int x1 = players[0].getPointer().box.getBox().getX()+30;
+		// int y1 = players[0].getPointer().box.getBox().getY()+30;
+		g2d.drawImage(players[0].getSprite(), (pt.y * 95) + 30, (pt.x * 105) + 30, this);
 	}
 
 }

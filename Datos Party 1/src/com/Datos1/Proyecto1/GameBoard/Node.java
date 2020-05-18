@@ -1,5 +1,7 @@
 package com.Datos1.Proyecto1.GameBoard;
 
+import java.awt.Point;
+
 public class Node {
 	/**
 	 * Public class that implements a Builder pattern design to handle different
@@ -10,6 +12,8 @@ public class Node {
 	protected Box box;
 	private Node next;
 	private Node prev;
+	private int i; //indexes of the element in the "matrix" generated in the canvas with the group layout
+	private int j;
 	private int id;
 	private boolean hasPointer;
 
@@ -24,6 +28,8 @@ public class Node {
 		this.box = builder.box;
 		this.next = builder.next;
 		this.prev = builder.prev;
+		this.i = builder.i;
+		this.j=builder.j;
 		this.id = builder.id;
 		this.hasPointer= builder.hasPointer;
 	}
@@ -67,10 +73,15 @@ public class Node {
 	}
 	
 	/**
-	 * ID setter
+	 * ID getter
 	 */
 	public int getId() {
 		return this.id;
+	}
+	
+	public Point getIndex() {
+		Point index = new Point(i,j);
+		return index;
 	}
 	
 	/**
@@ -102,6 +113,8 @@ public class Node {
 		
 		private Box box;
 		private Node next, prev;
+		private int i;
+		private int j;
 		private int id;
 		private boolean hasPointer;
 		
@@ -125,8 +138,13 @@ public class Node {
 			this.prev=prev;
 			return this;
 		}
+		public Builder withIndex(int i, int j) {
+			this.i=i;
+			this.j=j;
+			return this;
+		}
 		public Builder withId(int id) {
-			this.id=id;
+			this.id = id;
 			return this;
 		}
 	}	
