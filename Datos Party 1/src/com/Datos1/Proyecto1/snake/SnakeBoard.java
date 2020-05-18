@@ -29,6 +29,8 @@ public class SnakeBoard extends JPanel {
 
     Random random = new Random();
 
+    public Rectangle2D collector;
+
     public SnakeBoard() throws IOException {
 
         food = new SnakeFood();
@@ -66,10 +68,15 @@ public class SnakeBoard extends JPanel {
         createSnake();
         updateSnake();
         moveSnake();
+        detectFoodCollecting();
 
-        g2.drawImage(snakeHead,snake.getHeadX(), snake.getHeadY(),20,20,this);
+        collector = snake.headRect(snake.getHeadX(), snake.getHeadY());
+
+
         g2.setColor(new Color(124, 60, 171));
         g2.fill(snake.fistTail(tailX, tailY));
+        g2.fill(collector);
+        g2.drawImage(snakeHead,snake.getHeadX(), snake.getHeadY(),20,20,this);
 
 
     }
@@ -77,6 +84,7 @@ public class SnakeBoard extends JPanel {
     public void createSnake(){
 
         snakeHead = snake.getSnakeHead();
+
     }
 
     public void updateSnake(){
@@ -192,6 +200,23 @@ public class SnakeBoard extends JPanel {
         }
 
         return food.getFood4(posX4, posY4);
+    }
+
+    public void detectFoodCollecting(){
+
+        if (collector.intersects(food1)){
+            creatingFood1 = true;
+        }
+
+        if (collector.intersects(food2)){
+            creatingFood2 = true;
+        }
+        if (collector.intersects(food3)){
+            creatingFood3 = true;
+        }
+        if (collector.intersects(food4)){
+            creatingFood4 = true;
+        }
     }
 
 
