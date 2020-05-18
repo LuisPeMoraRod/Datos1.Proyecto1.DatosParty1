@@ -3,9 +3,11 @@ package com.Datos1.Proyecto1.snake;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
+import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.Random;
 
 public class SnakeBoard extends JPanel {
 
@@ -19,10 +21,13 @@ public class SnakeBoard extends JPanel {
 
     private boolean creatingFood1,  creatingFood2, creatingFood3, creatingFood4;
 
-    boolean beginGame;
-
+    public Rectangle2D food1, food2, food3, food4;
 
     public BufferedImage snakeHead;
+
+    public int posX1, posY1, posX2, posY2, posX3, posY3, posX4, posY4;
+
+    Random random = new Random();
 
     public SnakeBoard() throws IOException {
 
@@ -47,11 +52,16 @@ public class SnakeBoard extends JPanel {
 
         g2.drawImage(imgBackground,0,0,1000,600,this);
 
+        food1 = setCreatingFood1();
+        food2 = setCreatingFood2();
+        food3 = setCreatingFood3();
+        food4 = setCreatingFood4();
+
         g2.setColor(new Color(205, 220, 57));
-        g2.fill(food.getFood1());
-        g2.fill(food.getFood2());
-        g2.fill(food.getFood3());
-        g2.fill(food.getFood4());
+        g2.fill(food1);
+        g2.fill(food2);
+        g2.fill(food3);
+        g2.fill(food4);
 
         createSnake();
         updateSnake();
@@ -141,6 +151,48 @@ public class SnakeBoard extends JPanel {
         }
     }
 
+    public Rectangle2D setCreatingFood1(){
+        if(creatingFood1){
+            posX1 = random.nextInt(980);
+            posY1 = random.nextInt(580);
+            creatingFood1 = false;
+        }
+
+        return food.getFood1(posX1,posY1);
+    }
+
+    public Rectangle2D setCreatingFood2(){
+        if(creatingFood2){
+            posX2 = random.nextInt(980);
+            posY2 = random.nextInt(580);
+            creatingFood2 = false;
+        }
+
+        return food.getFood2(posX2, posY2);
+
+    }
+
+    public Rectangle2D setCreatingFood3(){
+        if(creatingFood3){
+            posX3 = random.nextInt(980);
+            posY3 = random.nextInt(580);
+            creatingFood3 = false;
+
+        }
+
+        return food.getFood3(posX3,posY3);
+
+    }
+
+    public Rectangle2D setCreatingFood4(){
+        if(creatingFood4){
+            posX4 = random.nextInt(980);
+            posY4 = random.nextInt(580);
+            creatingFood4 = false;
+        }
+
+        return food.getFood4(posX4, posY4);
+    }
 
 
 }
