@@ -7,6 +7,7 @@ import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Random;
 
 public class SnakeBoard extends JPanel {
@@ -17,7 +18,7 @@ public class SnakeBoard extends JPanel {
     private Snake snake;
 
 
-    public int tailX, tailY, lastY, lastX;
+    public int lastY, lastX;
 
 
     public BufferedImage snakeHead;
@@ -26,24 +27,30 @@ public class SnakeBoard extends JPanel {
 
     public Food f1;
 
+    public int score;
+
     Random random = new Random();
 
     Rectangle2D food1;
 
     Rectangle2D collisionDetector;
 
+    ArrayList<SnakeTail> tail;
+
+    int selector;
 
     public SnakeBoard() throws IOException {
 
         snake = new Snake(80,80);
 
-        tailX = snake.getHeadX()-25;
-        tailY = snake.getHeadY();
-
         fx1 = random.nextInt(980);
         fy1 = random.nextInt(580);
 
         f1 = new Food();
+
+        score = 0;
+
+        tail = new ArrayList<>();
 
     }
 
@@ -62,12 +69,17 @@ public class SnakeBoard extends JPanel {
 
         createSnake();
         updateSnake();
-        moveSnakeTail();
         detectFoodCollection();
 
+
         g2.setColor(new Color(124, 60, 171));
-        g2.fill(snake.firstTail(tailX, tailY));
         g2.fill(collisionDetector);
+        for (selector=0; selector<score; selector++){
+            lastX = tail.get(selector).getPosX();
+            lastY = tail.get(selector).getPosY();
+            g2.fill(tail.get(selector).getTail(lastX, lastY));
+        }
+
         g2.drawImage(snakeHead,snake.getHeadX(), snake.getHeadY(),20,20,this);
 
     }
@@ -81,80 +93,26 @@ public class SnakeBoard extends JPanel {
     public void updateSnake(){
 
         snake.moveSnake();
+        for (selector=0; selector<score; selector++){
+            tail.get(selector).moveSnakeTail(lastX, lastY);
+        }
 
     }
-
-    public void moveSnakeTail(){
-
-        if(SnakeEvent.up){
-
-            lastX = snake.getHeadX();
-
-            if(tailX<lastX){
-                tailX++;
-            }
-            else if(tailX>lastX){
-                tailX--;
-            }
-            else {
-                tailY--;
-            }
-
-        }
-
-        else if(SnakeEvent.down){
-            lastX = snake.getHeadX();
-
-            if(tailX<lastX){
-                tailX++;
-            }
-            else if(tailX>lastX){
-                tailX--;
-            }
-            else {
-                tailY++;
-            }
-
-        }
-
-        else if(SnakeEvent.right){
-            lastX = snake.getHeadX();
-            lastY = snake.getHeadY();
-
-            if(tailY<lastY){
-                tailY++;
-            }
-            else if(tailY>lastY){
-                tailY--;
-            }
-            else {
-                tailX++;
-            }
-
-        }
-
-        else if(SnakeEvent.left){
-            lastX = snake.getHeadX();
-            lastY = snake.getHeadY();
-
-            if(tailY<lastY){
-                tailY++;
-            }
-            else if(tailY>lastY){
-                tailY--;
-            }
-            else {
-                tailX--;
-            }
-
-        }
-    }
-
 
     public void detectFoodCollection(){
         if(collisionDetector.intersects(food1)){
             fx1 = f1.setCoordX();
             fy1 = f1.setCoordY();
+
+            if(score == 0){
+                tail.add(new SnakeTail(snake.getHeadX() - 25, snake.getHeadY()));
+            }
+            else{
+                tail.add((new SnakeTail(tail.get(score-1).posX-25, tail.get(score-1).posY)));
+            }
+            score++;
+
         }
     }
+
 }
