@@ -6,6 +6,7 @@ package com.Datos1.Proyecto1.snake;
         import java.awt.image.BufferedImage;
         import java.io.File;
         import java.io.IOException;
+        import java.util.Random;
 
 public class SnakeBoard extends JPanel {
 
@@ -14,17 +15,27 @@ public class SnakeBoard extends JPanel {
 
     private Snake snake;
 
+    private SnakeFood food1;
+
     public int tailX, tailY, lastY, lastX;
 
+    public int fx1, fy1;
+
     public BufferedImage snakeHead;
+
+    Random random;
+
+    boolean creatingFood1 = true;
 
     public SnakeBoard() throws IOException {
 
 
         snake = new Snake(80,80);
+        food1 = new SnakeFood();
 
         tailX = snake.getHeadX()-25;
         tailY = snake.getHeadY();
+
 
     }
 
@@ -33,13 +44,16 @@ public class SnakeBoard extends JPanel {
         super.paintComponent(g);
         Graphics2D g2 = (Graphics2D)g;
 
+
         g2.drawImage(imgBackground,0,0,1000,600,this);
 
         g2.setColor(new Color(205, 220, 57));
+        g2.fill(food1.setFood(fx1, fy1));
 
         createSnake();
         updateSnake();
-        moveSnake();
+        updateFood();
+        moveSnakeTail();
 
         g2.drawImage(snakeHead,snake.getHeadX(), snake.getHeadY(),20,20,this);
         g2.setColor(new Color(124, 60, 171));
@@ -59,7 +73,7 @@ public class SnakeBoard extends JPanel {
 
     }
 
-    public void moveSnake(){
+    public void moveSnakeTail(){
 
         if(SnakeEvent.up){
 
@@ -125,7 +139,11 @@ public class SnakeBoard extends JPanel {
         }
     }
 
-
-
-
+    public void updateFood(){
+        if (creatingFood1){
+            fx1 = random.nextInt(980);
+            fy1 = random.nextInt(580);
+            creatingFood1 = false;
+        }
+    }
 }
