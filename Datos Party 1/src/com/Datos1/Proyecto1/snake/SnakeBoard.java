@@ -32,7 +32,6 @@ public class SnakeBoard extends JPanel {
 
     Rectangle2D collisionDetector;
 
-    boolean creatingFood1 = true;
 
     public SnakeBoard() throws IOException {
 
@@ -44,9 +43,7 @@ public class SnakeBoard extends JPanel {
         fx1 = random.nextInt(980);
         fy1 = random.nextInt(580);
 
-        f1 = new Food(fx1,fy1);
-
-        food1 = f1.getFood();
+        f1 = new Food();
 
     }
 
@@ -59,15 +56,17 @@ public class SnakeBoard extends JPanel {
         g2.drawImage(imgBackground,0,0,1000,600,this);
 
         g2.setColor(new Color(205, 220, 57));
+
+        food1 = f1.getFood(fx1,fy1);
         g2.fill(food1);
 
         createSnake();
         updateSnake();
         moveSnakeTail();
-        updateFood();
+        detectFoodCollection();
 
         g2.setColor(new Color(124, 60, 171));
-        g2.fill(snake.fistTail(tailX, tailY));
+        g2.fill(snake.firstTail(tailX, tailY));
         g2.fill(collisionDetector);
         g2.drawImage(snakeHead,snake.getHeadX(), snake.getHeadY(),20,20,this);
 
@@ -151,9 +150,11 @@ public class SnakeBoard extends JPanel {
         }
     }
 
-    public void updateFood() {
 
-        f1.setCoords(creatingFood1);
-
+    public void detectFoodCollection(){
+        if(collisionDetector.intersects(food1)){
+            fx1 = f1.setCoordX();
+            fy1 = f1.setCoordY();
+        }
     }
 }

@@ -63,7 +63,7 @@ public class Snake {
 
     }
 
-    public Rectangle2D fistTail(int tailX, int tailY){
+    public Rectangle2D firstTail(int tailX, int tailY){
 
         return new Rectangle2D.Double(tailX, tailY, width, height);
     }
