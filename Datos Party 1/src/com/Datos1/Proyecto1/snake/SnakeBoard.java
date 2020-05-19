@@ -1,12 +1,13 @@
 package com.Datos1.Proyecto1.snake;
 
-        import javax.imageio.ImageIO;
-        import javax.swing.*;
-        import java.awt.*;
-        import java.awt.image.BufferedImage;
-        import java.io.File;
-        import java.io.IOException;
-        import java.util.Random;
+import javax.imageio.ImageIO;
+import javax.swing.*;
+import java.awt.*;
+import java.awt.geom.Rectangle2D;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
+import java.util.Random;
 
 public class SnakeBoard extends JPanel {
 
@@ -15,27 +16,37 @@ public class SnakeBoard extends JPanel {
 
     private Snake snake;
 
-    private SnakeFood food1;
 
     public int tailX, tailY, lastY, lastX;
 
-    public int fx1, fy1;
 
     public BufferedImage snakeHead;
 
-    Random random;
+    public int fx1, fy1;
+
+    public Food f1;
+
+    Random random = new Random();
+
+    Rectangle2D food1;
+
+    Rectangle2D collisionDetector;
 
     boolean creatingFood1 = true;
 
     public SnakeBoard() throws IOException {
 
-
         snake = new Snake(80,80);
-        food1 = new SnakeFood();
 
         tailX = snake.getHeadX()-25;
         tailY = snake.getHeadY();
 
+        fx1 = random.nextInt(980);
+        fy1 = random.nextInt(580);
+
+        f1 = new Food(fx1,fy1);
+
+        food1 = f1.getFood();
 
     }
 
@@ -48,23 +59,24 @@ public class SnakeBoard extends JPanel {
         g2.drawImage(imgBackground,0,0,1000,600,this);
 
         g2.setColor(new Color(205, 220, 57));
-        g2.fill(food1.setFood(fx1, fy1));
+        g2.fill(food1);
 
         createSnake();
         updateSnake();
-        updateFood();
         moveSnakeTail();
+        updateFood();
 
-        g2.drawImage(snakeHead,snake.getHeadX(), snake.getHeadY(),20,20,this);
         g2.setColor(new Color(124, 60, 171));
         g2.fill(snake.fistTail(tailX, tailY));
-
+        g2.fill(collisionDetector);
+        g2.drawImage(snakeHead,snake.getHeadX(), snake.getHeadY(),20,20,this);
 
     }
 
     public void createSnake(){
 
         snakeHead = snake.getSnakeHead();
+        collisionDetector = snake.setCollisionDetector(snake.getHeadX(),snake.getHeadY());
     }
 
     public void updateSnake(){
@@ -139,11 +151,9 @@ public class SnakeBoard extends JPanel {
         }
     }
 
-    public void updateFood(){
-        if (creatingFood1){
-            fx1 = random.nextInt(980);
-            fy1 = random.nextInt(580);
-            creatingFood1 = false;
-        }
+    public void updateFood() {
+
+        f1.setCoords(creatingFood1);
+
     }
 }

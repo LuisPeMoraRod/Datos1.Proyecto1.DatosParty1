@@ -68,7 +68,7 @@ public class Snake {
         return new Rectangle2D.Double(tailX, tailY, width, height);
     }
 
-    public Rectangle2D headRect(int x, int y){
+    public Rectangle2D setCollisionDetector(int x, int y){
 
         return new Rectangle2D.Double(x, y, width, height);
     }
