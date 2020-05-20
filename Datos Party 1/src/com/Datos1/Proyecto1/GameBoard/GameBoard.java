@@ -1,8 +1,10 @@
 package com.Datos1.Proyecto1.GameBoard;
 
+import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.LayoutManager;
 import java.awt.Point;
 import java.awt.image.BufferedImage;
 
@@ -25,16 +27,20 @@ public class GameBoard extends JPanel {
 	static DoublyLinkedList phaseC = new DoublyLinkedList();
 	static CircularDoublyLinkedList phaseD = new CircularDoublyLinkedList();
 	private Player[] players = new Player[4];
-
+	private GameThread thread;
+	private Dice dice;
 	public GameBoard() {
-
+		//thread= new GameThread(this);
+		//thread.start();
 		setBackground(Color.white);
 		createLinkedCircularList();
 		createPhaseA();
 		createPhaseB();
 		createPhaseC();
 		createPhaseD();
+		dice = new Dice();
 		players[0] = new Player("Pedro", 1);
+		setComponents(this);
 
 	}
 
@@ -199,12 +205,18 @@ public class GameBoard extends JPanel {
 
 	}
 
+	public void setComponents(JPanel canvas) {
+		this.setLayout( new BorderLayout() );
+		canvas.add(dice,"East");
+		
+	}
 	/**
 	 * Public method. Locates all the components of the JPanel in the canvas.
 	 * 
 	 * @throws Exception
 	 */
 	public void setBoxes() throws Exception {
+		
 		GroupLayout layout = new GroupLayout(this);
 		setLayout(layout);
 		layout.setAutoCreateGaps(true);
@@ -305,17 +317,7 @@ public class GameBoard extends JPanel {
 						.addComponent(phaseD.get(7)))
 
 		);
-
-		/**
-		 * GroupLayout spritesLayout = new GroupLayout(this); setLayout(spritesLayout);
-		 * spritesLayout.setAutoCreateGaps(true);
-		 * spritesLayout.setAutoCreateContainerGaps(true);
-		 * 
-		 * spritesLayout.setHorizontalGroup(spritesLayout.createSequentialGroup()
-		 * .addGroup(spritesLayout.createParallelGroup(GroupLayout.Alignment.LEADING).addComponent(players[0])));
-		 * spritesLayout.setVerticalGroup(spritesLayout.createSequentialGroup()
-		 * .addGroup(spritesLayout.createParallelGroup(GroupLayout.Alignment.LEADING).addComponent(players[0])));
-		 */
+		
 	}
 
 	@SuppressWarnings("deprecation")
@@ -324,10 +326,10 @@ public class GameBoard extends JPanel {
 		pointer=mainLinkedList.getNode(43);
 		pointer.setHasPointer(true);
 		Point pt = new Point(pointer.getIndex());
-		System.out.println(pt.x+" "+pt.y);
 		// int x1 = players[0].getPointer().box.getBox().getX()+30;
 		// int y1 = players[0].getPointer().box.getBox().getY()+30;
 		g2d.drawImage(players[0].getSprite(), (pt.y * 95) + 30, (pt.x * 105) + 30, this);
+		//g2d.drawImage(dice.getSprite(),1100,100,null);
 	}
 
 }
