@@ -38,7 +38,7 @@ public class Squares extends Component {
 		column1 = column;
 		this.addMouseListener(new MouseClickedEvent());
 		changeTranparency();
-		path = "images/Bs.jpg";
+		path = "Datos Party 1/images/Bs.jpg";
 		changeImage();
 		increaseIndex();
 	}
@@ -122,12 +122,12 @@ public class Squares extends Component {
 			if (!isPlayerTwo && !hasChanged && isChanging) {
 				hasChanged = true;
 				whichPlayer = 1;
-				path = "images/Xs.jpg";
+				path = "Datos Party 1/images/Xs.jpg";
 			}
 			if (isPlayerTwo && !hasChanged && isChanging) {
 				hasChanged = true;
 				whichPlayer = 2;
-				path = "images/Os.jpg";
+				path = "Datos Party 1/images/Os.jpg";
 
 			}
 		}
