@@ -177,7 +177,7 @@ public class GameBoard extends JPanel implements ActionListener {
 			if (crash == true) {
 				x -= speed; //Bird falls moving to the left when it crashes
 				if (player == 1 && MainFlappyBird.players == 1) {
-					sprite.path = "Datos Party 1/images/crashedPanda.png"; //Changes sprite
+					sprite.path = "images/crashedPanda.png"; //Changes sprite
 					image = sprite.getBird();
 				}
 			}
@@ -234,7 +234,7 @@ public class GameBoard extends JPanel implements ActionListener {
 	 */
 	public BufferedImage getWallpaper() {
 		try {
-			String path = "Datos Party 1/images/WallpaperFB.jpg";
+			String path = "images/WallpaperFB.jpg";
 			wallpaper = ImageIO.read(new File(path));
 
 		} catch (IOException e) {

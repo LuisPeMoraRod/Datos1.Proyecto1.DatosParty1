@@ -323,7 +323,7 @@ public class GameBoard extends JPanel {
 	@SuppressWarnings("deprecation")
 	public void setPlayers(Graphics2D g2d) {
 		Node pointer = players[0].getPointer();
-		pointer=mainLinkedList.getNode(43);
+		pointer=phaseA.getNode(2);
 		pointer.setHasPointer(true);
 		Point pt = new Point(pointer.getIndex());
 		// int x1 = players[0].getPointer().box.getBox().getX()+30;

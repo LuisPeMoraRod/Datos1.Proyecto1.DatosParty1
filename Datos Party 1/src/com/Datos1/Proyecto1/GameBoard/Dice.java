@@ -60,25 +60,25 @@ public class Dice extends Component {
 	public void setPath(int face) {
 		switch (face) {
 		case 1:
-			path = "Datos Party 1/images/one.jpg";
+			path = "images/one.jpg";
 			break;
 		case 2:
-			path = "Datos Party 1/images/two.jpg";
+			path = "images/two.jpg";
 			break;
 		case 3:
-			path = "Datos Party 1/images/three.jpg";
+			path = "images/three.jpg";
 			break;
 		case 4:
-			path = "Datos Party 1/images/four.jpg";
+			path = "images/four.jpg";
 			break;
 		case 5:
-			path = "Datos Party 1/images/five.jpg";
+			path = "images/five.jpg";
 			break;
 		case 6:
-			path = "Datos Party 1/images/six.jpg";
+			path = "images/six.jpg";
 			break;
 		default:
-			path = "Datos Party 1/images/one.jpg";
+			path = "images/one.jpg";
 			break;
 		}
 	}
