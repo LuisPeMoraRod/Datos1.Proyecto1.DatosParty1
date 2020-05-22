@@ -63,10 +63,6 @@ public class Snake {
 
     }
 
-    public Rectangle2D firstTail(int tailX, int tailY){
-
-        return new Rectangle2D.Double(tailX, tailY, width, height);
-    }
 
     public Rectangle2D setCollisionDetector(int x, int y){
 
