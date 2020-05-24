@@ -29,6 +29,7 @@ public class SnakeBoard extends JPanel {
 
     private final int snakeSize = 20;
 
+
     Random random = new Random();
 
     Rectangle2D food1;
@@ -36,6 +37,8 @@ public class SnakeBoard extends JPanel {
     SnakeTail collisionDetector;
 
     ArrayList<SnakeTail> snakeTail;
+
+    private boolean gameOver = false;
 
     public SnakeBoard() throws IOException {
 
@@ -71,7 +74,20 @@ public class SnakeBoard extends JPanel {
         g2.fill(food1);
 
         createSnake();
-        updateSnake();
+
+        if(!gameOver){
+            updateSnake();
+        }
+        else{
+            g.setColor(Color.WHITE);
+            g.setFont(new Font("Lao Sangam LM", Font.BOLD,40));
+            g.drawString("Game over", 400,280);
+            g.setColor(new Color(173, 20, 87));
+            g.setFont(new Font("Lao Sangam LM", Font.BOLD,30));
+            g.drawString("Score: " + score, 450,320);
+        }
+
+        detectColliion();
         detectFoodCollection();
 
 
@@ -91,7 +107,7 @@ public class SnakeBoard extends JPanel {
 
     public void updateSnake(){
 
-        snakeHead.moveSnake();
+        snakeHead.moveSnakeHead();
 
         if(SnakeEvent.up && dy == 0){
             dy = -snakeSize;
@@ -150,8 +166,17 @@ public class SnakeBoard extends JPanel {
             SnakeTail t = new SnakeTail();
             t.setPosition(collisionDetector.getTailX() + ((snakeTail.size()+1)*20), collisionDetector.getTailY());
             snakeTail.add(t);
+            score++;
         }
 
+    }
+
+    public void detectColliion(){
+        for(SnakeTail t : snakeTail){
+            if(t.isCollision(collisionDetector) || collisionDetector.getTailX()==0 || collisionDetector.getTailX()==980 || collisionDetector.getTailY() == 0 || collisionDetector.getTailY()==580){
+                gameOver=true;
+            }
+        }
     }
 
 }
