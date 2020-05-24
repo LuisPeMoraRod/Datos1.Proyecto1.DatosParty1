@@ -14,14 +14,10 @@ public class SnakeBoard extends JPanel {
 
     private BufferedImage imgBackground = ImageIO.read(new File("images/SnakeBackground.jpg"));
 
-
-    private Snake snake;
-
-
-    public int lastY, lastX;
+    private SnakeHead snakeHead;
 
 
-    public BufferedImage snakeHead;
+    public BufferedImage headImg;
 
     public int fx1, fy1;
 
@@ -29,19 +25,21 @@ public class SnakeBoard extends JPanel {
 
     public int score;
 
+    private int dx, dy;
+
+    private final int snakeSize = 20;
+
     Random random = new Random();
 
     Rectangle2D food1;
 
-    Rectangle2D collisionDetector;
+    SnakeTail collisionDetector;
 
-    ArrayList<SnakeTail> tail;
-
-    int selector;
+    ArrayList<SnakeTail> snakeTail;
 
     public SnakeBoard() throws IOException {
 
-        snake = new Snake(80,80);
+        snakeHead = new SnakeHead(80,80);
 
         fx1 = random.nextInt(980);
         fy1 = random.nextInt(580);
@@ -50,7 +48,12 @@ public class SnakeBoard extends JPanel {
 
         score = 0;
 
-        tail = new ArrayList<>();
+        snakeTail = new ArrayList<>();
+
+        collisionDetector = new SnakeTail();
+        collisionDetector.setPosition(snakeHead.getHeadX(), snakeHead.getHeadY());
+
+        snakeTail.add(collisionDetector);
 
     }
 
@@ -73,46 +76,82 @@ public class SnakeBoard extends JPanel {
 
 
         g2.setColor(new Color(124, 60, 171));
-        g2.fill(collisionDetector);
-        for (selector=0; selector<score; selector++){
-            lastX = tail.get(selector).getPosX();
-            lastY = tail.get(selector).getPosY();
-            g2.fill(tail.get(selector).getTail(lastX, lastY));
+        for (SnakeTail t: snakeTail){
+            t.render(g2);
         }
 
-        g2.drawImage(snakeHead,snake.getHeadX(), snake.getHeadY(),20,20,this);
+        g2.drawImage(headImg, snakeHead.getHeadX(), snakeHead.getHeadY(),20,20,this);
 
     }
 
     public void createSnake(){
 
-        snakeHead = snake.getSnakeHead();
-        collisionDetector = snake.setCollisionDetector(snake.getHeadX(),snake.getHeadY());
+        headImg = snakeHead.getSnakeHead();
     }
 
     public void updateSnake(){
 
-        snake.moveSnake();
-        for (selector=0; selector<score; selector++){
-            tail.get(selector).moveSnakeTail(lastX, lastY);
+        snakeHead.moveSnake();
+
+        if(SnakeEvent.up && dy == 0){
+            dy = -snakeSize;
+            dx = 0;
+        }
+
+        else if(SnakeEvent.down && dy == 0){
+            dy = snakeSize;
+            dx = 0;
+        }
+
+        else if(SnakeEvent.left && dx == 0){
+            dx = -snakeSize;
+            dy = 0;
+        }
+
+        else if(SnakeEvent.right && dx == 0){
+            dx = snakeSize;
+            dy = 0;
+        }
+
+        if (dx != 0 || dy != 0){
+
+            for(int i = snakeTail.size()-1; i>0; i--){
+
+                snakeTail.get(i).setPosition(snakeTail.get(i-1).getTailX(), snakeTail.get(i-1).getTailY());
+            }
+
+            collisionDetector.moveTail(dx,dy);
+        }
+
+
+
+        if(collisionDetector.getTailX()<0) {
+            collisionDetector.setTailX(1000);
+        }
+
+        if(collisionDetector.getTailY()<0){
+            collisionDetector.setTailY(600);
+        }
+
+        if(collisionDetector.getTailX()>1000) {
+            collisionDetector.setTailX(0);
+        }
+
+        if(collisionDetector.getTailY()>600){
+            collisionDetector.setTailY(0);
         }
 
     }
 
     public void detectFoodCollection(){
-        if(collisionDetector.intersects(food1)){
+        if(snakeTail.get(0).getTail().intersects(food1)){
             fx1 = f1.setCoordX();
             fy1 = f1.setCoordY();
-
-            if(score == 0){
-                tail.add(new SnakeTail(snake.getHeadX() - 25, snake.getHeadY()));
-            }
-            else{
-                tail.add((new SnakeTail(tail.get(score-1).posX-25, tail.get(score-1).posY)));
-            }
-            score++;
-
+            SnakeTail t = new SnakeTail();
+            t.setPosition(collisionDetector.getTailX() + ((snakeTail.size()+1)*20), collisionDetector.getTailY());
+            snakeTail.add(t);
         }
+
     }
 
 }
