@@ -8,12 +8,12 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 
-public class Snake {
+public class SnakeHead {
     private int headX, headY;
     public BufferedImage snakeHead;
     protected final int width, height;
 
-    public Snake(int headX, int headY) throws IOException {
+    public SnakeHead(int headX, int headY) throws IOException {
 
         this.headX = headX;
         this.headY = headY;
@@ -42,32 +42,25 @@ public class Snake {
     public void moveSnake(){
 
         if(SnakeEvent.up){
-            headY--;
+            headY-=height;
 
         }
 
         else if(SnakeEvent.down){
-            headY++;
+            headY+=height;
 
         }
 
         else if(SnakeEvent.right){
-            headX++;
+            headX+=width;
 
         }
 
         else if(SnakeEvent.left){
-            headX--;
+            headX-=height;
 
         }
 
     }
-
-
-    public Rectangle2D setCollisionDetector(int x, int y){
-
-        return new Rectangle2D.Double(x, y, width, height);
-    }
-
 
 }
