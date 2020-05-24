@@ -39,7 +39,7 @@ public class SnakeHead {
         return headY;
     }
 
-    public void moveSnake(){
+    public void moveSnakeHead(){
 
         if(SnakeEvent.up){
             headY-=height;
