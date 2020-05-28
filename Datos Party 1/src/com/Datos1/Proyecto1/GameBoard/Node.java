@@ -80,7 +80,7 @@ public class Node {
 	}
 	
 	public Point getIndex() {
-		Point index = new Point(i,j);
+		Point index = new Point(j,i);
 		return index;
 	}
 	

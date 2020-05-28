@@ -2,6 +2,7 @@ package com.Datos1.Proyecto1.GameBoard;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.FlowLayout;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.LayoutManager;
@@ -28,7 +29,7 @@ public class GameBoard extends JPanel {
 	static CircularDoublyLinkedList phaseD = new CircularDoublyLinkedList();
 	private Player[] players = new Player[4];
 	private GameThread thread;
-	private Dice dice;
+	private Dice dice1, dice2;
 	public GameBoard() {
 		//thread= new GameThread(this);
 		//thread.start();
@@ -38,7 +39,8 @@ public class GameBoard extends JPanel {
 		createPhaseB();
 		createPhaseC();
 		createPhaseD();
-		dice = new Dice();
+		dice1 = new Dice();
+		dice2 = new Dice();
 		players[0] = new Player("Pedro", 1);
 		setComponents(this);
 
@@ -206,8 +208,9 @@ public class GameBoard extends JPanel {
 	}
 
 	public void setComponents(JPanel canvas) {
-		this.setLayout( new BorderLayout() );
-		canvas.add(dice,"East");
+		this.setLayout (new FlowLayout(FlowLayout.RIGHT));
+		canvas.add(dice1);
+		canvas.add(dice2);
 		
 	}
 	/**
@@ -317,18 +320,17 @@ public class GameBoard extends JPanel {
 						.addComponent(phaseD.get(7)))
 
 		);
-		
 	}
 
 	@SuppressWarnings("deprecation")
 	public void setPlayers(Graphics2D g2d) {
 		Node pointer = players[0].getPointer();
-		pointer=phaseA.getNode(2);
+		pointer=phaseA.getNode(4);
 		pointer.setHasPointer(true);
 		Point pt = new Point(pointer.getIndex());
 		// int x1 = players[0].getPointer().box.getBox().getX()+30;
 		// int y1 = players[0].getPointer().box.getBox().getY()+30;
-		g2d.drawImage(players[0].getSprite(), (pt.y * 95) + 30, (pt.x * 105) + 30, this);
+		g2d.drawImage(players[0].getSprite(), (pt.x * 95) + 30, (pt.y * 105) + 30, this);
 		//g2d.drawImage(dice.getSprite(),1100,100,null);
 	}
 
