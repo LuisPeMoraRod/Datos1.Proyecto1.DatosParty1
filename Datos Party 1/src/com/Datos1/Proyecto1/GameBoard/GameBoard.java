@@ -28,6 +28,7 @@ public class GameBoard extends JPanel {
 	static DoublyLinkedList phaseC = new DoublyLinkedList();
 	static CircularDoublyLinkedList phaseD = new CircularDoublyLinkedList();
 	private Player[] players = new Player[4];
+	public static int playerInTurn = 0;
 	private GameThread thread;
 	private Dice dice1, dice2;
 	public GameBoard() {
