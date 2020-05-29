@@ -16,6 +16,9 @@ public class SnakeBoard extends JPanel {
     private BufferedImage snakeLogo = ImageIO.read(new File("images/snakeLogo.png"));
     private BufferedImage snakeCL = ImageIO.read(new File("images/snakeCL.png"));
     private BufferedImage snakeCR = ImageIO.read(new File("images/snakeCR.png"));
+    private BufferedImage snakeInstructions = ImageIO.read(new File("images/snakeInstructions.png"));
+    private BufferedImage enterPress = ImageIO.read(new File("images/enterPress.png"));
+    private BufferedImage spacePress = ImageIO.read(new File("images/spacePress.png"));
 
     private SnakeHead snakeHead;
 
@@ -75,6 +78,7 @@ public class SnakeBoard extends JPanel {
         if(SnakeEvent.startCover){
 
             g2.drawImage(snakeLogo,SnakeWindow.width/2-200,SnakeWindow.height/2-100,400,200,this);
+            g2.drawImage(enterPress,SnakeWindow.width/2-132,SnakeWindow.height/2+250,264,46,this);
 
         }
 
@@ -82,7 +86,14 @@ public class SnakeBoard extends JPanel {
 
             g2.drawImage(snakeCL,20,20,168,114,this);
             g2.drawImage(snakeCR,SnakeWindow.width-188,SnakeWindow.height-124,168,104,this);
-            
+            g2.drawImage(snakeInstructions,SnakeWindow.width/2-247,SnakeWindow.height/2-111,494,222,this);
+            g2.drawImage(spacePress,SnakeWindow.width/2-142,SnakeWindow.height/2+250,284,46,this);
+
+            g2.setColor(new Color(205, 220, 57));
+            g2.setFont(new Font("Eurostile", Font.BOLD,15));
+            g2.drawString("Left player controls", 25, 145);
+            g2.drawString("Right player controls", SnakeWindow.width-185 , 450);
+
         }
 
         else{
