@@ -20,16 +20,16 @@ public class Square extends Component {
 
 	public Square(Color color) {
 		this.color = color;
-		width = 80;
-		height = 80;
+		width = 65;
+		height = 65;
 		transparency = 10;
 		empty=false;
 	}
 
 	public Square(Color color, boolean empty) {
 		this.color = color;
-		width = 80;
-		height = 80;
+		width = 65;
+		height = 65;
 		transparency = 10;
 		this.empty = empty;
 	}
@@ -42,7 +42,7 @@ public class Square extends Component {
 		g2d.setComposite(alcom);
 		g2d.setColor(color);
 		if (empty) {
-			Stroke stroke1 = new BasicStroke((float) 5.0);
+			Stroke stroke1 = new BasicStroke((float) 3.0);
 			g2d.setStroke(stroke1);
 			g2d.drawRect(0, 0, width, height);
 		}else {
