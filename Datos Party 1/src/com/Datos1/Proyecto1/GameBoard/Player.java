@@ -10,10 +10,12 @@ import javax.imageio.ImageIO;
 
 
 public class Player extends Component {
-
 	/**
-	 * 
+	 * Public class. 
+	 * @author Luis Pedro Morales Rodriguez
+	 * @version 28/5/2020
 	 */
+	
 	private static final long serialVersionUID = 1L;
 	private String name;
 	private int coins;
@@ -25,6 +27,7 @@ public class Player extends Component {
 	private int spriteWidth;
 	private int spriteHeight;
 	private Node pointer;
+	private boolean inTurn;
 
 	public Player(String name, int id) {
 		this.name = name;
@@ -49,7 +52,23 @@ public class Player extends Component {
 	public void setPointer (Node pointer) {
 		this.pointer= pointer;
 	}
-
+	
+	/**
+	 * Getter of the player's boolean value that indicates whether is its turn or not
+	 * @return inTurn : boolean
+	 */
+	public boolean getInTurn() {
+		return this.inTurn;
+	}
+	
+	/**
+	 * Setter of the player's boolean value that indicates whether is its turn or not
+	 */
+	public void setInTurn(boolean inTurn){
+		this.inTurn=inTurn;
+	}
+	
+	
 	/**
 	 * Public method that sets the path of the sprite depending on which player is
 	 * it going to be the Bird object

@@ -13,8 +13,7 @@ public class Window extends JFrame{
 	private int width = 1650;
 	private int height = 1000;
 	
-	private GameBoard canvas;
-	private GameThread thread;
+	protected static GameBoard canvas;
 	
 	/**
 	 * Constructor method. Instantiates a GameBoard object
@@ -24,8 +23,7 @@ public class Window extends JFrame{
 		createWindow();
 		canvas = new GameBoard();
 		this.add(canvas);	
-		thread = new GameThread(canvas);
-		thread.start();
+	
 	}
 	
 	
