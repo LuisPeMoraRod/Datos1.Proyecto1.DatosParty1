@@ -83,15 +83,6 @@ public class GameBoard4IL extends JPanel implements ActionListener {
 
 	}
 
-	private void drawCircles(Circles[][] circles, Graphics g, Color color) {
-		for (int i = 0; i < circles.length; i++) {
-			for (int j = 0; j < circles[i].length; j++) {
-				// circles[i][j].draw(g, color);;
-			}
-		}
-
-	}
-
 	public void setCircles(Circles[][] c) {
 		GroupLayout layout = new GroupLayout(this);
 		setLayout(layout);

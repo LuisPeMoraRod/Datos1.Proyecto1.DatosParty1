@@ -28,7 +28,8 @@ public class Dice extends Component {
 	private String path;
 	private int width;
 	private int height;
-	public static int number;
+	public int number;
+	public boolean thrown;
 	private int transparency = 10;
 	private Random random;
 
@@ -140,22 +141,23 @@ public class Dice extends Component {
 		 * Overrided method. Changes the value of the dice and the static attribute
 		 * number randomly.
 		 */
-		public void run() {
+		@Override
+		public synchronized void run() {
 			int randomInt;
 			for (int i = 0; i < 10; i++) {
 				transparency=5;
 				randomInt = random.nextInt(6) + 1;
-				Dice.number = randomInt;
+				number = randomInt;
 				setPath(number);
-				canvas.repaint();
 				try {
 					Thread.sleep(200);
 				} catch (InterruptedException e) {
 					e.printStackTrace();
 				}
 			}
+			thrown = true;
 			transparency=10;
-			canvas.repaint();
+			
 		}
 	}
 

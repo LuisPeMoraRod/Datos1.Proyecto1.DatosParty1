@@ -2,7 +2,7 @@ package com.Datos1.Proyecto1.GameBoard;
 
 import java.awt.Point;
 
-public class Node {
+public class Node{
 	/**
 	 * Public class that implements a Builder pattern design to handle different
 	 * amount of parameters in its constructor. These parameters may vary depending
@@ -10,6 +10,7 @@ public class Node {
 	 */
 
 	protected Box box;
+	protected Player player;
 	private Node next;
 	private Node prev;
 	private int i; //indexes of the element in the "matrix" generated in the canvas with the group layout
@@ -26,6 +27,7 @@ public class Node {
 	 */
 	public Node(Builder builder) {
 		this.box = builder.box;
+		this.player = builder.player;
 		this.next = builder.next;
 		this.prev = builder.prev;
 		this.i = builder.i;
@@ -34,11 +36,19 @@ public class Node {
 		this.hasPointer= builder.hasPointer;
 	}
 	
-	/*
+	/**
 	 * Nodes' box setter
 	 */
 	public void setBox(Box box) {
 		this.box=box;
+	}
+	
+	/**
+	 * Node's player getter
+	 * @return player : Player
+	 */
+	public Player getPlayer() {
+		return this.player;
 	}
 	/**
 	 * Previous node getter
@@ -112,6 +122,7 @@ public class Node {
 		 */
 		
 		private Box box;
+		private Player player;
 		private Node next, prev;
 		private int i;
 		private int j;
@@ -128,6 +139,10 @@ public class Node {
 		}
 		public Builder withBox(Box box) {
 			this.box=box;
+			return this;
+		}
+		public Builder withPlayer(Player player) {
+			this.player=player;
 			return this;
 		}
 		public Builder withNext(Node next) {

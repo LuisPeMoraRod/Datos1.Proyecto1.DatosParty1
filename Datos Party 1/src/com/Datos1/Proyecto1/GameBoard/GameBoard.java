@@ -27,13 +27,13 @@ public class GameBoard extends JPanel {
 	static LinkedList phaseB = new LinkedList();
 	static DoublyLinkedList phaseC = new DoublyLinkedList();
 	static CircularDoublyLinkedList phaseD = new CircularDoublyLinkedList();
-	private Player[] players = new Player[4];
-	public static int playerInTurn = 0;
+	static CircularLinkedList players = new CircularLinkedList();
+	public static Node playerInTurn;
 	private GameThread thread;
-	private Dice dice1, dice2;
+	public static Dice dice1, dice2;
+
 	public GameBoard() {
-		//thread= new GameThread(this);
-		//thread.start();
+
 		setBackground(Color.white);
 		createLinkedCircularList();
 		createPhaseA();
@@ -42,9 +42,13 @@ public class GameBoard extends JPanel {
 		createPhaseD();
 		dice1 = new Dice();
 		dice2 = new Dice();
-		players[0] = new Player("Pedro", 1);
+		players.insertHead(new Player("Puta", 1));
+		players.insertEnd(new Player("Puta", 2));
+		players.insertEnd(new Player("Puta", 3));
+		playerInTurn = players.start;
 		setComponents(this);
-
+		// thread = new GameThread(this);
+		// thread.start();
 	}
 
 	/**
@@ -57,7 +61,7 @@ public class GameBoard extends JPanel {
 		Box first = new BlueBox();
 		mainLinkedList.insertHead(first, i, j);
 		j++;
-		
+
 		for (int j1 = j; j1 < 10; j1++) {
 			Box box = new BlueBox();
 			mainLinkedList.insertEnd(box, i, j1);
@@ -152,11 +156,12 @@ public class GameBoard extends JPanel {
 	 * Creates phase C: a doubly linked list
 	 */
 	public void createPhaseC() {
-		int i=4;int j=1;
+		int i = 4;
+		int j = 1;
 		Box head = new YellowBox();
 		phaseC.insertHead(head, i, j);
 		j++;
-		while(j<5) {
+		while (j < 5) {
 			Box box = new YellowBox();
 			phaseC.insertEnd(box, i, j);
 			j++;
@@ -168,23 +173,24 @@ public class GameBoard extends JPanel {
 	 * Creates phase D: a doubly circular linked list
 	 */
 	public void createPhaseD() {
-		int i=6; int j = 11;
+		int i = 6;
+		int j = 11;
 		Box first = new RedBox();
 		phaseD.insertHead(first, i, j);
 		j++;
-		for (int j1 = j; j1 <17; j1++) {
+		for (int j1 = j; j1 < 17; j1++) {
 			Box newBox = new RedBox();
 			phaseD.insertEnd(newBox, i, j1);
-			j=j1;
+			j = j1;
 		}
 		i++;
 		Box box = new RedBox();
 		phaseD.insertEnd(box, i, j);
 		i++;
-		for (int j1 = j; j1 >10; j1--) {
+		for (int j1 = j; j1 > 10; j1--) {
 			Box newBox = new RedBox();
 			phaseD.insertEnd(newBox, i, j1);
-			j=j1;
+			j = j1;
 		}
 		i--;
 		Box box1 = new RedBox();
@@ -194,11 +200,9 @@ public class GameBoard extends JPanel {
 	@Override
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
-
 		Graphics2D g2d = (Graphics2D) g.create();
 		setPlayers(g2d);
 		g2d.dispose();
-
 		try {
 			setBoxes();
 		} catch (Exception e) {
@@ -209,18 +213,19 @@ public class GameBoard extends JPanel {
 	}
 
 	public void setComponents(JPanel canvas) {
-		this.setLayout (new FlowLayout(FlowLayout.RIGHT));
+		this.setLayout(new FlowLayout(FlowLayout.RIGHT));
 		canvas.add(dice1);
 		canvas.add(dice2);
-		
+
 	}
+
 	/**
 	 * Public method. Locates all the components of the JPanel in the canvas.
 	 * 
 	 * @throws Exception
 	 */
 	public void setBoxes() throws Exception {
-		
+
 		GroupLayout layout = new GroupLayout(this);
 		setLayout(layout);
 		layout.setAutoCreateGaps(true);
@@ -323,16 +328,18 @@ public class GameBoard extends JPanel {
 		);
 	}
 
-	@SuppressWarnings("deprecation")
 	public void setPlayers(Graphics2D g2d) {
-		Node pointer = players[0].getPointer();
-		pointer=phaseA.getNode(4);
+		Node pointer = playerInTurn.getPlayer().getPointer();
+		for(int i = 0; i<3;i++) {
+			pointer = pointer.getNext();
+		}
+		
 		pointer.setHasPointer(true);
 		Point pt = new Point(pointer.getIndex());
 		// int x1 = players[0].getPointer().box.getBox().getX()+30;
 		// int y1 = players[0].getPointer().box.getBox().getY()+30;
-		g2d.drawImage(players[0].getSprite(), (pt.x * 95) + 30, (pt.y * 105) + 30, this);
-		//g2d.drawImage(dice.getSprite(),1100,100,null);
+		g2d.drawImage(players.getNode(0).getPlayer().getSprite(), (pt.x * 95) + 30, (pt.y * 105) + 30, this);
+		// g2d.drawImage(dice.getSprite(),1100,100,null);
 	}
 
 }
