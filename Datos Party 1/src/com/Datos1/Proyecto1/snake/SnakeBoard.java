@@ -13,6 +13,7 @@ import java.util.Random;
 public class SnakeBoard extends JPanel {
 
     private BufferedImage imgBackground = ImageIO.read(new File("images/SnakeBackground.jpg"));
+    private BufferedImage snakeLogo = ImageIO.read(new File("images/snakeLogo.png"));
 
     private SnakeHead snakeHead;
 
@@ -37,6 +38,7 @@ public class SnakeBoard extends JPanel {
     SnakeTail collisionDetector;
 
     ArrayList<SnakeTail> snakeTail;
+
 
     private boolean gameOver = false;
 
@@ -68,35 +70,43 @@ public class SnakeBoard extends JPanel {
 
         g2.drawImage(imgBackground,0,0,1000,600,this);
 
-        g2.setColor(new Color(205, 220, 57));
+        if(SnakeEvent.startCover){
 
-        food1 = f1.getFood(fx1,fy1);
-        g2.fill(food1);
-
-        createSnake();
-
-        if(!gameOver){
-            updateSnake();
+            g2.drawImage(snakeLogo,SnakeWindow.width/2-200,SnakeWindow.height/2-100,400,200,this);
         }
+
         else{
-            g.setColor(Color.WHITE);
-            g.setFont(new Font("Lao Sangam LM", Font.BOLD,40));
-            g.drawString("Game over", 400,280);
-            g.setColor(new Color(173, 20, 87));
-            g.setFont(new Font("Lao Sangam LM", Font.BOLD,30));
-            g.drawString("Score: " + score, 450,320);
+            g2.setColor(new Color(205, 220, 57));
+
+            food1 = f1.getFood(fx1,fy1);
+            g2.fill(food1);
+
+            createSnake();
+
+            if(!gameOver){
+                updateSnake();
+            }
+            else{
+                g.setColor(Color.WHITE);
+                g.setFont(new Font("Lao Sangam LM", Font.BOLD,40));
+                g.drawString("Game over", 400,280);
+                g.setColor(new Color(173, 20, 87));
+                g.setFont(new Font("Lao Sangam LM", Font.BOLD,30));
+                g.drawString("Score: " + score, 450,320);
+            }
+
+            detectColliion();
+            detectFoodCollection();
+
+
+            g2.setColor(new Color(124, 60, 171));
+            for (SnakeTail t: snakeTail){
+                t.render(g2);
+            }
+
+            g2.drawImage(headImg, snakeHead.getHeadX(), snakeHead.getHeadY(),20,20,this);
         }
 
-        detectColliion();
-        detectFoodCollection();
-
-
-        g2.setColor(new Color(124, 60, 171));
-        for (SnakeTail t: snakeTail){
-            t.render(g2);
-        }
-
-        g2.drawImage(headImg, snakeHead.getHeadX(), snakeHead.getHeadY(),20,20,this);
 
     }
 

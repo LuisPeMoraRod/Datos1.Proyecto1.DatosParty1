@@ -5,7 +5,7 @@ import java.awt.event.KeyEvent;
 
 public class SnakeEvent extends KeyAdapter {
 
-    static boolean up, right, left, down;
+    static boolean up, right, left, down, startCover = true;
 
     public SnakeEvent(){
 
@@ -17,6 +17,10 @@ public class SnakeEvent extends KeyAdapter {
         super.keyPressed(e);
 
         int id = e.getKeyCode();
+
+        if(id == KeyEvent.VK_ENTER){
+            startCover= false;
+        }
 
 
         if(id == KeyEvent.VK_DOWN && !up){
