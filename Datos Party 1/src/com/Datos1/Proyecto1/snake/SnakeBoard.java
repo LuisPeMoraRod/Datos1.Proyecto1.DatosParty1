@@ -14,6 +14,8 @@ public class SnakeBoard extends JPanel {
 
     private BufferedImage imgBackground = ImageIO.read(new File("images/SnakeBackground.jpg"));
     private BufferedImage snakeLogo = ImageIO.read(new File("images/snakeLogo.png"));
+    private BufferedImage snakeCL = ImageIO.read(new File("images/snakeCL.png"));
+    private BufferedImage snakeCR = ImageIO.read(new File("images/snakeCR.png"));
 
     private SnakeHead snakeHead;
 
@@ -73,6 +75,14 @@ public class SnakeBoard extends JPanel {
         if(SnakeEvent.startCover){
 
             g2.drawImage(snakeLogo,SnakeWindow.width/2-200,SnakeWindow.height/2-100,400,200,this);
+
+        }
+
+        else if(SnakeEvent.instructions){
+
+            g2.drawImage(snakeCL,20,20,168,114,this);
+            g2.drawImage(snakeCR,SnakeWindow.width-188,SnakeWindow.height-124,168,104,this);
+            
         }
 
         else{
