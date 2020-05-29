@@ -42,9 +42,9 @@ public class GameBoard extends JPanel {
 		createPhaseD();
 		dice1 = new Dice();
 		dice2 = new Dice();
-		players.insertHead(new Player("Puta", 1));
-		players.insertEnd(new Player("Puta", 2));
-		players.insertEnd(new Player("Puta", 3));
+		players.insertHead(new Player("P1", 1));
+		players.insertEnd(new Player("P2", 2));
+		players.insertEnd(new Player("P3", 3));
 		playerInTurn = players.start;
 		setComponents(this);
 		// thread = new GameThread(this);
@@ -328,17 +328,17 @@ public class GameBoard extends JPanel {
 		);
 	}
 
-	public void setPlayers(Graphics2D g2d) {
+	public void setPlayers(Graphics2D g2d, int dicesNumber) {
 		Node pointer = playerInTurn.getPlayer().getPointer();
-		for(int i = 0; i<3;i++) {
-			pointer = pointer.getNext();
-		}
-		
+		//for(int i = 0; i<3;i++) {
+			//pointer = pointer.getNext();
+		//}
+		pointer=mainLinkedList.getNode(10);
 		pointer.setHasPointer(true);
 		Point pt = new Point(pointer.getIndex());
 		// int x1 = players[0].getPointer().box.getBox().getX()+30;
 		// int y1 = players[0].getPointer().box.getBox().getY()+30;
-		g2d.drawImage(players.getNode(0).getPlayer().getSprite(), (pt.x * 95) + 30, (pt.y * 105) + 30, this);
+		g2d.drawImage(players.getNode(0).getPlayer().getSprite(), (pt.x * 80) + 20, (pt.y * 83) + 25, this);
 		// g2d.drawImage(dice.getSprite(),1100,100,null);
 	}
 
