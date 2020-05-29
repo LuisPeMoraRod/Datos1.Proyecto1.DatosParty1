@@ -6,7 +6,7 @@ import java.io.IOException;
 public class SnakeWindow extends JFrame {
 
     public static final int width = 1000;
-    public final int height = 600;
+    public static final int height = 600;
 
     private SnakeBoard snakeBoard;
 
