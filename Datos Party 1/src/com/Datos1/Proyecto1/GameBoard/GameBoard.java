@@ -201,7 +201,7 @@ public class GameBoard extends JPanel {
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
 		Graphics2D g2d = (Graphics2D) g.create();
-		setPlayers(g2d);
+		setPlayers(g2d,0);
 		g2d.dispose();
 		try {
 			setBoxes();
