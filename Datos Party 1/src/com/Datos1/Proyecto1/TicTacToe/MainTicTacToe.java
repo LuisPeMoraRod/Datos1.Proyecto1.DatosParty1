@@ -1,6 +1,7 @@
 package com.Datos1.Proyecto1.TicTacToe;
 
 import javax.swing.JFrame;
+import java.io.IOException;
 
 public class MainTicTacToe {
 	/**
@@ -10,7 +11,7 @@ public class MainTicTacToe {
 	 * {@link Window}
 	 * @param args
 	 */
-	public static void main(String [] args) {
+	public static void main(String [] args) throws IOException {
 		Window tictactoe= new Window( "Jugador(a) 1", "Jugador(a) 2");
 		tictactoe.setVisible(true);
 		tictactoe.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
