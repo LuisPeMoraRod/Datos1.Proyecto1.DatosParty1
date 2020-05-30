@@ -23,7 +23,7 @@ public class SnakeEvent extends KeyAdapter {
             instructions = true;
         }
 
-        if(id == KeyEvent.VK_SPACE){
+        if(id == KeyEvent.VK_SPACE && startCover==false){
             instructions = false;
         }
 

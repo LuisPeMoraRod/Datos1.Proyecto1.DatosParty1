@@ -1,5 +1,7 @@
 package com.Datos1.Proyecto1.pong;
 
+import com.Datos1.Proyecto1.snake.SnakeWindow;
+
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
@@ -17,6 +19,9 @@ public class PongBoard extends JPanel {
     BufferedImage pongLogo = ImageIO.read(new File("images/pongLogo.png"));
     BufferedImage leftControls = ImageIO.read(new File("images/leftControls.png"));
     BufferedImage rightControls = ImageIO.read(new File("images/rightControls.png"));
+    BufferedImage pongRules = ImageIO.read(new File("images/pongRules.png"));
+    private BufferedImage enterPress = ImageIO.read(new File("images/enterPress.png"));
+    private BufferedImage spacePress = ImageIO.read(new File("images/spacePress.png"));
 
     public PongScore pongScore;
     public int scoreP1, scoreP2;
@@ -37,11 +42,19 @@ public class PongBoard extends JPanel {
 
         g2.drawImage(imgBackground,0,0,1000,600,this);
 
-        if(!PalletEvent.start){
+        if(PalletEvent.cover){
 
             g2.drawImage(pongLogo, PongWindow.width/2-200,PongWindow.height/2 -75,400,150,this);
             g2.drawImage(leftControls, 50,PongWindow.height/2-65,50,130,this);
             g2.drawImage(rightControls, 905,PongWindow.height/2-55,45,110,this);
+            g2.drawImage(enterPress, SnakeWindow.width/2-132,SnakeWindow.height/2+250,264,46,this);
+        }
+
+        else if(PalletEvent.instructions){
+            g2.drawImage(leftControls, 50,PongWindow.height/2-65,50,130,this);
+            g2.drawImage(rightControls, 905,PongWindow.height/2-55,45,110,this);
+            g2.drawImage(pongRules, PongWindow.width/2-300,PongWindow.height/2-90,600,180,this);
+            g2.drawImage(spacePress,SnakeWindow.width/2-142,SnakeWindow.height/2+250,284,46,this);
         }
 
         else{
