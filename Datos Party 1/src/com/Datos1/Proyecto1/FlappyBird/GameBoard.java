@@ -77,7 +77,6 @@ public class GameBoard extends JPanel implements ActionListener {
 		gameOver = false;
 
 		timer = new Timer(20, this);
-
 		timer.start();
 
 	}
@@ -192,9 +191,7 @@ public class GameBoard extends JPanel implements ActionListener {
 
 			}
 		}
-
 		repaint();
-
 	}
 
 	/**

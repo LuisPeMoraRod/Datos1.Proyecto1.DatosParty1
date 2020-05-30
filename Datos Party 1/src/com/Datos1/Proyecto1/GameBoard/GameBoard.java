@@ -7,13 +7,16 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.LayoutManager;
 import java.awt.Point;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 
 import javax.swing.GroupLayout;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
+import javax.swing.Timer;
 
-public class GameBoard extends JPanel {
+public class GameBoard extends JPanel implements ActionListener {
 	/**
 	 * Public class. Represents the structure of the game's GUI
 	 * 
@@ -29,8 +32,15 @@ public class GameBoard extends JPanel {
 	static CircularDoublyLinkedList phaseD = new CircularDoublyLinkedList();
 	static CircularLinkedList players = new CircularLinkedList();
 	public static Node playerInTurn;
+
+	public Node movingPointer; // Pointer that moves to the next nodes of each player's until they get to the
+								// correct node
+
 	private GameThread thread;
+	private boolean moving;
+	private int movingCont;
 	public static Dice dice1, dice2;
+	Timer timer;
 
 	public GameBoard() {
 
@@ -47,8 +57,10 @@ public class GameBoard extends JPanel {
 		players.insertEnd(new Player("P3", 3));
 		playerInTurn = players.start;
 		setComponents(this);
-		// thread = new GameThread(this);
-		// thread.start();
+
+		timer = new Timer(10, this);
+		timer.start();
+
 	}
 
 	/**
@@ -201,8 +213,19 @@ public class GameBoard extends JPanel {
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
 		Graphics2D g2d = (Graphics2D) g.create();
-		setPlayers(g2d,0);
-		g2d.dispose();
+		if (dice1.thrown && dice2.thrown) {
+			startMovement();
+		} else if (moving) {
+			Point actualPos = playerInTurn.getPlayer().getLocation();
+			g2d.drawImage(playerInTurn.getPlayer().getSprite(), actualPos.x, actualPos.y, this);
+		}
+
+		else {
+
+			setPlayers(g2d);
+			g2d.dispose();
+		}
+
 		try {
 			setBoxes();
 		} catch (Exception e) {
@@ -328,18 +351,77 @@ public class GameBoard extends JPanel {
 		);
 	}
 
-	public void setPlayers(Graphics2D g2d, int dicesNumber) {
+	/**
+	 * Sets players in the canvas when one of them is going to move
+	 * 
+	 * @param g2d
+	 * @param dicesNumber
+	 */
+	public void startMovement() {
+		movingPointer = playerInTurn.getPlayer().getPointer();
+		movingPointer = movingPointer.getNext();
+
+		playerInTurn.getPlayer().setPointer(movingPointer);
+
+		moving = true;
+
+		dice1.thrown = false;
+		dice2.thrown = false;
+	}
+
+	/**
+	 * Sets players in the canvas when no one needs to move
+	 * 
+	 * @param g2d
+	 */
+	public void setPlayers(Graphics2D g2d) {
 		Node pointer = playerInTurn.getPlayer().getPointer();
-		//for(int i = 0; i<3;i++) {
-			//pointer = pointer.getNext();
-		//}
-		pointer=mainLinkedList.getNode(10);
-		pointer.setHasPointer(true);
+		// pointer.setHasPointer(true);
 		Point pt = new Point(pointer.getIndex());
-		// int x1 = players[0].getPointer().box.getBox().getX()+30;
-		// int y1 = players[0].getPointer().box.getBox().getY()+30;
-		g2d.drawImage(players.getNode(0).getPlayer().getSprite(), (pt.x * 80) + 20, (pt.y * 83) + 25, this);
-		// g2d.drawImage(dice.getSprite(),1100,100,null);
+		pt.x = (pt.x * 80) + 20;
+		pt.y = (pt.y * 83) + 25;
+		g2d.drawImage(playerInTurn.getPlayer().getSprite(), pt.x, pt.y, this);
+		playerInTurn.getPlayer().setLocation(pt);
+	}
+
+	/**
+	 * Routine in charge of moving the players
+	 */
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		if (moving) {
+
+			Point newPos = playerInTurn.getPlayer().getPointer().getIndex();
+			newPos.x = (newPos.x * 80) + 20;
+			newPos.y = (newPos.y * 83) + 25;
+
+			Point actualPos = playerInTurn.getPlayer().getLocation();
+
+			if (actualPos.x == newPos.x && actualPos.y == newPos.y) {
+				movingCont++;
+				System.out.println(movingCont + " " + (dice1.number + dice2.number));
+				if (movingCont == dice1.number + dice2.number) {
+					movingCont = 0;
+					moving = false;
+				} else {
+					movingPointer = movingPointer.getNext();
+					playerInTurn.getPlayer().setPointer(movingPointer);
+				}
+			}
+			if (actualPos.x < newPos.x) {
+				actualPos.x += 1;
+			} else if (actualPos.x > newPos.x) {
+				actualPos.x -= 1;
+			} else if (actualPos.y < newPos.y) {
+				actualPos.y += 1;
+			} else if (actualPos.y > newPos.y) {
+				actualPos.y -= 1;
+			}
+
+			playerInTurn.getPlayer().setLocation(actualPos); // this is necessary to paint the sprite in the right place
+			repaint();
+
+		}
 	}
 
 }
