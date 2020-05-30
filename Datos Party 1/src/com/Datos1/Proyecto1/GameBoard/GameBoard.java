@@ -32,8 +32,13 @@ public class GameBoard extends JPanel implements ActionListener {
 	static CircularDoublyLinkedList phaseD = new CircularDoublyLinkedList();
 	static CircularLinkedList players = new CircularLinkedList();
 	public static Node playerInTurn;
+
+	public Node movingPointer; // Pointer that moves to the next nodes of each player's until they get to the
+								// correct node
+
 	private GameThread thread;
-	private boolean moving, movingHorizontally;
+	private boolean moving;
+	private int movingCont;
 	public static Dice dice1, dice2;
 	Timer timer;
 
@@ -209,8 +214,7 @@ public class GameBoard extends JPanel implements ActionListener {
 		super.paintComponent(g);
 		Graphics2D g2d = (Graphics2D) g.create();
 		if (dice1.thrown && dice2.thrown) {
-			setPlayers(g2d, dice1.number + dice2.number);
-			g2d.dispose();
+			startMovement();
 		} else if (moving) {
 			Point actualPos = playerInTurn.getPlayer().getLocation();
 			g2d.drawImage(playerInTurn.getPlayer().getSprite(), actualPos.x, actualPos.y, this);
@@ -353,20 +357,13 @@ public class GameBoard extends JPanel implements ActionListener {
 	 * @param g2d
 	 * @param dicesNumber
 	 */
-	public void setPlayers(Graphics2D g2d, int dicesNumber) {
-		Node pointer = playerInTurn.getPlayer().getPointer();
-		// pointer.setHasPointer(false);
-		for (int i = 0; i < dicesNumber; i++) {
-			pointer = pointer.getNext();
-		}
+	public void startMovement() {
+		movingPointer = playerInTurn.getPlayer().getPointer();
+		movingPointer = movingPointer.getNext();
 
-		Point pt = new Point(pointer.getIndex());
-		pt.x = (pt.x * 80) + 20;
-		pt.y = (pt.y * 83) + 25;
-		playerInTurn.getPlayer().setPointer(pointer);
+		playerInTurn.getPlayer().setPointer(movingPointer);
 
 		moving = true;
-		movingHorizontally = true;
 
 		dice1.thrown = false;
 		dice2.thrown = false;
@@ -393,39 +390,37 @@ public class GameBoard extends JPanel implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if (moving) {
+
 			Point newPos = playerInTurn.getPlayer().getPointer().getIndex();
 			newPos.x = (newPos.x * 80) + 20;
 			newPos.y = (newPos.y * 83) + 25;
 
 			Point actualPos = playerInTurn.getPlayer().getLocation();
-			if (movingHorizontally) {
 
-				if (actualPos.x == newPos.x) {
-					movingHorizontally = false;
-				}
-				if (actualPos.x < newPos.x) {
-					actualPos.x += 1;
-					System.out.println(actualPos + " " + newPos);
-				} else {
-					actualPos.x -= 1;
-				}
-
-				playerInTurn.getPlayer().setLocation(actualPos);
-				repaint();
-				
-			} else {
-				if (actualPos.y == newPos.y) {
+			if (actualPos.x == newPos.x && actualPos.y == newPos.y) {
+				movingCont++;
+				System.out.println(movingCont + " " + (dice1.number + dice2.number));
+				if (movingCont == dice1.number + dice2.number) {
+					movingCont = 0;
 					moving = false;
-				}
-				if (actualPos.y < newPos.y) {
-					actualPos.y -= 1;
-					System.out.println(actualPos + " " + newPos);
 				} else {
-					actualPos.y += 1;
+					movingPointer = movingPointer.getNext();
+					playerInTurn.getPlayer().setPointer(movingPointer);
 				}
-				playerInTurn.getPlayer().setLocation(actualPos);
-				repaint();
 			}
+			if (actualPos.x < newPos.x) {
+				actualPos.x += 1;
+			} else if (actualPos.x > newPos.x) {
+				actualPos.x -= 1;
+			} else if (actualPos.y < newPos.y) {
+				actualPos.y += 1;
+			} else if (actualPos.y > newPos.y) {
+				actualPos.y -= 1;
+			}
+
+			playerInTurn.getPlayer().setLocation(actualPos); // this is necessary to paint the sprite in the right place
+			repaint();
+
 		}
 	}
 
