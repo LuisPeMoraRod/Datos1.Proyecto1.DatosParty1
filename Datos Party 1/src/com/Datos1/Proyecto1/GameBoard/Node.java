@@ -33,7 +33,7 @@ public class Node{
 		this.i = builder.i;
 		this.j=builder.j;
 		this.id = builder.id;
-		this.hasPointer= builder.hasPointer;
+		this.hasPointer= true;
 	}
 	
 	/**
@@ -130,6 +130,7 @@ public class Node{
 		private boolean hasPointer;
 		
 		public Node build() {
+		
 			return new Node(this);
 		}
 		
