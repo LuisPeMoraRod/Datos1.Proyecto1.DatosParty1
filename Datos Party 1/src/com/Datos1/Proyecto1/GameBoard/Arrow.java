@@ -152,11 +152,14 @@ public class Arrow extends Component {
 					Node pointer = GameBoard.phaseA.head;
 					GameBoard.movingPointer = pointer;
 					GameBoard.playerInTurn.getPlayer().setPointer(pointer);
+					
 				}else {
 					GameBoard.twoPaths = false;
 					GameBoard.moving = true;
+					GameBoard.movingPointer = GameBoard.playerInTurn.getPlayer().getPointer();
 					GameBoard.movingPointer = GameBoard.movingPointer.getNext();
-					GameBoard.playerInTurn.getPlayer().setPointer(GameBoard.movingPointer);// pointer to the next node
+					GameBoard.playerInTurn.getPlayer().setPointer(GameBoard.movingPointer);
+					
 				}
 			}
 		});
