@@ -35,7 +35,7 @@ public class Dice extends Component {
 
 	public Dice() {
 		setPath(number);
-		ClickOnDice();
+		clickOnDice();
 		setTransparency();
 		random = new Random();
 	}
@@ -76,22 +76,38 @@ public class Dice extends Component {
 		}
 	}
 
+	/**
+	 * Public method. Sets mouse adapter on the component. Changes transparency of
+	 * the component when the mouse enters or exits it.
+	 *  {@link MouseAdapter}
+	 */
 	public void setTransparency() {
-
 		this.addMouseListener(new MouseAdapter() {
 			public void mouseEntered(MouseEvent me) {
 				transparency = 5;
 			}
 		});
-
 		this.addMouseListener(new MouseAdapter() {
 			public void mouseExited(MouseEvent me) {
 				transparency = 10;
 			}
 		});
-
 	}
-	
+
+	/**
+	 * Public method. Sets mouse adapter on the dice object. Every click simulates
+	 * the dice throwing. 
+	 * {@link MouseAdapter}
+	 */
+	public void clickOnDice() {
+		this.addMouseListener(new MouseAdapter() {
+			public void mouseClicked(MouseEvent e) {
+
+				DiceThread thread = new DiceThread(Window.canvas);
+				thread.start();
+			}
+		});
+	}
 
 	/**
 	 * Overrided method. Sets the dimension of the sprite
@@ -101,9 +117,7 @@ public class Dice extends Component {
 		if (diceFace == null) {
 			return new Dimension(96, 96);
 		} else {
-
 			return new Dimension(width, height);
-
 		}
 	}
 
@@ -145,7 +159,7 @@ public class Dice extends Component {
 		public synchronized void run() {
 			int randomInt;
 			for (int i = 0; i < 10; i++) {
-				transparency=5;
+				transparency = 5;
 				randomInt = random.nextInt(6) + 1;
 				number = randomInt;
 				setPath(number);
@@ -156,24 +170,9 @@ public class Dice extends Component {
 				}
 			}
 			thrown = true;
-			transparency=10;
-			
+			transparency = 10;
+
 		}
-	}
-
-	/**
-	 * Public method. Sets mouse adapter on the dice object. Every click simulates
-	 * the dice throwing.
-	 */
-	public void ClickOnDice() {
-		this.addMouseListener(new MouseAdapter() {
-			public void mouseClicked(MouseEvent e) {
-				
-				DiceThread thread = new DiceThread(Window.canvas);
-				thread.start();
-			}
-		});
-
 	}
 
 }

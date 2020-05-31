@@ -34,7 +34,7 @@ public class CircularLinkedList {
 	 * @param newBox : Box
 	 */
 	public void insertEnd(Box newBox, int i,int j) {
-		Node newNode = Node.builder().withBox(newBox).withIndex(i,j).build();
+		Node newNode = Node.builder().withBox(newBox).withIndex(i,j).withId(size).build();
 		if (isEmpty()) {
 			start = newNode;
 			end = newNode;
@@ -53,7 +53,7 @@ public class CircularLinkedList {
 	 * @param newPlayer : Player
 	 */
 	public void insertEnd(Player newPlayer) {
-		Node newNode = Node.builder().withPlayer(newPlayer).build();
+		Node newNode = Node.builder().withPlayer(newPlayer).withId(size).build();
 		if (isEmpty()) {
 			start = newNode;
 			end = newNode;
@@ -73,7 +73,7 @@ public class CircularLinkedList {
 	 * @param newBox : Box
 	 */
 	public void insertHead(Box newBox, int i, int j) {
-		Node newNode = Node.builder().withBox(newBox).withIndex(i,j).build();
+		Node newNode = Node.builder().withBox(newBox).withIndex(i,j).withId(size).build();
 		if (isEmpty()) {
 			start = newNode;
 			end = newNode;
@@ -92,7 +92,7 @@ public class CircularLinkedList {
 	 * @param newPlayer : Player
 	 */
 	public void insertHead(Player newPlayer) {
-		Node newNode = Node.builder().withPlayer(newPlayer).build();
+		Node newNode = Node.builder().withPlayer(newPlayer).withId(size).build();
 		if (isEmpty()) {
 			start = newNode;
 			end = newNode;
@@ -113,7 +113,7 @@ public class CircularLinkedList {
 	 * @param newBox : Box
 	 */
 	public void insert(int index, Box newBox, int i , int j) {
-		Node newNode = Node.builder().withBox(newBox).withIndex(i,j).build();
+		Node newNode = Node.builder().withBox(newBox).withIndex(i,j).withId(size).build();
 		if (index >= 0 && index <= size) {
 			Node pointer = start;
 			int cont = 0;
