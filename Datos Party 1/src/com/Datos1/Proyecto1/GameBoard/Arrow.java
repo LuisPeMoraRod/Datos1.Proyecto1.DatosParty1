@@ -135,7 +135,10 @@ public class Arrow extends Component{
 	public void clickOnDice() {
 		this.addMouseListener(new MouseAdapter() {
 			public void mouseClicked(MouseEvent e) {
-				System.out.println("click");
+				GameBoard.twoPaths=false;
+				GameBoard.moving=true;
+				Node pointer = GameBoard.phaseA.head;
+				GameBoard.playerInTurn.getPlayer().setPointer(pointer);
 			}
 		});
 	}

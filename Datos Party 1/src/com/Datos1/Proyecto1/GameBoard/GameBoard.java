@@ -43,8 +43,8 @@ public class GameBoard extends JPanel implements ActionListener {
 								// correct node
 
 	private GameThread thread;
-	private boolean moving;
-	private boolean twoPaths;
+	public static boolean moving;
+	public static boolean twoPaths;
 	private int movingCont;// indicates through how many nodes the sprite has moved
 	public static Dice dice1, dice2;
 	public Arrow leftArrow, rightArrow;
@@ -67,7 +67,7 @@ public class GameBoard extends JPanel implements ActionListener {
 		players.insertEnd(new Player("P2", 2));
 		players.insertEnd(new Player("P3", 3));
 		playerInTurn = players.start;
-		setComponents(this);
+		setDices(this);
 
 		timer = new Timer(10, this);
 		timer.start();
@@ -223,6 +223,7 @@ public class GameBoard extends JPanel implements ActionListener {
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
 		Graphics2D g2d = (Graphics2D) g.create();
+		
 		if (dice1.thrown && dice2.thrown) {
 			startMovement();
 		} else if (moving) {
@@ -233,10 +234,16 @@ public class GameBoard extends JPanel implements ActionListener {
 				
 			}
 			
-
-		} else {
+		}else if (twoPaths) {
+			for (int i = 0; i < players.getSize(); i++) {
+				Point actualPos = playerInTurn.getPlayer().getLocation();
+				g2d.drawImage(playerInTurn.getPlayer().getSprite(), actualPos.x, actualPos.y, this);
+				playerInTurn = playerInTurn.getNext();
+			}
+			paintArrows(g2d);
+		}else {
+		
 			setPlayers(g2d);
-			//this.remove(leftArrow);this.remove(rightArrow);
 		}
 
 		try {
@@ -247,11 +254,10 @@ public class GameBoard extends JPanel implements ActionListener {
 		}
 	}
 
-	public void setComponents(JPanel canvas) {
+	public void setDices(JPanel canvas) {
 		this.setLayout(null);
 		dice1.setBounds(Window.width*6/8+20,30,96,96);
 		dice2.setBounds(Window.width*6/7,30,96,96);
-		
 		canvas.add(dice1);
 		canvas.add(dice2);
 	}
@@ -267,7 +273,6 @@ public class GameBoard extends JPanel implements ActionListener {
 		setLayout(layout);
 		layout.setAutoCreateGaps(true);
 		layout.setAutoCreateContainerGaps(true);
-
 		layout.setHorizontalGroup(layout.createSequentialGroup()
 				.addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING).addComponent(mainLinkedList.get(0))
 						.addComponent(mainLinkedList.get(43)).addComponent(mainLinkedList.get(42))
@@ -422,6 +427,10 @@ public class GameBoard extends JPanel implements ActionListener {
 																		// node:
 				movingCont++;// Increments counter that indicates through how many nodes the sprite has moved
 				System.out.println(movingCont + " " + (dice1.number + dice2.number));
+				if (playerInTurn.getPlayer().getPointer().getId()==11) {
+					twoPaths= true;
+					moving=false;
+				}
 				if (movingCont == dice1.number + dice2.number) {// if the sprite reached the correct node
 					movingCont = 0;// resets counter
 					moving = false;// stops moving routine
