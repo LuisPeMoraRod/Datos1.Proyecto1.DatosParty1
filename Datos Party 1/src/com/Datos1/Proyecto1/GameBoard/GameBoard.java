@@ -2,6 +2,7 @@ package com.Datos1.Proyecto1.GameBoard;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.FlowLayout;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -10,11 +11,16 @@ import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 
+import javax.imageio.ImageIO;
 import javax.swing.GroupLayout;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 import javax.swing.Timer;
+
 
 public class GameBoard extends JPanel implements ActionListener {
 	/**
@@ -38,8 +44,10 @@ public class GameBoard extends JPanel implements ActionListener {
 
 	private GameThread thread;
 	private boolean moving;
-	private int movingCont;
+	private boolean twoPaths;
+	private int movingCont;// indicates through how many nodes the sprite has moved
 	public static Dice dice1, dice2;
+	public Arrow leftArrow, rightArrow;
 	Timer timer;
 
 	public GameBoard() {
@@ -52,6 +60,9 @@ public class GameBoard extends JPanel implements ActionListener {
 		createPhaseD();
 		dice1 = new Dice();
 		dice2 = new Dice();
+		leftArrow= Arrow.builder().left().build();
+		rightArrow = Arrow.builder().right().build();
+		
 		players.insertHead(new Player("P1", 1));
 		players.insertEnd(new Player("P2", 2));
 		players.insertEnd(new Player("P3", 3));
@@ -178,7 +189,6 @@ public class GameBoard extends JPanel implements ActionListener {
 			phaseC.insertEnd(box, i, j);
 			j++;
 		}
-		// phaseC.printList();
 	}
 
 	/**
@@ -216,14 +226,17 @@ public class GameBoard extends JPanel implements ActionListener {
 		if (dice1.thrown && dice2.thrown) {
 			startMovement();
 		} else if (moving) {
-			Point actualPos = playerInTurn.getPlayer().getLocation();
-			g2d.drawImage(playerInTurn.getPlayer().getSprite(), actualPos.x, actualPos.y, this);
-		}
+			for (int i = 0; i < players.getSize(); i++) {
+				Point actualPos = playerInTurn.getPlayer().getLocation();
+				g2d.drawImage(playerInTurn.getPlayer().getSprite(), actualPos.x, actualPos.y, this);
+				playerInTurn = playerInTurn.getNext();
+				
+			}
+			
 
-		else {
-
+		} else {
 			setPlayers(g2d);
-			g2d.dispose();
+			//this.remove(leftArrow);this.remove(rightArrow);
 		}
 
 		try {
@@ -232,14 +245,15 @@ public class GameBoard extends JPanel implements ActionListener {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-
 	}
 
 	public void setComponents(JPanel canvas) {
-		this.setLayout(new FlowLayout(FlowLayout.RIGHT));
+		this.setLayout(null);
+		dice1.setBounds(Window.width*6/8+20,30,96,96);
+		dice2.setBounds(Window.width*6/7,30,96,96);
+		
 		canvas.add(dice1);
 		canvas.add(dice2);
-
 	}
 
 	/**
@@ -303,7 +317,6 @@ public class GameBoard extends JPanel implements ActionListener {
 						.addComponent(phaseD.get(8)))
 				.addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING).addComponent(phaseD.get(5))
 						.addComponent(phaseD.get(6)).addComponent(phaseD.get(7)))
-
 		);
 
 		layout.setVerticalGroup(layout.createSequentialGroup()
@@ -375,37 +388,47 @@ public class GameBoard extends JPanel implements ActionListener {
 	 * @param g2d
 	 */
 	public void setPlayers(Graphics2D g2d) {
-		Node pointer = playerInTurn.getPlayer().getPointer();
-		// pointer.setHasPointer(true);
-		Point pt = new Point(pointer.getIndex());
-		pt.x = (pt.x * 80) + 20;
-		pt.y = (pt.y * 83) + 25;
-		g2d.drawImage(playerInTurn.getPlayer().getSprite(), pt.x, pt.y, this);
-		playerInTurn.getPlayer().setLocation(pt);
+		for (int i = 0; i < players.getSize(); i++) {
+			Node pointer = playerInTurn.getPlayer().getPointer();
+			Point pt = new Point(pointer.getIndex());
+			pt.x = (pt.x * 80) + 20;
+			pt.y = (pt.y * 83) + 25;
+
+			g2d.drawImage(playerInTurn.getPlayer().getSprite(), pt.x, pt.y, this);// draws player's sprite in canvas
+			playerInTurn.getPlayer().setLocation(pt);// sets actual location of the sprite
+			playerInTurn = playerInTurn.getNext();// pointer to the next player in turn
+		}
+
 	}
 
 	/**
-	 * Routine in charge of moving the players
+	 * Routine in charge of moving the players. The sprite keeps moving node by node
+	 * until it reaches the indicated by the number of the thrown dices
 	 */
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if (moving) {
 
-			Point newPos = playerInTurn.getPlayer().getPointer().getIndex();
+			Point newPos = playerInTurn.getPlayer().getPointer().getIndex();// Gets the location of the next node where
+																			// the player is moving (in terms of the
+																			// matrix index)
+			// changes the indexes to a location in screen
 			newPos.x = (newPos.x * 80) + 20;
 			newPos.y = (newPos.y * 83) + 25;
 
-			Point actualPos = playerInTurn.getPlayer().getLocation();
+			Point actualPos = playerInTurn.getPlayer().getLocation();// Gets the actual location of the sprite
 
-			if (actualPos.x == newPos.x && actualPos.y == newPos.y) {
-				movingCont++;
+			if (actualPos.x == newPos.x && actualPos.y == newPos.y) {// when the sprite reaches the position of the next
+																		// node:
+				movingCont++;// Increments counter that indicates through how many nodes the sprite has moved
 				System.out.println(movingCont + " " + (dice1.number + dice2.number));
-				if (movingCont == dice1.number + dice2.number) {
-					movingCont = 0;
-					moving = false;
+				if (movingCont == dice1.number + dice2.number) {// if the sprite reached the correct node
+					movingCont = 0;// resets counter
+					moving = false;// stops moving routine
+					playerInTurn = playerInTurn.getNext();// pointer to the next player in turn
 				} else {
 					movingPointer = movingPointer.getNext();
-					playerInTurn.getPlayer().setPointer(movingPointer);
+					playerInTurn.getPlayer().setPointer(movingPointer);// pointer to the next node
 				}
 			}
 			if (actualPos.x < newPos.x) {
@@ -417,11 +440,34 @@ public class GameBoard extends JPanel implements ActionListener {
 			} else if (actualPos.y > newPos.y) {
 				actualPos.y -= 1;
 			}
-
-			playerInTurn.getPlayer().setLocation(actualPos); // this is necessary to paint the sprite in the right place
+			playerInTurn.getPlayer().setLocation(actualPos);// this is necessary to paint the sprite in the right place
 			repaint();
-
 		}
 	}
-
+	
+	public void paintArrows(Graphics2D g) {
+		leftArrow.setBounds(leftArrow.getsLocation().x,leftArrow.getsLocation().y,108,105);
+		rightArrow.setBounds(rightArrow.getsLocation().x,rightArrow.getsLocation().y,108,105);
+		this.add(leftArrow);
+		this.add(rightArrow);
+		Point p1 = new Point(Window.width*9/12,Window.height/4);
+		g.drawImage(getSprite("images/choosePath.png"), p1.x+10,p1.y +20, this);
+		leftArrow.paintsArrow(g);
+		rightArrow.paintsArrow(g);
+	}
+	
+	/**
+	 * Public method. Returns BufferedImage
+	 * @param path
+	 * @return sprite : getSprite
+	 */
+	public BufferedImage getSprite(String path) {
+		BufferedImage sprite = null;
+		try {
+			sprite = ImageIO.read(new File(path));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return sprite;
+	}
 }
