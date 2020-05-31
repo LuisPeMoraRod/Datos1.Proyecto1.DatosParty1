@@ -3,7 +3,8 @@ package com.Datos1.Proyecto1.cover;
 public class CoverThread extends Thread {
 
     CoverBoard coverBoard;
-    public boolean intro = true;
+    boolean active = true;
+
 
     public CoverThread(CoverBoard coverBoard){
         this.coverBoard = coverBoard;
@@ -13,7 +14,7 @@ public class CoverThread extends Thread {
     public void run() {
         super.run();
 
-        while(intro){
+        while(active){
             try {
                 Thread.sleep(1);
             } catch (InterruptedException e) {
@@ -21,9 +22,7 @@ public class CoverThread extends Thread {
             }
             coverBoard.repaint();
         }
+
     }
 
-    public void endIntro(){
-        intro = false;
-    }
 }

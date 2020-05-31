@@ -30,6 +30,16 @@ public class CoverBoard extends JPanel {
 
         g.drawImage(background,0,0,CoverWindow.width,CoverWindow.height,this);
 
+        if (CoverEvent.cover){
+            g.drawImage(logo, CoverWindow.width/2-logo.getWidth()/2, CoverWindow.height/2-logo.getHeight()/2, this);
+            g.drawImage(enterPress, CoverWindow.width/2 - enterPress.getWidth()/2, CoverWindow.height-enterPress.getHeight()-10,this);
+        }
+
+        else if(CoverEvent.instructions){
+            g.drawImage(instructions, CoverWindow.width/2-instructions.getWidth()/2, CoverWindow.height/2-instructions.getHeight()/2, this);
+            g.drawImage(spacePress, CoverWindow.width/2 - spacePress.getWidth()/2, CoverWindow.height-spacePress.getHeight()-10,this);
+        }
+
 
     }
 

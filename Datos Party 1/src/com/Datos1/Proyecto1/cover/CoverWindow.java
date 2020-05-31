@@ -16,13 +16,20 @@ public class CoverWindow extends JFrame {
         setLocationRelativeTo(null);
         setUndecorated(true);
         setResizable(false);
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-        coverBoard = new CoverBoard("images/filLogo.png","images/filBackground.png","images/enterPress.png","images/spacePress.png","images/SnakeInstructions.png");
+        coverBoard = new CoverBoard("images/filLogo.png","images/filBackground.png","images/enterPress.png","images/spacePress.png","images/filInstructions.png");
         add(coverBoard);
+        addKeyListener(new CoverEvent());
 
         coverThread = new CoverThread(coverBoard);
         coverThread.start();
 
+    }
+
+    public void closeWindow(){
+        setVisible(false);
+        dispose();
     }
 
 }
