@@ -260,6 +260,7 @@ public class GameBoard extends JPanel implements ActionListener {
 		dice2.setBounds(Window.width*6/7,30,96,96);
 		canvas.add(dice1);
 		canvas.add(dice2);
+		System.out.println("odio git");
 	}
 
 	/**
