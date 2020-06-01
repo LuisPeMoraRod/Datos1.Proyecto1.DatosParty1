@@ -23,14 +23,15 @@ import java.util.Random;
  * @version 4/29/2020
  */
 
-public class Simon implements ActionListener, MouseListener {
+public class SimonBoard implements ActionListener, MouseListener {
 
 
-    public static Simon simon;
+
+
+    SimonWindow simonWindow;
 
     public SimonRenderer simonRenderer;
 
-    public static final int WIDTH=900, HEIGHT= 600;
 
     public int flashed = 0;
 
@@ -46,9 +47,6 @@ public class Simon implements ActionListener, MouseListener {
 
     public Random random;
 
-    Dimension dimension = Toolkit.getDefaultToolkit().getScreenSize();
-    int x = (int) ((dimension.getWidth()/2 - WIDTH / 2));
-    int y = (int) ((dimension.getHeight()/2 - HEIGHT / 2));
 
     BufferedImage imgBackground = ImageIO.read(new File("images/SimonBackground.png"));
     BufferedImage imgP1 = ImageIO.read(new File("images/P1.png"));
@@ -56,23 +54,16 @@ public class Simon implements ActionListener, MouseListener {
     BufferedImage imgP3 = ImageIO.read(new File("images/P3.png"));
     BufferedImage imgP4 = ImageIO.read(new File("images/P4.png"));
 
-    public Simon() throws IOException {
+    public SimonBoard() throws IOException {
 
-        JFrame frame = new JFrame();
+        simonWindow = new SimonWindow();
         Timer timer = new Timer(20,this);
-        Timer gameStart = new Timer(2000,this);
-        gameStart.setRepeats(false);
 
 
         simonRenderer = new SimonRenderer();
-        frame.add(simonRenderer);
-        frame.setSize(WIDTH, HEIGHT);
-        frame.setLocation(x, y);
-        frame.setUndecorated(true);
-        frame.setVisible(true);
-        frame.addMouseListener(this);
-        frame.setResizable(false);
-        frame.setDefaultCloseOperation(frame.EXIT_ON_CLOSE);
+        simonWindow.add(simonRenderer);
+        simonWindow.setVisible(true);
+        simonRenderer.addMouseListener(this);
 
         start();
         timer.start();
@@ -84,15 +75,10 @@ public class Simon implements ActionListener, MouseListener {
         random = new Random();
         pattern = new ArrayList<>();
         gameOver = false;
-        Timer gameStart = new Timer(2000,this);
-        gameStart.setRepeats(false);
+
 
     }
 
-    public static void main(String[] args) throws IOException {
-
-        simon = new Simon();
-    }
 
     /**
      * Invoked when an action occurs.
@@ -149,7 +135,7 @@ public class Simon implements ActionListener, MouseListener {
 
     public void paint(Graphics2D g) {
 
-        g.drawImage(imgBackground,0,0,WIDTH,HEIGHT,simonRenderer);
+        g.drawImage(imgBackground,0,0,SimonWindow.width,SimonWindow.height,simonRenderer);
         g.drawImage(imgP1,30,125,50,50,simonRenderer);
         g.drawImage(imgP2,30,225,50,50,simonRenderer);
         g.drawImage(imgP3,30,325,50,50,simonRenderer);
@@ -157,7 +143,7 @@ public class Simon implements ActionListener, MouseListener {
 
         g.setColor(Color.WHITE);
         g.setFont(new Font("Lao Sangam LM", Font.BOLD,35));
-        g.drawString("Round " + round, 545,150);
+        g.drawString("Round " + round, 600,150);
 
         if(flashed == 1){
             g.setColor(new Color(231, 44, 187));
@@ -165,7 +151,7 @@ public class Simon implements ActionListener, MouseListener {
         else{
             g.setColor(new Color(139, 28, 113));
         }
-        g.fillRoundRect(WIDTH/2,190, 100,100,10,10);
+        g.fillRoundRect(SimonWindow.width/2,190, 100,100,10,10);
 
         if (flashed == 2){
             g.setColor(new Color(107, 233, 39));
@@ -173,7 +159,7 @@ public class Simon implements ActionListener, MouseListener {
         else{
             g.setColor(new Color(106, 131, 25));
         }
-        g.fillRoundRect(WIDTH/2+120,190, 100,100,10,10);
+        g.fillRoundRect(SimonWindow.width/2+120,190, 100,100,10,10);
 
         if(flashed == 3){
             g.setColor(new Color(48, 241, 247));
@@ -181,7 +167,7 @@ public class Simon implements ActionListener, MouseListener {
         else{
             g.setColor(new Color(28, 136, 139));
         }
-        g.fillRoundRect(WIDTH/2+240,190, 100,100,10,10);
+        g.fillRoundRect(SimonWindow.width/2+240,190, 100,100,10,10);
 
         if(flashed==4){
             g.setColor(new Color(255, 144, 41));
@@ -189,7 +175,7 @@ public class Simon implements ActionListener, MouseListener {
         else{
             g.setColor(new Color(141, 80, 24));
         }
-        g.fillRoundRect(WIDTH/2,310, 100,100,10,10);
+        g.fillRoundRect(SimonWindow.width/2,310, 100,100,10,10);
 
         if(flashed == 5){
             g.setColor(new Color(227, 250, 42));
@@ -197,7 +183,7 @@ public class Simon implements ActionListener, MouseListener {
         else{
             g.setColor(new Color(128, 141, 24));
         }
-        g.fillRoundRect(WIDTH/2+120,310, 100,100,10,10);
+        g.fillRoundRect(SimonWindow.width/2+120,310, 100,100,10,10);
 
         if(flashed == 6){
             g.setColor(new Color(141, 40, 237));
@@ -205,12 +191,12 @@ public class Simon implements ActionListener, MouseListener {
         else{
             g.setColor(new Color(77, 22, 129));
         }
-        g.fillRoundRect(WIDTH/2+240,310, 100,100,10,10);
+        g.fillRoundRect(SimonWindow.width/2+240,310, 100,100,10,10);
 
         if(gameOver){
             g.setColor(Color.WHITE);
             g.setFont(new Font("Arial",Font.PLAIN,40));
-            g.drawString("Game over", 520,450);
+            g.drawString("Game over", 570,475);
         }
 
     }
@@ -240,7 +226,7 @@ public class Simon implements ActionListener, MouseListener {
 
             if(!creatingPattern && clickCounts< reference){
 
-                if (mouseX>WIDTH/2 && mouseX<WIDTH/2+100 && mouseY > 190 && mouseY<290){
+                if (mouseX>SimonWindow.width/2 && mouseX<SimonWindow.width/2+100 && mouseY > 190 && mouseY<290){
                     flashed = 1;
                     ticks=1;
                     clickCounts++;
@@ -253,7 +239,7 @@ public class Simon implements ActionListener, MouseListener {
                     indexPattern++;
 
                 }
-                else if (mouseX>WIDTH/2 + 120 && mouseX<WIDTH/2+220 && mouseY > 190 && mouseY<290){
+                else if (mouseX>SimonWindow.width/2 + 120 && mouseX<SimonWindow.width/2+220 && mouseY > 190 && mouseY<290){
                     flashed = 2;
                     ticks=1;
                     clickCounts++;
@@ -265,7 +251,7 @@ public class Simon implements ActionListener, MouseListener {
 
                     indexPattern++;
                 }
-                else if(mouseX>WIDTH/2 + 240 && mouseX<WIDTH/2+340 && mouseY > 190 && mouseY<290){
+                else if(mouseX>SimonWindow.width/2 + 240 && mouseX<SimonWindow.width/2+340 && mouseY > 190 && mouseY<290){
                     flashed = 3;
                     ticks=1;
                     clickCounts++;
@@ -277,7 +263,7 @@ public class Simon implements ActionListener, MouseListener {
 
                     indexPattern++;
                 }
-                else if(mouseX>WIDTH/2 && mouseX<WIDTH/2+100 && mouseY > 310 && mouseY<410){
+                else if(mouseX>SimonWindow.width/2 && mouseX<SimonWindow.width/2+100 && mouseY > 310 && mouseY<410){
                     flashed = 4;
                     ticks=1;
                     clickCounts++;
@@ -289,7 +275,7 @@ public class Simon implements ActionListener, MouseListener {
 
                     indexPattern++;
                 }
-                else if(mouseX>WIDTH/2 +120 && mouseX<WIDTH/2+220 && mouseY > 310 && mouseY<410){
+                else if(mouseX>SimonWindow.width/2 +120 && mouseX<SimonWindow.width/2+220 && mouseY > 310 && mouseY<410){
                     flashed = 5;
                     ticks=1;
                     clickCounts++;
@@ -302,7 +288,7 @@ public class Simon implements ActionListener, MouseListener {
                     indexPattern++;
                 }
               
-                else if(mouseX>WIDTH/2 + 240 && mouseX<WIDTH/2+340 && mouseY >310 && mouseY<410){
+                else if(mouseX>SimonWindow.width/2 + 240 && mouseX<SimonWindow.width/2+340 && mouseY >310 && mouseY<410){
                   
                     flashed = 6;
                     ticks=1;

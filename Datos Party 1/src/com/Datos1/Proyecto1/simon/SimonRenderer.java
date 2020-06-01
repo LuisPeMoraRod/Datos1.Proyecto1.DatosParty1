@@ -25,9 +25,9 @@ public class SimonRenderer extends JPanel {
 
         super.paintComponent(g);
 
-        if (Simon.simon!=null){
+        if (SimonMain.simon!=null){
 
-            Simon.simon.paint((Graphics2D)g);
+            SimonMain.simon.paint((Graphics2D)g);
         }
     }
 }
