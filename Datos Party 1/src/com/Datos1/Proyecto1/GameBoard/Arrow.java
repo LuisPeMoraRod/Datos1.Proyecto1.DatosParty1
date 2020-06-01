@@ -14,70 +14,83 @@ import java.io.IOException;
 
 import javax.imageio.ImageIO;
 
-public class Arrow extends Component{
+public class Arrow extends Component {
 	/**
 	 * Arrow image component class
+	 * 
 	 * @author Luis Pedro Morales Rodriguez
 	 * @version 30/5/2020
 	 */
-	
+
 	private String path;
-	private int transparency=10;
+	private int transparency = 10;
 	private BufferedImage sprite;
-	private int width,height;
+	private int width, height;
 	private Point location;
-	
+	private boolean isRight;
+	private boolean isUp;
+
 	public Arrow(Builder builder) {
-		path=builder.getPath();
-		location=builder.getLocation();
+		path = builder.getPath();
+		location = builder.getLocation();
+		isRight = builder.isRight;
 		setTransparency();
 		clickOnDice();
 	}
-	
+
 	public Point getsLocation() {
 		return this.location;
 	}
+
 	public static Builder builder() {
 		return new Builder();
 	}
-	
-	public static class Builder{
+
+	public static class Builder {
 		/**
 		 * Builder class. Sets the path of the image for right or left arrow.
 		 */
-		
+
 		private String path;
-		private Point location;//location of the sprite in the canvas
-		
+		private Point location;// location of the sprite in the canvas
+		private boolean isRight;
+		private boolean isUp;
+
 		public Arrow build() {
 			return new Arrow(this);
 		}
+
 		public Builder right() {
-			path="images/rightArrow.png";
-			location=new Point(Window.width*10/12,Window.height*3/7);//sets location for right arrow
-			location.x+=40;
+			path = "images/rightArrow.png";
+			location = new Point(Window.width * 10 / 12, Window.height * 3 / 7);// sets location for right arrow
+			location.x += 40;
+			isRight = true;
 			return this;
 		}
-		
+
 		public Builder left() {
-			path="images/leftArrow.png";
-			location=new Point(Window.width*10/12,Window.height*3/7);//sets location for left arrow
-			location.x-=80;
+			path = "images/leftArrow.png";
+			location = new Point(Window.width * 10 / 12, Window.height * 3 / 7);// sets location for left arrow
+			location.x -= 80;
+			isRight = false;
 			return this;
 		}
+
 		public String getPath() {
 			return this.path;
 		}
+
 		public Point getLocation() {
 			return this.location;
 		}
-		
+
 	}
-	
-	@Override 
+
+	@Override
 	public void paint(Graphics g) {
-		
+
 	}
+
 	public void paintsArrow(Graphics g) {
 		Graphics2D g2d = (Graphics2D) g.create();
 		float alpha = (float) ((transparency) * 0.1f);
@@ -85,19 +98,21 @@ public class Arrow extends Component{
 		g2d.setComposite(alcom);
 		g2d.drawImage(getSprite(path), location.x, location.y, null);
 	}
-	
+
 	@Override
-    public Dimension getPreferredSize() {
+	public Dimension getPreferredSize() {
 		if (sprite == null) {
 			return new Dimension(108, 105);
 		} else {
 			return new Dimension(width, height);
 
 		}
-    }
-	
+	}
+
 	/**
-	 * Public method. Used to draw the sprite in the canvas. Returns a BufferedImage object
+	 * Public method. Used to draw the sprite in the canvas. Returns a BufferedImage
+	 * object
+	 * 
 	 * @param path
 	 * @return sprite : BufferedImage
 	 */
@@ -109,38 +124,47 @@ public class Arrow extends Component{
 		}
 		return sprite;
 	}
-	
+
 	/**
 	 * Public method. Sets mouse adapter on the component. Changes transparency of
-	 * the component when the mouse enters or exits it.
-	 *  {@link MouseAdapter}
+	 * the component when the mouse enters or exits it. {@link MouseAdapter}
 	 */
 	public void setTransparency() {
 		this.addMouseListener(new MouseAdapter() {
 			public void mouseEntered(MouseEvent me) {
-				transparency=5;
+				transparency = 5;
 			}
 		});
 		this.addMouseListener(new MouseAdapter() {
 			public void mouseExited(MouseEvent me) {
-				transparency=10;
+				transparency = 10;
 			}
 		});
 	}
-	
+
 	/**
-	 * Public method. Sets mouse adapter on the dice object. 
-	 * {@link MouseAdapter}
+	 * Public method. Sets mouse adapter on the dice object. {@link MouseAdapter}
 	 */
 	public void clickOnDice() {
 		this.addMouseListener(new MouseAdapter() {
 			public void mouseClicked(MouseEvent e) {
-				GameBoard.twoPaths=false;
-				GameBoard.moving=true;
-				Node pointer = GameBoard.phaseA.head;
-				GameBoard.playerInTurn.getPlayer().setPointer(pointer);
+				if (isRight) {
+					GameBoard.twoPaths = false;
+					GameBoard.moving = true;
+					Node pointer = GameBoard.phaseA.head;
+					GameBoard.movingPointer = pointer;
+					GameBoard.playerInTurn.getPlayer().setPointer(pointer);
+					
+				}else if (!isRight){
+					GameBoard.twoPaths = false;
+					GameBoard.moving = true;
+					GameBoard.movingPointer = GameBoard.playerInTurn.getPlayer().getPointer();
+					GameBoard.movingPointer = GameBoard.movingPointer.getNext();
+					GameBoard.playerInTurn.getPlayer().setPointer(GameBoard.movingPointer);
+					
+				}
 			}
 		});
 	}
-	
+
 }

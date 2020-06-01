@@ -57,6 +57,30 @@ public class CircularDoublyLinkedList {
 		}
 		size++;
 	}
+	
+	/**
+	 * Public method. Inserts a node at the very beginning of the linked list.
+	 * 
+	 * @param newPlayer : Player
+	 */
+	public void insertHead(Player newPlayer) {
+		Node newNode = Node.builder().withPlayer(newPlayer).withId(size).build();
+		if (isEmpty()) {
+			newNode.setNext(newNode);
+			newNode.setPrev(newNode);
+			start = newNode;
+			end = start;
+		} else {
+			newNode.setNext(start);
+			newNode.setPrev(end);
+			start.setPrev(newNode);
+			start = newNode;
+			end.setNext(start);
+		}
+
+		size++;
+	}
+
 
 	/**
 	 * Public method. Inserts a node at the very end of the doubly linked list.
@@ -81,6 +105,28 @@ public class CircularDoublyLinkedList {
 			start.setPrev(end);
 		}
 		size++;
+	}
+	
+	/**
+	 * Public method. Inserts a note at the very end of the linked circular list.
+	 * @param newPlayer : Player
+	 */
+	public void insertEnd(Player newPlayer) {
+		Node newNode = Node.builder().withPlayer(newPlayer).withId(size).build();
+		if (isEmpty()) {
+			newNode.setNext(newNode);
+			newNode.setPrev(newNode);
+			start = newNode;
+			end = start;
+		} else {
+			end.setNext(newNode);
+			newNode.setPrev(end);
+			newNode.setNext(start);
+			end = newNode;
+			start.setPrev(end);
+		}
+		size++;
+
 	}
 
 	/**
