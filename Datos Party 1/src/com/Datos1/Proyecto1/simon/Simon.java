@@ -159,22 +159,6 @@ public class Simon implements ActionListener, MouseListener {
         g.setFont(new Font("Lao Sangam LM", Font.BOLD,35));
         g.drawString("Round " + round, 545,150);
 
-        g.setColor(new Color(231, 44, 187));
-        g.fillRoundRect(130,30,20,20,5,5);
-        g.setColor(new Color(107, 233, 39));
-        g.fillRoundRect(155,30,20,20,5,5);
-        g.setColor(new Color(48, 241, 247));
-        g.fillRoundRect(130,55,20,20,5,5);
-        g.setColor(new Color(255, 144, 41));
-        g.fillRoundRect(365,55,20,20,5,5);
-        g.setColor(new Color(227, 250, 42));
-        g.fillRoundRect(365,30,20,20,5,5);
-        g.setColor(new Color(141, 40, 237));
-        g.fillRoundRect(340,30,20,20,5,5);
-        g.setColor(Color.WHITE);
-        g.setFont(new Font("Phosphate", Font.BOLD,50));
-        g.drawString("S  I M  O  N", 150,75);
-
         if(flashed == 1){
             g.setColor(new Color(231, 44, 187));
         }

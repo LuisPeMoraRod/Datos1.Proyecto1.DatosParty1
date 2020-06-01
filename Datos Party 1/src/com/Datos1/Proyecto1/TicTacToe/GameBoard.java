@@ -7,7 +7,6 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.Label;
-import java.awt.event.KeyAdapter;
 import java.awt.geom.Line2D;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
@@ -21,12 +20,12 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 
-public class GameBoard extends JPanel{
+public class GameBoard extends JPanel {
 
 	/**
 	 * Public class that displays the canvas with all its needed components on the
 	 * game window. It's constantly updating the status of its components
-	 * 
+	 *
 	 * @author Luis Pedro Morales Rodriguez
 	 * @version 25/3/2020
 	 */
@@ -44,7 +43,7 @@ public class GameBoard extends JPanel{
 	static Squares S9 = new Squares();
 
 	static int gameStatus[][] = new int[3][3]; // Array that controls the status of the game and is used to determine if
-												// a player has won or of the game ended in a draw
+	// a player has won or of the game ended in a draw
 	static int cont = 0;
 	public static String winner;
 	public String player1, player2;
@@ -52,27 +51,22 @@ public class GameBoard extends JPanel{
 	private static final long serialVersionUID = 1L;
 	final Image wallpaper = requestImage();
 
-	private int counter = 0;
-
-	BufferedImage tttLogo =ImageIO.read(new File("images/tttLogo.png"));
-
-
 	/**
 	 * Constructor method
-	 * 
+	 *
 	 * @param player1 : String
 	 * @param player2 : String
 	 */
-	public GameBoard(String player1, String player2) throws IOException {
+	public GameBoard(String player1, String player2) {
 		this.player1 = player1;
 		this.player2 = player2;
+		setPanel(S1, S2, S3, S4, S5, S6, S7, S8, S9);
 
-		
 	}
 
 	/**
 	 * Public method that sets the position of components in the canvas
-	 * 
+	 *
 	 * @param S1 : Squares
 	 * @param S2 : Squares
 	 * @param S3 : Squares
@@ -83,9 +77,8 @@ public class GameBoard extends JPanel{
 	 * @param S8 : Squares
 	 * @param S9 : Squares
 	 */
-
 	public void setPanel(Squares S1, Squares S2, Squares S3, Squares S4, Squares S5, Squares S6, Squares S7, Squares S8,
-			Squares S9) {
+						 Squares S9) {
 
 		GroupLayout layout = new GroupLayout(this);
 		setLayout(layout);
@@ -125,7 +118,7 @@ public class GameBoard extends JPanel{
 
 	/**
 	 * Overrided method that's in charge of painting components on the canvas
-	 * 
+	 *
 	 * @see GameBoard#update()
 	 * @see GameBoard#setPanel(Squares, Squares, Squares, Squares, Squares, Squares,
 	 *      Squares, Squares, Squares)
@@ -136,22 +129,8 @@ public class GameBoard extends JPanel{
 		g.drawImage(wallpaper, 0, 0, null);
 		Graphics2D g2 = (Graphics2D) g;
 		g2.setPaint(Color.WHITE);
+		update();
 
-		if(counter <2000) {
-			g2.drawImage(tttLogo,300,60,300,350,this);
-			counter++;
-		}
-
-		else if(counter==2000){
-			setPanel(S1, S2, S3, S4, S5, S6, S7, S8, S9);
-			counter++;
-		}
-
-		else{
-			update();
-		}
-
-		
 		// removeAll();
 		/*
 		 * Graphics2D g2=(Graphics2D)g; g2.setColor(Color.black); g2.fill(new
@@ -177,7 +156,7 @@ public class GameBoard extends JPanel{
 
 	/**
 	 * Public method that constantly updates the canvas of the game board
-	 * 
+	 *
 	 * @return void {@link Squares#setTypeSquare()}
 	 *         {@link GameBoard#setMatrix(Squares)}
 	 */
@@ -201,13 +180,13 @@ public class GameBoard extends JPanel{
 		S9.setTypeSquare();
 		setMatrix(S9);
 		setTurnText(turnLabel);
-		
+
 	}
 
 	/**
 	 * Public method that sets a value of the gameSatus matrix. If the value is
 	 * true, it represents an X. If it is false, it represents an O.
-	 * 
+	 *
 	 * @param square: Square type object
 	 */
 	public void setMatrix(Squares square) {
@@ -228,7 +207,7 @@ public class GameBoard extends JPanel{
 	/**
 	 * Public method in charge of checking after every play if there's a winner or
 	 * not
-	 * 
+	 *
 	 * @param player1: String
 	 * @param player2: String
 	 * @return String object that represents the name of the winner player. If no
@@ -246,7 +225,7 @@ public class GameBoard extends JPanel{
 		int pos22 = gameStatus[2][2];
 
 		if (pos00 == pos01 && pos00 == pos02 && pos00 != 0) {
-			
+
 			if (pos00 == 1) {
 				return player1;
 			} else {
@@ -312,7 +291,7 @@ public class GameBoard extends JPanel{
 
 		return null;
 	}
-	
+
 	public void setTurnText(JLabel label) {
 		winner = checkVictory(player1, player2);
 		String text;
@@ -320,16 +299,16 @@ public class GameBoard extends JPanel{
 			GameBoard.gameEnded = true;// Game ended with a winner
 			text="<html><body><font size=6><br>Winner: "+winner+".</font> </body></html>";
 			turnLabel.setText(text);
-			
+
 		}
 		if (winner == null && cont > 8) {
 			GameBoard.gameEnded = true;
 			winner = "draw";
 			text="<html><body><font size=6><br>Game ended: "+winner+".</font> </body></html>";
 			turnLabel.setText(text);
-			
+
 		}
-		
+
 		if (!GameBoard.gameEnded) {
 			if (MouseClickedEvent.isFirstPlayer) {
 				text="<html><body><font size=6><br>It's "+player1+"'s turn</font> </body></html>";
@@ -338,7 +317,7 @@ public class GameBoard extends JPanel{
 				text="<html><body><font size=6><br>It's "+player2+"'s turn</font> </body></html>";
 				turnLabel.setText(text);
 			}
-			
+
 		}
 	}
 
