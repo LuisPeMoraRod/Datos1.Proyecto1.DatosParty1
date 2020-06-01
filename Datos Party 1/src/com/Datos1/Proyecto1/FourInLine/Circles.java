@@ -70,7 +70,7 @@ public class Circles extends Component {
 			g2d.setColor(red);
 		}
 
-		Ellipse2D.Double circle = new Ellipse2D.Double(0, 0, Window4IL.width / 9, Window4IL.width / 9);
+		Ellipse2D.Double circle = new Ellipse2D.Double(0, 0, Window4IL.width / 10.5, Window4IL.width / 10.5);
 		g2d.fill(circle);
 	}
 

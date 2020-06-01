@@ -317,7 +317,9 @@ public class Simon implements ActionListener, MouseListener {
 
                     indexPattern++;
                 }
+              
                 else if(mouseX>WIDTH/2 + 240 && mouseX<WIDTH/2+340 && mouseY >310 && mouseY<410){
+                  
                     flashed = 6;
                     ticks=1;
                     clickCounts++;
