@@ -20,7 +20,7 @@ public class Window extends JFrame {
 	private static final long serialVersionUID = 1L;
 
 	private int width, height;
-	public static int frameWidth = 615, frameHeight = 503;
+	public static int frameWidth = 490, frameHeight = 375;//615  503
 	public static GameBoard canvas1, canvas2, canvas3, canvas4;
 
 	JDesktopPane desk;
@@ -58,23 +58,23 @@ public class Window extends JFrame {
 	 */
 	public void setWindowSize(int players) {
 		if (players == 1) {
-			width = 620;// 555
-			height = 542;
+			width = frameWidth;// 555
+			height = frameHeight;
 			setSize(width, height);
 		}
 		if (players == 2) {
-			width = 1246;
-			height = 542;
+			width = frameWidth*2;
+			height = frameHeight;
 			setSize(width, height);
 		}
 		if (players == 3) {
-			width = 1861;
-			height = 542;
+			width =  frameWidth*2;
+			height = frameHeight*2+39;
 			setSize(width, height);
 		}
 		if (players == 4) {
-			width = 1246;
-			height = 1045;// 889
+			width =  frameWidth*2;
+			height = frameHeight*2+39;// 889
 			setSize(width, height);
 		}
 	}
@@ -106,7 +106,7 @@ public class Window extends JFrame {
 			frame2 = new JInternalFrame("Frame2", true, true, true, true);
 			frame2.setVisible(true);
 			frame2.setSize(frameWidth, frameHeight);
-			frame2.setLocation(615, 0);
+			frame2.setLocation(frameWidth, 0);
 			int x = frame2.getX();
 			int y = frame2.getY();
 			internalFrameProps(frame2, x, y);
@@ -120,10 +120,10 @@ public class Window extends JFrame {
 			frame3.setVisible(true);
 			frame3.setSize(frameWidth, frameHeight);
 			if (players == 3) {
-				frame3.setLocation(1230, 0);
+				frame3.setLocation(frameWidth*2/4, frameHeight);
 			}
 			if (players == 4) {
-				frame3.setLocation(0, 503);
+				frame3.setLocation(0, frameHeight);
 			}
 			int x = frame3.getX();
 			int y = frame3.getY();
@@ -137,7 +137,7 @@ public class Window extends JFrame {
 			frame4 = new JInternalFrame("Frame4", true, true, true, true);
 			frame4.setVisible(true);
 			frame4.setSize(frameWidth, frameHeight);
-			frame4.setLocation(615, 503);
+			frame4.setLocation(frameWidth, frameHeight);
 			int x = frame4.getX();
 			int y = frame4.getY();
 			// frame4.setMaximizable(false);
