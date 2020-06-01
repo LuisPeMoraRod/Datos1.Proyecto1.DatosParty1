@@ -102,7 +102,7 @@ public class Dice extends Component {
 	public void clickOnDice() {
 		this.addMouseListener(new MouseAdapter() {
 			public void mouseClicked(MouseEvent e) {
-
+				GameBoard.throwAgain=false;
 				DiceThread thread = new DiceThread(Window.canvas);
 				thread.start();
 			}

@@ -47,6 +47,7 @@ public class GameBoard extends JPanel implements ActionListener {
 	public static boolean twoPaths;
 	private boolean disappears;
 	private boolean appears;
+	public static boolean throwAgain;
 	public static int movingCont;// indicates through how many nodes the sprite has moved
 	public static Dice dice1, dice2;
 	public Arrow leftArrow, rightArrow;
@@ -233,6 +234,10 @@ public class GameBoard extends JPanel implements ActionListener {
 		pos.x = (pos.x * 80) + 2;
 		pos.y = (pos.y * 83) + 2;
 		g.drawImage(blackHole, pos.x, pos.y, this);
+		if (throwAgain) { //draws message of throwing dices again after falling in the black hole
+			Point p1 = new Point(Window.width * 9 / 12, Window.height / 4);
+			g.drawImage(getSprite("images/throwAgain.png"), p1.x + 30, p1.y + 20, this);
+		}
 
 	}
 
@@ -403,7 +408,8 @@ public class GameBoard extends JPanel implements ActionListener {
 			}
 		}
 		else {
-			setPlayers(g2d);// pain
+			setPlayers(g2d);
+			
 		}
 
 		try {
@@ -618,7 +624,7 @@ public class GameBoard extends JPanel implements ActionListener {
 		if (transparency == 11) {
 			transparency=10;
 			appears = false;
-			playerInTurn = playerInTurn.getNext();// pointer to the next player in turn
+			throwAgain=true;
 		}
 	}
 
