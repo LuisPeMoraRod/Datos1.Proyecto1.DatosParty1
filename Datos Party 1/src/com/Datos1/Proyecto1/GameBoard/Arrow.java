@@ -28,6 +28,7 @@ public class Arrow extends Component {
 	private int width, height;
 	private Point location;
 	private boolean isRight;
+	private boolean isUp;
 
 	public Arrow(Builder builder) {
 		path = builder.getPath();
@@ -53,6 +54,7 @@ public class Arrow extends Component {
 		private String path;
 		private Point location;// location of the sprite in the canvas
 		private boolean isRight;
+		private boolean isUp;
 
 		public Arrow build() {
 			return new Arrow(this);
@@ -153,7 +155,7 @@ public class Arrow extends Component {
 					GameBoard.movingPointer = pointer;
 					GameBoard.playerInTurn.getPlayer().setPointer(pointer);
 					
-				}else {
+				}else if (!isRight){
 					GameBoard.twoPaths = false;
 					GameBoard.moving = true;
 					GameBoard.movingPointer = GameBoard.playerInTurn.getPlayer().getPointer();
