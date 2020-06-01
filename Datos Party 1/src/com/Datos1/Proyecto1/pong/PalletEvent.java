@@ -5,7 +5,7 @@ import java.awt.event.KeyEvent;
 
 public class PalletEvent extends KeyAdapter {
 
-    static boolean w, s, up, down, start;
+    static boolean w, s, up, down, cover=true, instructions;
 
     @Override
     public void keyPressed(KeyEvent e) {
@@ -28,7 +28,12 @@ public class PalletEvent extends KeyAdapter {
         }
 
         if(id== KeyEvent.VK_ENTER){
-            start= true;
+            cover= false;
+            instructions = true;
+        }
+
+        if(id == KeyEvent.VK_SPACE && cover==false){
+            instructions = false;
         }
     }
 

@@ -7,6 +7,7 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.Label;
+import java.awt.event.KeyAdapter;
 import java.awt.geom.Line2D;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
@@ -20,7 +21,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 
-public class GameBoard extends JPanel {
+public class GameBoard extends JPanel{
 
 	/**
 	 * Public class that displays the canvas with all its needed components on the
@@ -51,16 +52,21 @@ public class GameBoard extends JPanel {
 	private static final long serialVersionUID = 1L;
 	final Image wallpaper = requestImage();
 
+	private int counter = 0;
+
+	BufferedImage tttLogo =ImageIO.read(new File("images/tttLogo.png"));
+
+
 	/**
 	 * Constructor method
 	 * 
 	 * @param player1 : String
 	 * @param player2 : String
 	 */
-	public GameBoard(String player1, String player2) {
+	public GameBoard(String player1, String player2) throws IOException {
 		this.player1 = player1;
 		this.player2 = player2;
-		setPanel(S1, S2, S3, S4, S5, S6, S7, S8, S9);
+
 		
 	}
 
@@ -77,6 +83,7 @@ public class GameBoard extends JPanel {
 	 * @param S8 : Squares
 	 * @param S9 : Squares
 	 */
+
 	public void setPanel(Squares S1, Squares S2, Squares S3, Squares S4, Squares S5, Squares S6, Squares S7, Squares S8,
 			Squares S9) {
 
@@ -129,7 +136,21 @@ public class GameBoard extends JPanel {
 		g.drawImage(wallpaper, 0, 0, null);
 		Graphics2D g2 = (Graphics2D) g;
 		g2.setPaint(Color.WHITE);
-		update();
+
+		if(counter <2000) {
+			g2.drawImage(tttLogo,300,60,300,350,this);
+			counter++;
+		}
+
+		else if(counter==2000){
+			setPanel(S1, S2, S3, S4, S5, S6, S7, S8, S9);
+			counter++;
+		}
+
+		else{
+			update();
+		}
+
 		
 		// removeAll();
 		/*

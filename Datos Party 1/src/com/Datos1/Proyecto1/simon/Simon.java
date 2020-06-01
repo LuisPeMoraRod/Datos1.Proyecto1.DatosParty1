@@ -256,7 +256,7 @@ public class Simon implements ActionListener, MouseListener {
 
             if(!creatingPattern && clickCounts< reference){
 
-                if (mouseX>WIDTH/2 && mouseX<WIDTH/2+100 && mouseY > HEIGHT/4 && mouseY<HEIGHT/4+100){
+                if (mouseX>WIDTH/2 && mouseX<WIDTH/2+100 && mouseY > 190 && mouseY<290){
                     flashed = 1;
                     ticks=1;
                     clickCounts++;
@@ -269,7 +269,7 @@ public class Simon implements ActionListener, MouseListener {
                     indexPattern++;
 
                 }
-                else if (mouseX>WIDTH/2 + 120 && mouseX<WIDTH/2+220 && mouseY > HEIGHT/4 && mouseY<HEIGHT/4+100){
+                else if (mouseX>WIDTH/2 + 120 && mouseX<WIDTH/2+220 && mouseY > 190 && mouseY<290){
                     flashed = 2;
                     ticks=1;
                     clickCounts++;
@@ -281,7 +281,7 @@ public class Simon implements ActionListener, MouseListener {
 
                     indexPattern++;
                 }
-                else if(mouseX>WIDTH/2 + 240 && mouseX<WIDTH/2+340 && mouseY > HEIGHT/4 && mouseY<HEIGHT/4+100){
+                else if(mouseX>WIDTH/2 + 240 && mouseX<WIDTH/2+340 && mouseY > 190 && mouseY<290){
                     flashed = 3;
                     ticks=1;
                     clickCounts++;
@@ -293,7 +293,7 @@ public class Simon implements ActionListener, MouseListener {
 
                     indexPattern++;
                 }
-                else if(mouseX>WIDTH/2 && mouseX<WIDTH/2+100 && mouseY > HEIGHT/4 +120 && mouseY<HEIGHT/4+220){
+                else if(mouseX>WIDTH/2 && mouseX<WIDTH/2+100 && mouseY > 310 && mouseY<410){
                     flashed = 4;
                     ticks=1;
                     clickCounts++;
@@ -305,7 +305,7 @@ public class Simon implements ActionListener, MouseListener {
 
                     indexPattern++;
                 }
-                else if(mouseX>WIDTH/2 +120 && mouseX<WIDTH/2+220 && mouseY > HEIGHT/4 +120 && mouseY<HEIGHT/4+220){
+                else if(mouseX>WIDTH/2 +120 && mouseX<WIDTH/2+220 && mouseY > 310 && mouseY<410){
                     flashed = 5;
                     ticks=1;
                     clickCounts++;
@@ -317,7 +317,9 @@ public class Simon implements ActionListener, MouseListener {
 
                     indexPattern++;
                 }
-                else if(mouseX>WIDTH/2 + 240 && mouseX<WIDTH/2+340 && mouseY > HEIGHT/4 +120 && mouseY<HEIGHT/4+220){
+              
+                else if(mouseX>WIDTH/2 + 240 && mouseX<WIDTH/2+340 && mouseY >310 && mouseY<410){
+                  
                     flashed = 6;
                     ticks=1;
                     clickCounts++;

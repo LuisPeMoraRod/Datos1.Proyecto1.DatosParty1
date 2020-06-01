@@ -65,7 +65,9 @@ public class GameBoard extends JPanel implements ActionListener {
 		birdWidth = sprite.birdWidth;
 		birdHeight = sprite.birdHeight;
 
-		x = (frameWidth / 3) - (birdWidth / 2);
+		x = ((frameWidth / 3) - (birdWidth / 2))/10;
+		x*=10;
+		System.out.println(x);
 		y = (frameHeight / 2) - (birdHeight / 2);
 
 		columnsArray = new ArrayList<Rectangle>();
@@ -75,7 +77,6 @@ public class GameBoard extends JPanel implements ActionListener {
 		gameOver = false;
 
 		timer = new Timer(20, this);
-
 		timer.start();
 
 	}
@@ -84,8 +85,9 @@ public class GameBoard extends JPanel implements ActionListener {
 	 * Public method that creates two columns with the shape of pipelines and adds them to the columnsArray
 	 */
 	public void createColumn() {
-		int space = 160;
-		int width = 90;
+		int space = (int) (Window.frameHeight/2.8);
+		int width = (int)(Window.frameWidth*0.15)/10;
+		width*=10;
 		int height = columnHeights[columnIndex];
 		Rectangle tube1 = new Rectangle(frameWidth, 0, width, height);
 		Rectangle border1 = new Rectangle(tube1.x - 8, tube1.y + height - 10, width + 16, 10);
@@ -189,9 +191,7 @@ public class GameBoard extends JPanel implements ActionListener {
 
 			}
 		}
-
 		repaint();
-
 	}
 
 	/**
@@ -207,23 +207,23 @@ public class GameBoard extends JPanel implements ActionListener {
 			paintColumn(g, column);
 		}
 		g.setColor(Color.white);
-		g.setFont(new Font("Arial", 1, 30));
+		g.setFont(new Font("Arial", 1, 25));
 		if (!gameOn) {
 			if (player == 1) {
-				g.drawString("Tap w to start", 210, 50);
+				g.drawString("Tap w to start", 160, 50);
 			}
 			if (player == 2) {
-				g.drawString("Tap space bar to start", 150, 50);
+				g.drawString("Tap space bar to start", 100, 50);
 			}
 			if (player == 3) {
-				g.drawString("Tap p to start", 210, 50);
+				g.drawString("Tap p to start", 160, 50);
 			}
 			if (player == 4) {
-				g.drawString("Tap up key to start", 160, 50);
+				g.drawString("Tap up key to start", 120, 50);
 			}
 
 		} else {
-			g.drawString("Score: " + String.valueOf(score), 250, 50);
+			g.drawString("Score: " + String.valueOf(score), (int) (frameWidth*0.4), 50);
 		}
 
 	}
