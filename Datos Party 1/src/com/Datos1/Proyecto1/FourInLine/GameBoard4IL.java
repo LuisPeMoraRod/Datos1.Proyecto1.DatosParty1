@@ -22,7 +22,6 @@ public class GameBoard4IL extends JPanel implements ActionListener {
 
 	private JLabel turnLabel = new JLabel();
 
-
 	public static boolean gameEnded;
 	public static boolean draw;
 	public static boolean playerOne = true;
@@ -83,17 +82,6 @@ public class GameBoard4IL extends JPanel implements ActionListener {
 		}
 
 	}
-
-
-	private void drawCircles(Circles[][] circles, Graphics g, Color color) {
-		for (int i = 0; i < circles.length; i++) {
-			for (int j = 0; j < circles[i].length; j++) {
-				// circles[i][j].draw(g, color);;
-			}
-		}
-
-	}
-
 
 	public void setCircles(Circles[][] c) {
 		GroupLayout layout = new GroupLayout(this);
@@ -175,6 +163,11 @@ public class GameBoard4IL extends JPanel implements ActionListener {
 
 	}
 
+	/**
+	 * Public method that sets the token's player.
+	 * 
+	 * @param c : Circles
+	 */
 	public void setToken(Circles c) {
 		if (playerOne) {
 			c.player = 1;
@@ -183,6 +176,14 @@ public class GameBoard4IL extends JPanel implements ActionListener {
 		}
 	}
 
+	/**
+	 * Public method that checks in the array of Circles objects if there's already
+	 * a token in the next position of the column where the token is falling. When
+	 * the token finds another token or gets to the last row, it sets the new
+	 * 
+	 * @param c : Circles
+	 * @return boolean
+	 */
 	public boolean isToken(Circles c) {
 		if (c.player > 0 && c.i == 1) {
 			return true;
@@ -422,8 +423,8 @@ public class GameBoard4IL extends JPanel implements ActionListener {
 				thread = new hideShow(line4);
 				thread.start();
 
-				//thread = new hideShow(line4);
-				//thread.start();
+				// thread = new hideShow(line4);
+				// thread.start();
 
 			}
 

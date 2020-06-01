@@ -12,7 +12,7 @@ public class Window4IL extends JFrame {
 	 */
 	private static final long serialVersionUID = 1L;
 	public static int width = 800;
-	static int height = 850;
+	static int height = 750;
 	GameBoard4IL canvas;
 
 	/**

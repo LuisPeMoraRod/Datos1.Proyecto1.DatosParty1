@@ -21,7 +21,9 @@ import javax.swing.Timer;
 
 public class GameBoard extends JPanel implements ActionListener {
 	/**
-	 * 
+	 * Public class that creates the canvas where the game develops
+	 * @author Luis Pedro Morales Rodriguez
+	 * @version 4/1/2020
 	 */
 	private static final long serialVersionUID = 1L;
 	public int player;
@@ -57,13 +59,15 @@ public class GameBoard extends JPanel implements ActionListener {
 		image = sprite.getBird();
 		wallpaper = getWallpaper();
 
-		frameWidth = WindowFP.frameWidth;
-		frameHeight = WindowFP.frameHeight;
+		frameWidth = Window.frameWidth;
+		frameHeight = Window.frameHeight;
 
 		birdWidth = sprite.birdWidth;
 		birdHeight = sprite.birdHeight;
 
-		x = (frameWidth / 3) - (birdWidth / 2);
+		x = ((frameWidth / 3) - (birdWidth / 2))/10;
+		x*=10;
+		System.out.println(x);
 		y = (frameHeight / 2) - (birdHeight / 2);
 
 		columnsArray = new ArrayList<Rectangle>();
@@ -73,17 +77,17 @@ public class GameBoard extends JPanel implements ActionListener {
 		gameOver = false;
 
 		timer = new Timer(20, this);
-
 		timer.start();
 
 	}
 
 	/**
-	 * Public method that creates two columns and adds them to the columnsArray
+	 * Public method that creates two columns with the shape of pipelines and adds them to the columnsArray
 	 */
 	public void createColumn() {
-		int space = 160;
-		int width = 90;
+		int space = (int) (Window.frameHeight/2.8);
+		int width = (int)(Window.frameWidth*0.15)/10;
+		width*=10;
 		int height = columnHeights[columnIndex];
 		Rectangle tube1 = new Rectangle(frameWidth, 0, width, height);
 		Rectangle border1 = new Rectangle(tube1.x - 8, tube1.y + height - 10, width + 16, 10);
@@ -125,12 +129,16 @@ public class GameBoard extends JPanel implements ActionListener {
 		Stroke stroke1 = new BasicStroke(2f);
 		g2.setColor(Color.black);
 		g2.setStroke(stroke1);
-		g2.drawRect(column.x, column.y, column.width, column.height);
+		g2.drawRect(column.x, column.y, column.width, column.height); //Draws black border
 		g2.setColor(green);
 		g2.fillRect(column.x + 1, column.y + 1, column.width - 2, column.height - 2);
 
 	}
 
+	/**
+	 * Overrided method that handles the events of the game. It is called in every iteration of the timer object.
+	 * {@link ActionEvent}
+	 */
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		int speed = 10;
@@ -144,15 +152,15 @@ public class GameBoard extends JPanel implements ActionListener {
 			dy += 2;
 			y += dy;
 
-			for (int i = 0; i < columnsArray.size(); i++) {
+			for (int i = 0; i < columnsArray.size(); i++) { //Moves the rectangles to the left
 				Rectangle column = columnsArray.get(i);
 				column.x -= speed;
-				if (column.x + column.width + 8 <= 0) {
+				if (column.x + column.width + 8 <= 0) {//Removes the rectangle from the array if it gets to the left side of the canvas
 					columnsArray.remove(i);
 				}
 			}
 
-			if ((y + birdHeight) <= 0 || y >= (frameHeight)) {
+			if ((y + birdHeight) <= 0 || y >= (frameHeight)) {//Stops the game when the bird falls down or reaches the top
 				gameOver = true;
 				System.out.println("Game Over");
 				repaint();
@@ -160,7 +168,7 @@ public class GameBoard extends JPanel implements ActionListener {
 			}
 
 			for (Rectangle column : columnsArray) {
-				if (column.intersects(x, y, birdWidth, birdHeight)) {
+				if (column.intersects(x, y, birdWidth, birdHeight)) { //Checks if the bird object intersects any of the rectangles
 					gameOver = true;
 					crash = true;
 					if (column.x>x) {
@@ -169,13 +177,13 @@ public class GameBoard extends JPanel implements ActionListener {
 				}
 			}
 			if (crash == true) {
-				x -= speed;
+				x -= speed; //Bird falls moving to the left when it crashes
 				if (player == 1 && MainFlappyBird.players == 1) {
-					sprite.path = "images/crashedPanda.png";
+					sprite.path = "images/crashedPanda.png"; //Changes sprite
 					image = sprite.getBird();
 				}
 			}
-			for (int i = 0; i < columnsArray.size(); i += 4) {
+			for (int i = 0; i < columnsArray.size(); i += 4) { //Increases score if the bird surpasses the columns
 				Rectangle column = columnsArray.get(i);
 				if (column.x + column.width == x && !gameOver) {
 					score++;
@@ -183,11 +191,13 @@ public class GameBoard extends JPanel implements ActionListener {
 
 			}
 		}
-
 		repaint();
-
 	}
 
+	/**
+	 * Overrided method that paints all the objects in the canvas
+	 * {@link Graphics}
+	 */
 	@Override
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
@@ -197,27 +207,31 @@ public class GameBoard extends JPanel implements ActionListener {
 			paintColumn(g, column);
 		}
 		g.setColor(Color.white);
-		g.setFont(new Font("Arial", 1, 30));
+		g.setFont(new Font("Arial", 1, 25));
 		if (!gameOn) {
 			if (player == 1) {
-				g.drawString("Tap w to start", 210, 50);
+				g.drawString("Tap w to start", 160, 50);
 			}
 			if (player == 2) {
-				g.drawString("Tap space bar to start", 150, 50);
+				g.drawString("Tap space bar to start", 100, 50);
 			}
 			if (player == 3) {
-				g.drawString("Tap p to start", 210, 50);
+				g.drawString("Tap p to start", 160, 50);
 			}
 			if (player == 4) {
-				g.drawString("Tap up key to start", 160, 50);
+				g.drawString("Tap up key to start", 120, 50);
 			}
 
 		} else {
-			g.drawString("Score: " + String.valueOf(score), 250, 50);
+			g.drawString("Score: " + String.valueOf(score), (int) (frameWidth*0.4), 50);
 		}
 
 	}
 
+	/**
+	 * Returns image 
+	 * @return BufferedImage
+	 */
 	public BufferedImage getWallpaper() {
 		try {
 			String path = "images/WallpaperFB.jpg";
