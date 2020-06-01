@@ -1,5 +1,7 @@
 package com.Datos1.Proyecto1.FlappyBird;
 
+import com.Datos1.Proyecto1.cover.CoverEvent;
+
 import javax.swing.JFrame;
 
 public class MainFlappyBird {
@@ -9,13 +11,18 @@ public class MainFlappyBird {
 	 * @version 3/30/2020
 	 */
 	public static int players=4;
+	static boolean startPlaying = false;
 	
 	public MainFlappyBird(int players) {
 		this.players=players;
 	}
 	
+	
 	public static void main (String[] args) {
+
 		MainFlappyBird main=new MainFlappyBird(players);
+
+
 		Window window=new Window(players);
 		window.setVisible(true);
 		window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

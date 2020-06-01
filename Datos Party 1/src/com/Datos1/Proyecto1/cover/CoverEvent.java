@@ -5,9 +5,15 @@ import java.awt.event.KeyEvent;
 
 public class CoverEvent extends KeyAdapter {
 
-    static boolean cover = true;
-    static boolean instructions = false;
-    public static boolean gameStart= false;
+    static boolean cover;
+    static boolean instructions;
+    public static boolean closeCover;
+
+    CoverEvent(){
+        this.cover = true;
+        this.instructions = false;
+        this.closeCover= false;
+    }
 
     @Override
     public void keyPressed(KeyEvent e) {
@@ -21,7 +27,8 @@ public class CoverEvent extends KeyAdapter {
         }
         if(id == KeyEvent.VK_SPACE && !cover){
             instructions = false;
-            gameStart = true;
+            closeCover = true;
+
         }
     }
 }

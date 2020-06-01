@@ -5,10 +5,16 @@ import java.io.IOException;
 public class Cover {
 
     CoverWindow coverWindow;
+    String pathLogo, pathBackground, pathEnterPress, pathSpacePress, pathInstructions;
 
-    public Cover() throws IOException {
+    public Cover( String pathLogo, String pathBackground,String pathEnterPress, String pathSpacePress, String pathInstructions) throws IOException {
 
-       this.coverWindow  = new CoverWindow();
+       this.coverWindow  = new CoverWindow(pathLogo,pathBackground,pathEnterPress,pathSpacePress,pathInstructions);
+        this.pathBackground = pathBackground;
+        this.pathEnterPress = pathEnterPress;
+        this.pathLogo = pathLogo;
+        this.pathSpacePress = pathSpacePress;
+        this.pathInstructions = pathInstructions;
 
 
     }

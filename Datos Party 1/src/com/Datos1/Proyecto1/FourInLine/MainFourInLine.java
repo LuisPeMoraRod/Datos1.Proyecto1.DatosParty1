@@ -17,20 +17,30 @@ public class MainFourInLine {
 
 	static boolean startPlaying = false;
 
+
 	public static void main(String [] args) throws IOException {
 
-		Cover filCover = new Cover();
+		String pathLogo = "images/filLogo.png";
+		String pathEnterPress = "images/enterPress.png";
+		String pathSpacePress = "images/spacePress.png";
+		String pathInstructions = "images/filInstructions.png";
+		String pathBackground = "images/filBackground.png";
+
+		Cover filCover = new Cover(pathLogo,pathBackground,pathEnterPress,pathSpacePress,pathInstructions);
 		filCover.createWindow();
 
-		while(!CoverEvent.gameStart){
 
-			System.out.println("Dentri");
-			if(CoverEvent.gameStart){
+		while(!startPlaying){
+
+			System.out.println("while");
+
+			if(CoverEvent.closeCover){
 				startPlaying = true;
 			}
 		}
 
 		if(startPlaying){
+
 			filCover.getWindow().setVisible(false);
 			filCover.getWindow().dispose();
 

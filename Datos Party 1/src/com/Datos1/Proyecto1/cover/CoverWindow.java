@@ -10,7 +10,9 @@ public class CoverWindow extends JFrame {
     CoverBoard coverBoard;
     CoverThread coverThread;
 
-    public CoverWindow() throws IOException {
+    String pathLogo, pathBackground, pathEnterPress, pathSpacePress, pathInstructions;
+
+    public CoverWindow( String pathLogo, String pathBackground,String pathEnterPress, String pathSpacePress, String pathInstructions) throws IOException {
 
         setSize(width, height);
         setLocationRelativeTo(null);
@@ -18,7 +20,13 @@ public class CoverWindow extends JFrame {
         setResizable(false);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-        coverBoard = new CoverBoard("images/filLogo.png","images/filBackground.png","images/enterPress.png","images/spacePress.png","images/filInstructions.png");
+        this.pathBackground = pathBackground;
+        this.pathEnterPress = pathEnterPress;
+        this.pathLogo = pathLogo;
+        this.pathSpacePress = pathSpacePress;
+        this.pathInstructions = pathInstructions;
+
+        coverBoard = new CoverBoard(pathLogo,pathBackground,pathEnterPress,pathSpacePress,pathInstructions);
         add(coverBoard);
         addKeyListener(new CoverEvent());
 
