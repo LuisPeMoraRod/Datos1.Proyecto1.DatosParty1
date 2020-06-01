@@ -63,9 +63,9 @@ public class GameBoard extends JPanel implements ActionListener {
 		rightArrow = Arrow.builder().right().build();
 
 		players.insertHead(new Player("P1", 1));
-		players.insertEnd(new Player("P2", 2));
-		players.insertEnd(new Player("P2", 3));
-		players.insertEnd(new Player("P4", 4));
+		//players.insertEnd(new Player("P2", 2));
+		//players.insertEnd(new Player("P2", 3));
+		//players.insertEnd(new Player("P4", 4));
 		playerInTurn = players.start;
 		setDices(this);
 
@@ -219,47 +219,25 @@ public class GameBoard extends JPanel implements ActionListener {
 		phaseD.insertEnd(box1, i, j);
 	}
 
-	@Override
-	public void paintComponent(Graphics g) {
-		super.paintComponent(g);
-		Graphics2D g2d = (Graphics2D) g.create();
-
-		if (dice1.thrown && dice2.thrown) {
-			startMovement();
-		}
-		if (moving) {
-			for (int i = 0; i < players.getSize(); i++) {
-				playerInTurn = playerInTurn.getPrev();
-				Point actualPos = playerInTurn.getPlayer().getLocation();
-				g2d.drawImage(playerInTurn.getPlayer().getSprite(), actualPos.x, actualPos.y, this);
-				//playerInTurn = playerInTurn.getNext();
-			}
-
-		} else if (twoPaths) {// if flag is set
-			for (int i = 0; i < players.getSize(); i++) {
-				playerInTurn = playerInTurn.getPrev();
-				Point actualPos = playerInTurn.getPlayer().getLocation();
-				g2d.drawImage(playerInTurn.getPlayer().getSprite(), actualPos.x, actualPos.y, this);
-				//playerInTurn = playerInTurn.getNext();
-			}
-			paintArrows(g2d);// paint arrows to chose path
-		} else {
-
-			setPlayers(g2d);
-		}
-
-		try {
-			setBoxes();
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+	
+	public void setImages(Graphics2D g) {
+		Point pos=mainLinkedList.getNode(2).getIndex();
+		pos.x=(pos.x*80)+2;
+		pos.y=(pos.y*83)+2;
+		BufferedImage blackHole = getSprite("images/blackHole.png");
+		g.drawImage(blackHole,pos.x,pos.y,this);
+		pos=phaseD.getNode(13).getIndex();
+		pos.x=(pos.x*80)+2;
+		pos.y=(pos.y*83)+2;
+		g.drawImage(blackHole,pos.x,pos.y,this);
+		
 	}
 
 	public void setDices(JPanel canvas) {
 		this.setLayout(null);
 		dice1.setBounds(Window.width * 6 / 8 + 20, 30, 96, 96);
 		dice2.setBounds(Window.width * 6 / 7, 30, 96, 96);
+		
 		canvas.add(dice1);
 		canvas.add(dice2);
 	}
@@ -370,6 +348,44 @@ public class GameBoard extends JPanel implements ActionListener {
 		);
 	}
 
+	@Override
+	public void paintComponent(Graphics g) {
+		super.paintComponent(g);
+		Graphics2D g2d = (Graphics2D) g.create();
+		setImages(g2d);
+
+		if (dice1.thrown && dice2.thrown) {
+			startMovement();
+		}
+		if (moving) {
+			for (int i = 0; i < players.getSize(); i++) {
+				playerInTurn = playerInTurn.getPrev();
+				Point actualPos = playerInTurn.getPlayer().getLocation();
+				g2d.drawImage(playerInTurn.getPlayer().getSprite(), actualPos.x, actualPos.y, this);
+				// playerInTurn = playerInTurn.getNext();
+			}
+
+		} else if (twoPaths) {// if flag is set
+			for (int i = 0; i < players.getSize(); i++) {
+				playerInTurn = playerInTurn.getPrev();
+				Point actualPos = playerInTurn.getPlayer().getLocation();
+				g2d.drawImage(playerInTurn.getPlayer().getSprite(), actualPos.x, actualPos.y, this);
+				// playerInTurn = playerInTurn.getNext();
+			}
+			paintArrows(g2d);// paint arrows to chose path
+		} else {
+
+			setPlayers(g2d);
+		}
+
+		try {
+			setBoxes();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
 	/**
 	 * Sets players in the canvas when one of them is going to move
 	 * 
@@ -382,6 +398,10 @@ public class GameBoard extends JPanel implements ActionListener {
 			twoPaths = true;
 			moving = false;
 			movingCont--; // this fixes counting bug
+		}else if (playerInTurn.getPlayer().getPointer().equals(phaseA.getNode(6))){
+			movingPointer=mainLinkedList.getNode(23);
+			playerInTurn.getPlayer().setPointer(movingPointer);// pointer to the next corresponding node in the mainLinkedList
+			
 		} else {// if player is located in any other place
 			movingPointer = playerInTurn.getPlayer().getPointer();
 			movingPointer = movingPointer.getNext();
@@ -443,11 +463,16 @@ public class GameBoard extends JPanel implements ActionListener {
 					moving = false;// stops moving routine
 					playerInTurn = playerInTurn.getNext();// pointer to the next player in turn
 				} else if (playerInTurn.getPlayer().getPointer().getId() == 11) {// if player reaches 11th node, set
-																					// twoPaths flaf
+																					// twoPaths flag
 					twoPaths = true;
 					moving = false;
 
-				} else {
+				} else if (playerInTurn.getPlayer().getPointer().equals(phaseA.getNode(6))){
+					movingPointer=mainLinkedList.getNode(23);
+					playerInTurn.getPlayer().setPointer(movingPointer);// pointer to the next node
+				}
+				else {
+				
 					movingPointer = movingPointer.getNext();
 					playerInTurn.getPlayer().setPointer(movingPointer);// pointer to the next node
 				}
@@ -464,6 +489,7 @@ public class GameBoard extends JPanel implements ActionListener {
 			playerInTurn.getPlayer().setLocation(actualPos);// this is necessary to paint the sprite in the right place
 			repaint();
 		}
+
 	}
 
 	public void paintArrows(Graphics2D g) {
@@ -472,7 +498,7 @@ public class GameBoard extends JPanel implements ActionListener {
 		this.add(leftArrow);
 		this.add(rightArrow);
 		Point p1 = new Point(Window.width * 9 / 12, Window.height / 4);
-		g.drawImage(getSprite("images/choosePath.png"), p1.x + 10, p1.y + 20, this);
+		g.drawImage(getSprite("images/leftOrRight.png"), p1.x + 10, p1.y + 20, this);
 		leftArrow.paintsArrow(g);
 		rightArrow.paintsArrow(g);
 	}
