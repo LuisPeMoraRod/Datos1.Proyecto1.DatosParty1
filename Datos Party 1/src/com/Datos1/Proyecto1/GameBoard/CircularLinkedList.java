@@ -31,11 +31,29 @@ public class CircularLinkedList {
 
 	/**
 	 * Public method. Inserts a note at the very end of the linked circular list.
-	 * 
 	 * @param newBox : Box
 	 */
 	public void insertEnd(Box newBox, int i,int j) {
-		Node newNode = Node.builder().withBox(newBox).withIndex(i,j).build();
+		Node newNode = Node.builder().withBox(newBox).withIndex(i,j).withId(size).build();
+		if (isEmpty()) {
+			start = newNode;
+			end = newNode;
+			end.setNext(start);
+		} else {
+			end.setNext(newNode);
+			newNode.setNext(start);
+			end = newNode;
+		}
+		size++;
+
+	}
+	
+	/**
+	 * Public method. Inserts a note at the very end of the linked circular list.
+	 * @param newPlayer : Player
+	 */
+	public void insertEnd(Player newPlayer) {
+		Node newNode = Node.builder().withPlayer(newPlayer).withId(size).build();
 		if (isEmpty()) {
 			start = newNode;
 			end = newNode;
@@ -55,7 +73,26 @@ public class CircularLinkedList {
 	 * @param newBox : Box
 	 */
 	public void insertHead(Box newBox, int i, int j) {
-		Node newNode = Node.builder().withBox(newBox).withIndex(i,j).build();
+		Node newNode = Node.builder().withBox(newBox).withIndex(i,j).withId(size).build();
+		if (isEmpty()) {
+			start = newNode;
+			end = newNode;
+			end.setNext(start);
+		} else {
+			newNode.setNext(start);
+			start = newNode;
+			end.setNext(start);
+		}
+
+		size++;
+	}
+	/**
+	 * Public method. Inserts a node at the very beginning of the linked list.
+	 * 
+	 * @param newPlayer : Player
+	 */
+	public void insertHead(Player newPlayer) {
+		Node newNode = Node.builder().withPlayer(newPlayer).withId(size).build();
 		if (isEmpty()) {
 			start = newNode;
 			end = newNode;
@@ -76,7 +113,7 @@ public class CircularLinkedList {
 	 * @param newBox : Box
 	 */
 	public void insert(int index, Box newBox, int i , int j) {
-		Node newNode = Node.builder().withBox(newBox).withIndex(i,j).build();
+		Node newNode = Node.builder().withBox(newBox).withIndex(i,j).withId(size).build();
 		if (index >= 0 && index <= size) {
 			Node pointer = start;
 			int cont = 0;

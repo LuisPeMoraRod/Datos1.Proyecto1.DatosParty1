@@ -20,16 +20,16 @@ public class Square extends Component {
 
 	public Square(Color color) {
 		this.color = color;
-		width = 80;
-		height = 80;
+		width = 65;
+		height = 65;
 		transparency = 10;
 		empty=false;
 	}
 
 	public Square(Color color, boolean empty) {
 		this.color = color;
-		width = 80;
-		height = 80;
+		width = 65;
+		height = 65;
 		transparency = 10;
 		this.empty = empty;
 	}

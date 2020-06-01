@@ -14,7 +14,7 @@ public class PongPallets {
         this.y = y;
 
         width = 20;
-        height = 50;
+        height = 100;
 
     }
 

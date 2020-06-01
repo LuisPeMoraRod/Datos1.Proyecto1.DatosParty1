@@ -1,18 +1,20 @@
 package com.Datos1.Proyecto1.GameBoard;
 
-
-public class GameThread extends Thread{
-	
+public class GameThread extends Thread {
+	public static boolean gameEnded;
 	GameBoard board;
+	Node pointer;
 
 	public GameThread(GameBoard board) {
 		this.board = board;
-	}
-	@Override
-	public void run() {
-		while(true) {
-			board.repaint();
-		}
+		gameEnded = false;
 	}
 
+	@Override
+	public synchronized void run() {
+		while (!gameEnded) {
+			board.repaint();
+		}
+
+	}
 }

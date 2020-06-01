@@ -47,17 +47,17 @@ public class Bird extends Component {
 			if (MainFlappyBird.players == 1) {
 				path = "images/panda.png";
 			} else {
-				path = "images/player1.png";
+				path = "images/player1FB.png";
 			}
 		}
 		if (player == 2) {
-			path = "images/player2.png";
+			path = "images/player2FB.png";
 		}
 		if (player == 3) {
-			path = "images/player3.png";
+			path = "images/player3FB.png";
 		}
 		if (player == 4) {
-			path = "images/player4.png";
+			path = "images/player4FB.png";
 		}
 	}
 
@@ -67,7 +67,7 @@ public class Bird extends Component {
 	@Override
 	public Dimension getPreferredSize() {
 		if (image == null) {
-			return new Dimension(40, 40);
+			return new Dimension(30, 30);
 		} else {
 
 			return new Dimension(birdWidth, birdHeight);

@@ -12,7 +12,7 @@ public class PongScore {
 
     public int setScoreP2(Ball ball){
 
-        if (ball.x == 0){
+        if (ball.x <= 0){
             scoreP2++;
         }
         return scoreP2;
@@ -20,7 +20,7 @@ public class PongScore {
 
     public int setScoreP1(Ball ball){
 
-        if (ball.x == 980){
+        if (ball.x >= 980){
             scoreP1++;
         }
         return scoreP1;

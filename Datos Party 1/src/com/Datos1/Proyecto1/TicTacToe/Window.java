@@ -1,6 +1,7 @@
 package com.Datos1.Proyecto1.TicTacToe;
 
 import javax.swing.JFrame;
+import java.io.IOException;
 
 public class Window extends JFrame{
 	/**
@@ -16,7 +17,7 @@ public class Window extends JFrame{
 	GameThread thread;
 	
 	
-	public Window (String player1, String player2) {
+	public Window (String player1, String player2) throws IOException {
 		this.player1=player1;
 		this.player2=player2;
 		createWindow(player1,player2);
@@ -25,7 +26,7 @@ public class Window extends JFrame{
 		
 	}
 	
-	public void createWindow(String player1, String player2) {
+	public void createWindow(String player1, String player2) throws IOException {
 		setTitle("Tic-Tac-Toe");
 		setSize(width,length);
 		setLocationRelativeTo(null);
