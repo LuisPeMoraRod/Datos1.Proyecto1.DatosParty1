@@ -5,14 +5,24 @@ import java.io.IOException;
 
 public class SimonWindow extends JFrame {
 
+    SimonBoard simonBoard;
+
     public static final int width =1000,height=600;
 
-    public SimonWindow() {
+    public SimonWindow() throws IOException {
 
         setSize(width, height);
         setLocationRelativeTo(null);
         setUndecorated(true);
         setResizable(false);
+
+        simonBoard = new SimonBoard();
+        add(simonBoard);
+
+        SimonThread simonThread = new SimonThread(simonBoard);
+        simonThread.start();
+
+
 
 
     }

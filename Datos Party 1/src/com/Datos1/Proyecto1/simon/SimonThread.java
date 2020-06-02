@@ -2,11 +2,11 @@ package com.Datos1.Proyecto1.simon;
 
 public class SimonThread extends Thread {
 
-    SimonRenderer simonRenderer;
+    SimonBoard simonBoard;
 
-    public SimonThread (SimonRenderer simonRenderer){
+    public SimonThread (SimonBoard simonBoard){
 
-        this.simonRenderer = simonRenderer;
+        this.simonBoard = simonBoard;
 
     }
 
@@ -21,7 +21,7 @@ public class SimonThread extends Thread {
                 e.printStackTrace();
             }
 
-            simonRenderer.repaint();
+            simonBoard.repaint();
         }
     }
 }

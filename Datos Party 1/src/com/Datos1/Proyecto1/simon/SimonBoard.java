@@ -23,14 +23,8 @@ import java.util.Random;
  * @version 4/29/2020
  */
 
-public class SimonBoard implements ActionListener, MouseListener {
+public class SimonBoard extends JPanel implements ActionListener, MouseListener {
 
-
-
-
-    SimonWindow simonWindow;
-
-    public SimonRenderer simonRenderer;
 
 
     public int flashed = 0;
@@ -47,6 +41,8 @@ public class SimonBoard implements ActionListener, MouseListener {
 
     public Random random;
 
+    Timer timer;
+
 
     BufferedImage imgBackground = ImageIO.read(new File("images/SimonBackground.png"));
     BufferedImage imgP1 = ImageIO.read(new File("images/P1.png"));
@@ -56,17 +52,12 @@ public class SimonBoard implements ActionListener, MouseListener {
 
     public SimonBoard() throws IOException {
 
-        simonWindow = new SimonWindow();
-        Timer timer = new Timer(20,this);
 
+        addMouseListener(this);
 
-        simonRenderer = new SimonRenderer();
-        simonWindow.add(simonRenderer);
-        simonWindow.setVisible(true);
-        simonRenderer.addMouseListener(this);
+        timer = new Timer(20,this);
 
         start();
-        timer.start();
 
     }
 
@@ -75,6 +66,7 @@ public class SimonBoard implements ActionListener, MouseListener {
         random = new Random();
         pattern = new ArrayList<>();
         gameOver = false;
+        timer.start();
 
 
     }
@@ -87,6 +79,8 @@ public class SimonBoard implements ActionListener, MouseListener {
      */
     @Override
     public void actionPerformed(ActionEvent e) {
+
+        System.out.println("here");
 
         ticks++;
         if(ticks%10 ==0){
@@ -129,17 +123,17 @@ public class SimonBoard implements ActionListener, MouseListener {
 
         }
 
-        simonRenderer.repaint();
-
     }
 
-    public void paint(Graphics2D g) {
+    @Override
+    protected void paintComponent(Graphics g) {
+        super.paintComponent(g);
 
-        g.drawImage(imgBackground,0,0,SimonWindow.width,SimonWindow.height,simonRenderer);
-        g.drawImage(imgP1,30,125,50,50,simonRenderer);
-        g.drawImage(imgP2,30,225,50,50,simonRenderer);
-        g.drawImage(imgP3,30,325,50,50,simonRenderer);
-        g.drawImage(imgP4,30,425,50,50,simonRenderer);
+        g.drawImage(imgBackground,0,0,SimonWindow.width,SimonWindow.height,this);
+        g.drawImage(imgP1,30,125,50,50,this);
+        g.drawImage(imgP2,30,225,50,50,this);
+        g.drawImage(imgP3,30,325,50,50,this);
+        g.drawImage(imgP4,30,425,50,50, this);
 
         g.setColor(Color.WHITE);
         g.setFont(new Font("Lao Sangam LM", Font.BOLD,35));
@@ -198,8 +192,8 @@ public class SimonBoard implements ActionListener, MouseListener {
             g.setFont(new Font("Arial",Font.PLAIN,40));
             g.drawString("Game over", 570,475);
         }
-
     }
+
 
     /**
      * Invoked when the mouse button has been clicked (pressed

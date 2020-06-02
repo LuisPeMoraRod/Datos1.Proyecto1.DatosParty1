@@ -7,7 +7,7 @@ import java.io.IOException;
 
 public class SimonMain {
 
-    public static SimonBoard simon;
+    public static SimonWindow simonWindow;
     static boolean startPlaying = false;
 
     public static void main(String[] args) throws IOException {
@@ -23,7 +23,7 @@ public class SimonMain {
 
         while(!startPlaying){
 
-            System.out.println("while");
+            System.out.println("cover");
 
             if(CoverEvent.closeCover){
                 startPlaying = true;
@@ -34,7 +34,8 @@ public class SimonMain {
 
             simonCover.getWindow().setVisible(false);
             simonCover.getWindow().dispose();
-            simon = new SimonBoard();
+            simonWindow = new SimonWindow();
+            simonWindow.setVisible(true);
         }
     }
 }
