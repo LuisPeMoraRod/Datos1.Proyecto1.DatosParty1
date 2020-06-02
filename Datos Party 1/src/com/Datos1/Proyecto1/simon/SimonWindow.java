@@ -5,11 +5,9 @@ import java.io.IOException;
 
 public class SimonWindow extends JFrame {
 
-    private static final int width =1000,height=600;
+    SimonBoard simonBoard;
 
-    private SimonBoard simonBoard;
-
-    private SimonThread simonThread;
+    public static final int width =1000,height=600;
 
     public SimonWindow() throws IOException {
 
@@ -20,9 +18,12 @@ public class SimonWindow extends JFrame {
 
         simonBoard = new SimonBoard();
         add(simonBoard);
-        setVisible(true);
 
-       simonThread = new SimonThread(simonBoard);
-       simonThread.start();
+        SimonThread simonThread = new SimonThread(simonBoard);
+        simonThread.start();
+
+
+
+
     }
 }
