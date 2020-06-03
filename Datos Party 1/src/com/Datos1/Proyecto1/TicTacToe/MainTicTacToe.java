@@ -7,9 +7,7 @@ import javax.swing.JFrame;
 import java.io.IOException;
 
 public class MainTicTacToe {
-
 	static boolean startPlaying = false;
-
 	/**
 	 * Main method that creates the window object
 	 * @author Luis Pedro Morales Rodriguez
@@ -17,6 +15,7 @@ public class MainTicTacToe {
 	 * {@link Window}
 	 * @param args
 	 */
+	
 	public static void main(String [] args) throws IOException {
 
 		String pathLogo = "images/tttLogo.png";

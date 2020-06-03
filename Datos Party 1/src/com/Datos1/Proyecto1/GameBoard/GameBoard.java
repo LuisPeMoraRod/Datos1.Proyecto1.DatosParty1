@@ -71,6 +71,11 @@ public class GameBoard extends JPanel implements ActionListener {
 		//players.insertEnd(new Player("P2", 2));
 		// players.insertEnd(new Player("P2", 3));
 		// players.insertEnd(new Player("P4", 4));
+		players.insertHead(new Player("P1", 1));
+		//players.insertEnd(new Player("P2", 2));
+		//players.insertEnd(new Player("P2", 3));
+		//players.insertEnd(new Player("P4", 4));
+
 		playerInTurn = players.start;
 		setDices(this);
 
@@ -234,7 +239,7 @@ public class GameBoard extends JPanel implements ActionListener {
 		pos.x = (pos.x * 80) + 2;
 		pos.y = (pos.y * 83) + 2;
 		g.drawImage(blackHole, pos.x, pos.y, this);
-		if (throwAgain) { //draws message of throwing dices again after falling in the black hole
+		if (throwAgain) { // draws message of throwing dices again after falling in the black hole
 			Point p1 = new Point(Window.width * 9 / 12, Window.height / 4);
 			g.drawImage(getSprite("images/throwAgain.png"), p1.x + 30, p1.y + 20, this);
 		}
@@ -360,7 +365,7 @@ public class GameBoard extends JPanel implements ActionListener {
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
 		Graphics2D g2d = (Graphics2D) g.create();
-		setImages(g2d);
+		setImages(g2d); // sets images like black hole and throw again message
 
 		if (dice1.thrown && dice2.thrown) {
 			startMovement();
@@ -383,33 +388,44 @@ public class GameBoard extends JPanel implements ActionListener {
 			for (int i = 0; i < players.getSize(); i++) {// paints all players
 				playerInTurn = playerInTurn.getPrev();
 				if (playerInTurn.getPlayer().getPointer().equals(phaseD.getNode(13))) {
-					Point actualPos = new Point(mainLinkedList.getNode(16).getIndex());
+					Point actualPos = new Point(mainLinkedList.getNode(16).getIndex()); //change for 16
 					actualPos.x = (actualPos.x * 80) + 20;
 					actualPos.y = (actualPos.y * 83) + 25;
-					spriteDisappears(g2d,actualPos);
+					spriteDisappears(g2d, actualPos);
+				} else if(playerInTurn.getPlayer().getPointer().equals(mainLinkedList.getNode(16))){//change for 16
+					Point actualPos = phaseD.getNode(13).getIndex();
+					actualPos.x = (actualPos.x * 80) + 20;
+					actualPos.y = (actualPos.y * 83) + 25;
+					spriteDisappears(g2d, actualPos);
+					
 				} else {
 					Point actualPos = playerInTurn.getPlayer().getLocation();
 					g2d.drawImage(playerInTurn.getPlayer().getSprite(), actualPos.x, actualPos.y, this);
 				}
 			}
 
-		}else if (appears) {
+		} else if (appears) {
 			for (int i = 0; i < players.getSize(); i++) {// paints all players
 				playerInTurn = playerInTurn.getPrev();
 				if (playerInTurn.getPlayer().getPointer().equals(phaseD.getNode(13))) {
 					Point actualPos = phaseD.getNode(13).getIndex();
 					actualPos.x = (actualPos.x * 80) + 20;
 					actualPos.y = (actualPos.y * 83) + 25;
-					spriteAppears(g2d,actualPos);
-				} else {
+					spriteAppears(g2d, actualPos);
+				} else if(playerInTurn.getPlayer().getPointer().equals(mainLinkedList.getNode(16))){//change for 16
+					Point actualPos = mainLinkedList.getNode(16).getIndex();//change for 16
+					actualPos.x = (actualPos.x * 80) + 20;
+					actualPos.y = (actualPos.y * 83) + 25;
+					spriteAppears(g2d, actualPos);
+					
+				}else {
 					Point actualPos = playerInTurn.getPlayer().getLocation();
 					g2d.drawImage(playerInTurn.getPlayer().getSprite(), actualPos.x, actualPos.y, this);
 				}
 			}
-		}
-		else {
+		} else {
 			setPlayers(g2d);
-			
+
 		}
 
 		try {
@@ -494,8 +510,11 @@ public class GameBoard extends JPanel implements ActionListener {
 				System.out.println(movingCont + " " + (dice1.number + dice2.number));
 
 				if (movingCont == dice1.number + dice2.number) {// if the sprite reached the correct node
-					if (playerInTurn.getPlayer().getPointer().equals(mainLinkedList.getNode(16))) {// if players falls in
-																									// black hole
+					if (playerInTurn.getPlayer().getPointer().equals(mainLinkedList.getNode(16))) {// if players falls
+																									// in
+																									// black hole in
+																									// main linked list
+																									// path
 						movingPointer = phaseD.getNode(13);
 						playerInTurn.getPlayer().setPointer(movingPointer);// pointer to the first node of the phase D
 																			// list
@@ -512,14 +531,35 @@ public class GameBoard extends JPanel implements ActionListener {
 						movingCont = 0;// resets counter
 						moving = false;// stops moving routine
 
+					} else if (playerInTurn.getPlayer().getPointer().equals(phaseD.getNode(13)))// if player falls in
+																								// the black hole
+																								// located in phase D
+					{
+						movingPointer = mainLinkedList.getNode(16);
+						playerInTurn.getPlayer().setPointer(movingPointer);// pointer to the first node of the phase D
+																			// list
+						newPos = playerInTurn.getPlayer().getPointer().getIndex();// resets new position
+						System.out.println(newPos);
+						newPos.x = (newPos.x * 80) + 20;
+						newPos.y = (newPos.y * 83) + 25;
+
+						actualPos.x = newPos.x;// gives the sprite the new position
+						actualPos.x = newPos.y;
+						playerInTurn.getPlayer().setLocation(actualPos);// this is necessary to paint the sprite in the
+																		// right place
+						disappears = true;
+						movingCont = 0;// resets counter
+						moving = false;// stops moving routine
 					} else {
 						movingCont = 0;// resets counter
 						moving = false;// stops moving routine
 						playerInTurn = playerInTurn.getNext();// pointer to the next player in turn
 					}
 
-				} else if (playerInTurn.getPlayer().getPointer().getId() == 11) {// if player reaches 11th node, set
-																					// twoPaths flag
+				}
+
+				else if (playerInTurn.getPlayer().getPointer().getId() == 11) {// if player reaches 11th node, set
+																				// twoPaths flag
 					twoPaths = true;
 					moving = false;
 
@@ -585,8 +625,7 @@ public class GameBoard extends JPanel implements ActionListener {
 	 * @param g
 	 */
 	public void spriteDisappears(Graphics2D g, Point actualPos) {
-		
-	
+
 		float alpha = (float) ((transparency) * 0.1f);
 		AlphaComposite alcom = AlphaComposite.getInstance(AlphaComposite.SRC_OVER, alpha);
 		g.setComposite(alcom);
@@ -599,7 +638,7 @@ public class GameBoard extends JPanel implements ActionListener {
 		transparency--;
 		if (transparency == 0) {
 			disappears = false;
-			appears=true;
+			appears = true;
 		}
 
 	}
@@ -609,8 +648,8 @@ public class GameBoard extends JPanel implements ActionListener {
 	 * 
 	 * @param g
 	 */
-	public void spriteAppears(Graphics2D g,Point actualPos) {
-		
+	public void spriteAppears(Graphics2D g, Point actualPos) {
+
 		float alpha = (float) ((transparency) * 0.1f);
 		AlphaComposite alcom = AlphaComposite.getInstance(AlphaComposite.SRC_OVER, alpha);
 		g.setComposite(alcom);
@@ -622,9 +661,9 @@ public class GameBoard extends JPanel implements ActionListener {
 		}
 		transparency++;
 		if (transparency == 11) {
-			transparency=10;
+			transparency = 10;
 			appears = false;
-			throwAgain=true;
+			throwAgain = true;
 		}
 	}
 
