@@ -21,8 +21,8 @@ public class MainFourInLine {
 	public static void main(String [] args) throws IOException {
 
 		String pathLogo = "images/filLogo.png";
-		String pathEnterPress = "images/enterPress.png";
-		String pathSpacePress = "images/spacePress.png";
+		String pathEnterPress = "images/enterContinue.png";
+		String pathSpacePress = "images/spaceContinue.png";
 		String pathInstructions = "images/filInstructions.png";
 		String pathBackground = "images/filBackground.png";
 
