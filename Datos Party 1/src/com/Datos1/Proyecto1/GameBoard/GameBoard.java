@@ -472,17 +472,26 @@ public class GameBoard extends JPanel implements ActionListener {
 			playerInTurn.getPlayer().setPointer(movingPointer);// pointer to the next corresponding node in the
 																// mainLinkedList
 
-		} else if (playerInTurn.getPlayer().getPointer().equals(mainLinkedList.getNode(18))) { // if players finish its
-																								// turn in node 18,
-																								// point to node in
-																								// phase C
+		} 
+		
+		//get in phase B
+		else if (playerInTurn.getPlayer().getPointer().equals(mainLinkedList.getNode(30))) {
+			movingPointer = phaseB.getNode(0);
+			playerInTurn.getPlayer().setPointer(movingPointer);
+		}
+		//get out of phase B
+		else if (playerInTurn.getPlayer().getPointer().equals(phaseB.getNode(6))) {
+			movingPointer = mainLinkedList.getNode(38);
+			playerInTurn.getPlayer().setPointer(movingPointer);
+		}
+		// if players finish its turn in node 18, point to node 2 in phase C
+		else if (playerInTurn.getPlayer().getPointer().equals(mainLinkedList.getNode(18))) { 
 			movingPointer = phaseC.getNode(2);
 			playerInTurn.getPlayer().setPointer(movingPointer);
 			playerInTurn.getPlayer().setClockWise(true); //moves to the left in phase C
-		} else if (playerInTurn.getPlayer().getPointer().equals(mainLinkedList.getNode(40))) { // if players finish its
-			// turn in node 40,
-			// point to node in
-			// phase C
+		} 
+		// if players finish its turn in node 40, point to node in 0 phase C
+		else if (playerInTurn.getPlayer().getPointer().equals(mainLinkedList.getNode(40))) { 
 			movingPointer = phaseC.getNode(0);
 			playerInTurn.getPlayer().setPointer(movingPointer);
 			playerInTurn.getPlayer().setClockWise(false);//moves to the right in phase C
@@ -620,6 +629,11 @@ public class GameBoard extends JPanel implements ActionListener {
 					movingPointer = mainLinkedList.getNode(40);
 					playerInTurn.getPlayer().setPointer(movingPointer);
 					playerInTurn.getPlayer().setClockWise(false);
+				}
+				//if player reaches the last node of phase B, point to node 38 in main path
+				else if (playerInTurn.getPlayer().getPointer().equals(phaseB.getNode(6))) {
+					movingPointer = mainLinkedList.getNode(38);
+					playerInTurn.getPlayer().setPointer(movingPointer);
 				}
 
 				else {
