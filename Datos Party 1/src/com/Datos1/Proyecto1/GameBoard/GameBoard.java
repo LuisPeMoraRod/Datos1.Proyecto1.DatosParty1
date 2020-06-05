@@ -68,9 +68,9 @@ public class GameBoard extends JPanel implements ActionListener {
 		rightArrow = Arrow.builder().right().build();
 
 		players.insertHead(new Player("P1", 1));
-		//players.insertEnd(new Player("P2", 2));
-		//players.insertEnd(new Player("P2", 3));
-		//players.insertEnd(new Player("P4", 4));
+		// players.insertEnd(new Player("P2", 2));
+		// players.insertEnd(new Player("P2", 3));
+		// players.insertEnd(new Player("P4", 4));
 		playerInTurn = players.start;
 		setDices(this);
 
@@ -224,16 +224,40 @@ public class GameBoard extends JPanel implements ActionListener {
 		phaseD.insertEnd(box1, i, j);
 	}
 
+	/**
+	 * Paints static images such as the black holes or arrows in the canvas
+	 * 
+	 * @param g : Graphics2D
+	 */
 	public void setImages(Graphics2D g) {
 		Point pos = mainLinkedList.getNode(16).getIndex();
 		pos.x = (pos.x * 80) + 2;
 		pos.y = (pos.y * 83) + 2;
-		BufferedImage blackHole = getSprite("images/blackHole.png");
-		g.drawImage(blackHole, pos.x, pos.y, this);
+		BufferedImage blackHole = getSprite("images/blackHole.png"); // black hole image
+		g.drawImage(blackHole, pos.x, pos.y, this); // places black hole in node 16 of main linked list
 		pos = phaseD.getNode(13).getIndex();
 		pos.x = (pos.x * 80) + 2;
 		pos.y = (pos.y * 83) + 2;
-		g.drawImage(blackHole, pos.x, pos.y, this);
+		g.drawImage(blackHole, pos.x, pos.y, this); // places black hole in node 13 of phase D
+
+		pos = mainLinkedList.getNode(18).getIndex();
+		pos.x = (pos.x * 80) + 14;
+		pos.y = (pos.y * 83) + 12;
+		BufferedImage leftArrow = getSprite("images/leftArrow2.png");
+		g.drawImage(leftArrow, pos.x, pos.y, this); // draws left arrow in node 18 of main linked list
+
+		pos = mainLinkedList.getNode(30).getIndex();
+		pos.x = (pos.x * 80) + 10;
+		pos.y = (pos.y * 83) + 13;
+		BufferedImage upArrow = getSprite("images/upArrow2.png");
+		g.drawImage(upArrow, pos.x, pos.y, this); // draws up arrow in node 30 of main linked list
+
+		pos = mainLinkedList.getNode(40).getIndex();
+		pos.x = (pos.x * 80) + 9;
+		pos.y = (pos.y * 83) + 10;
+		BufferedImage rightArrow = getSprite("images/rightArrow2.png");
+		g.drawImage(rightArrow, pos.x, pos.y, this); // draws right arrow in node 40 of main linked list
+
 		if (throwAgain) { // draws message of throwing dices again after falling in the black hole
 			Point p1 = new Point(Window.width * 9 / 12, Window.height / 4);
 			g.drawImage(getSprite("images/throwAgain.png"), p1.x + 30, p1.y + 20, this);
@@ -383,16 +407,16 @@ public class GameBoard extends JPanel implements ActionListener {
 			for (int i = 0; i < players.getSize(); i++) {// paints all players
 				playerInTurn = playerInTurn.getPrev();
 				if (playerInTurn.getPlayer().getPointer().equals(phaseD.getNode(13))) {
-					Point actualPos = new Point(mainLinkedList.getNode(16).getIndex()); //change for 16
+					Point actualPos = new Point(mainLinkedList.getNode(16).getIndex()); // change for 16
 					actualPos.x = (actualPos.x * 80) + 20;
 					actualPos.y = (actualPos.y * 83) + 25;
 					spriteDisappears(g2d, actualPos);
-				} else if(playerInTurn.getPlayer().getPointer().equals(mainLinkedList.getNode(16))){//change for 16
+				} else if (playerInTurn.getPlayer().getPointer().equals(mainLinkedList.getNode(16))) {// change for 16
 					Point actualPos = phaseD.getNode(13).getIndex();
 					actualPos.x = (actualPos.x * 80) + 20;
 					actualPos.y = (actualPos.y * 83) + 25;
 					spriteDisappears(g2d, actualPos);
-					
+
 				} else {
 					Point actualPos = playerInTurn.getPlayer().getLocation();
 					g2d.drawImage(playerInTurn.getPlayer().getSprite(), actualPos.x, actualPos.y, this);
@@ -407,13 +431,13 @@ public class GameBoard extends JPanel implements ActionListener {
 					actualPos.x = (actualPos.x * 80) + 20;
 					actualPos.y = (actualPos.y * 83) + 25;
 					spriteAppears(g2d, actualPos);
-				} else if(playerInTurn.getPlayer().getPointer().equals(mainLinkedList.getNode(16))){//change for 16
-					Point actualPos = mainLinkedList.getNode(16).getIndex();//change for 16
+				} else if (playerInTurn.getPlayer().getPointer().equals(mainLinkedList.getNode(16))) {// change for 16
+					Point actualPos = mainLinkedList.getNode(16).getIndex();// change for 16
 					actualPos.x = (actualPos.x * 80) + 20;
 					actualPos.y = (actualPos.y * 83) + 25;
 					spriteAppears(g2d, actualPos);
-					
-				}else {
+
+				} else {
 					Point actualPos = playerInTurn.getPlayer().getLocation();
 					g2d.drawImage(playerInTurn.getPlayer().getSprite(), actualPos.x, actualPos.y, this);
 				}
@@ -448,6 +472,20 @@ public class GameBoard extends JPanel implements ActionListener {
 			playerInTurn.getPlayer().setPointer(movingPointer);// pointer to the next corresponding node in the
 																// mainLinkedList
 
+		} else if (playerInTurn.getPlayer().getPointer().equals(mainLinkedList.getNode(18))) { // if players finish its
+																								// turn in node 18,
+																								// point to node in
+																								// phase C
+			movingPointer = phaseC.getNode(2);
+			playerInTurn.getPlayer().setPointer(movingPointer);
+			playerInTurn.getPlayer().setClockWise(true); //moves to the left in phase C
+		} else if (playerInTurn.getPlayer().getPointer().equals(mainLinkedList.getNode(40))) { // if players finish its
+			// turn in node 40,
+			// point to node in
+			// phase C
+			movingPointer = phaseC.getNode(0);
+			playerInTurn.getPlayer().setPointer(movingPointer);
+			playerInTurn.getPlayer().setClockWise(false);//moves to the right in phase C
 		} else {// if player is located in any other place
 			movingPointer = playerInTurn.getPlayer().getPointer();
 			movingPointer = movingPointer.getNext();
@@ -558,13 +596,40 @@ public class GameBoard extends JPanel implements ActionListener {
 					twoPaths = true;
 					moving = false;
 
-				} else if (playerInTurn.getPlayer().getPointer().equals(phaseA.getNode(6))) {
+				} else if (playerInTurn.getPlayer().getPointer().equals(phaseA.getNode(6))) {// if players reaches the
+																								// last node of the
+																								// phase A, pointer to
+																								// corresponding next
+																								// node in main path
 					movingPointer = mainLinkedList.getNode(23);
 					playerInTurn.getPlayer().setPointer(movingPointer);// pointer to the next node
-				} else {
+				} 
+				// if player reaches node 2 of phase C and moves clockwise, sets next pointer to
+				// node 18 in main path
+				else if (playerInTurn.getPlayer().getPointer().equals(phaseC.getNode(2))
+						&& !playerInTurn.getPlayer().getClockWise()) {
 
-					movingPointer = movingPointer.getNext();
-					playerInTurn.getPlayer().setPointer(movingPointer);// pointer to the next node
+					movingPointer = mainLinkedList.getNode(18);
+					playerInTurn.getPlayer().setPointer(movingPointer);
+				}
+				// if player reaches node 0 of phase C and moves counterclockwise, sets next pointer to
+				// node 40 in main path
+				else if (playerInTurn.getPlayer().getPointer().equals(phaseC.getNode(0))
+						&& playerInTurn.getPlayer().getClockWise()) {
+
+					movingPointer = mainLinkedList.getNode(40);
+					playerInTurn.getPlayer().setPointer(movingPointer);
+					playerInTurn.getPlayer().setClockWise(false);
+				}
+
+				else {
+					if (playerInTurn.getPlayer().getClockWise()) { //if clockwise == true, pointer to the previous node
+						movingPointer = movingPointer.getPrev();
+						playerInTurn.getPlayer().setPointer(movingPointer);// pointer to the next node
+					} else {
+						movingPointer = movingPointer.getNext();
+						playerInTurn.getPlayer().setPointer(movingPointer);// pointer to the next node
+					}
 				}
 			}
 			if (actualPos.x < newPos.x) {
@@ -583,7 +648,8 @@ public class GameBoard extends JPanel implements ActionListener {
 	}
 
 	/**
-	 * Adds the arrow objects to the canvas so that the player can choose the path
+	 * Adds the left and right arrow objects to the canvas so that the player can
+	 * choose the path
 	 * 
 	 * @param g : Graphics2D
 	 */
@@ -599,7 +665,8 @@ public class GameBoard extends JPanel implements ActionListener {
 	}
 
 	/**
-	 * Adds the arrow objects to the canvas so that the player can choose the path
+	 * Adds the up and down arrow objects to the canvas so that the player can
+	 * choose the path
 	 * 
 	 * @param g : Graphics2D
 	 */

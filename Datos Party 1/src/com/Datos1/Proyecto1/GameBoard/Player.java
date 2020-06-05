@@ -28,6 +28,7 @@ public class Player extends Component {
 	private int spriteHeight;
 	private Node pointer;
 	private boolean inTurn;
+	private boolean clockWise;
 
 	public Player(String name, int id) {
 		this.name = name;
@@ -36,6 +37,22 @@ public class Player extends Component {
 		spriteWidth = 20;
 		spriteHeight = 20;
 		pointer=GameBoard.mainLinkedList.start;
+	}
+	
+	/**
+	 * Getter of the flag that indicates the direction of the player's movement
+	 * @return left : boolen 
+	 */
+	public boolean getClockWise() {
+		return this.clockWise;
+	}
+	
+
+	/**
+	 * Setter of the flag that indicates the direction of the player's movement
+	 */
+	public void setClockWise(boolean clockWise) {
+		this.clockWise = clockWise;
 	}
 	
 	/**
