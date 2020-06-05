@@ -37,6 +37,7 @@ public class Player extends Component {
 		spriteWidth = 20;
 		spriteHeight = 20;
 		pointer=GameBoard.mainLinkedList.start;
+		clockWise=true;
 	}
 	
 	/**

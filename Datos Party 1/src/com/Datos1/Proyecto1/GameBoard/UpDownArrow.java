@@ -14,7 +14,12 @@ import java.io.IOException;
 
 import javax.imageio.ImageIO;
 
-public class Arrow extends Component {
+
+public class UpDownArrow extends Component{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	/**
 	 * Arrow image component class
 	 * 
@@ -22,20 +27,22 @@ public class Arrow extends Component {
 	 * @version 30/5/2020
 	 */
 
-	private String path;
-	private int transparency = 10;
-	private BufferedImage sprite;
-	private int width, height;
-	private Point location;
-	private boolean isRight;
-	private boolean isUp;
+	protected String path;
+	protected int transparency = 10;
+	protected BufferedImage sprite;
+	protected int width, height;
+	protected Point location;
+	protected boolean isUp;
+	
 
-	public Arrow(Builder builder) {
+	public UpDownArrow(Builder builder) {
+		super();
 		path = builder.getPath();
 		location = builder.getLocation();
-		isRight = builder.isRight;
+		isUp= builder.isUp;
 		setTransparency();
 		clickOnDice();
+		
 	}
 
 	public Point getsLocation() {
@@ -50,29 +57,28 @@ public class Arrow extends Component {
 		/**
 		 * Builder class. Sets the path of the image for right or left arrow.
 		 */
+		protected String path;
+		protected Point location;// location of the sprite in the canvas
+		protected boolean isUp;
 
-		private String path;
-		private Point location;// location of the sprite in the canvas
-		private boolean isRight;
-		private boolean isUp;
-
-		public Arrow build() {
-			return new Arrow(this);
+		public UpDownArrow build() {
+			return new UpDownArrow(this);
 		}
 
-		public Builder right() {
-			path = "images/rightArrow.png";
-			location = new Point(Window.width * 10 / 12, Window.height * 3 / 7);// sets location for right arrow
-			location.x += 40;
-			isRight = true;
-			return this;
-		}
 
-		public Builder left() {
-			path = "images/leftArrow.png";
+		public Builder up() {
+			path = "images/upArrow.png";
 			location = new Point(Window.width * 10 / 12, Window.height * 3 / 7);// sets location for left arrow
 			location.x -= 80;
-			isRight = false;
+			isUp = true;
+			return this;
+		}
+		
+		public Builder down() {
+			path = "images/downArrow.png";
+			location = new Point(Window.width * 10 / 12, Window.height * 3 / 7);// sets location for left arrow
+			location.x += 60;
+			isUp = false;
 			return this;
 		}
 
@@ -142,29 +148,28 @@ public class Arrow extends Component {
 		});
 	}
 
-	/**
-	 * Public method. Sets mouse adapter on the dice object. {@link MouseAdapter}
-	 */
 	public void clickOnDice() {
 		this.addMouseListener(new MouseAdapter() {
 			public void mouseClicked(MouseEvent e) {
-				if (isRight) {
-					GameBoard.twoPaths = false;
-					GameBoard.moving = true;
-					Node pointer = GameBoard.phaseA.head;
-					GameBoard.movingPointer = pointer;
-					GameBoard.playerInTurn.getPlayer().setPointer(pointer);
-					
-				}else if (!isRight){
-					GameBoard.twoPaths = false;
+				if (isUp) {
+					GameBoard.twoPaths2 = false;
 					GameBoard.moving = true;
 					GameBoard.movingPointer = GameBoard.playerInTurn.getPlayer().getPointer();
 					GameBoard.movingPointer = GameBoard.movingPointer.getNext();
 					GameBoard.playerInTurn.getPlayer().setPointer(GameBoard.movingPointer);
+					GameBoard.playerInTurn.getPlayer().setClockWise(true);
+					System.out.println("clockwise");
 					
+				}else if (!isUp){
+					GameBoard.twoPaths2 = false;
+					GameBoard.moving = true;
+					GameBoard.movingPointer = GameBoard.playerInTurn.getPlayer().getPointer();
+					GameBoard.movingPointer = GameBoard.movingPointer.getPrev();
+					GameBoard.playerInTurn.getPlayer().setPointer(GameBoard.movingPointer);
+					GameBoard.playerInTurn.getPlayer().setClockWise(false);
+					System.out.println("counterclockwise");
 				}
 			}
 		});
 	}
-
 }
