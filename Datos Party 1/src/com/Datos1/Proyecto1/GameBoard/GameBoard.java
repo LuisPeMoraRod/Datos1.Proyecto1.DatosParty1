@@ -73,7 +73,7 @@ public class GameBoard extends JPanel implements ActionListener {
 		downArrow = UpDownArrow.builder().down().build();
 
 		players.insertHead(new Player("P1", 1));
-		// players.insertEnd(new Player("P2", 2));
+		players.insertEnd(new Player("P2", 2));
 		// players.insertEnd(new Player("P2", 3));
 		// players.insertEnd(new Player("P4", 4));
 		playerInTurn = players.start;
