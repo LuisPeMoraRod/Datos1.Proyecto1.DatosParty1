@@ -474,12 +474,6 @@ public class GameBoard extends JPanel implements ActionListener {
 		}
 	}
 
-	/**
-	 * Sets players in the canvas when one of them is going to move
-	 * 
-	 * @param g2d
-	 * @param dicesNumber
-	 */
 	public void startMovement() {
 		if (playerInTurn.getPlayer().getPointer().equals(mainLinkedList.getNode(11))) {// sets flag twoPaths when player
 																						// starts to move and
