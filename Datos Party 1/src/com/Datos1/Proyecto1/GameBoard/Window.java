@@ -6,7 +6,7 @@ public class Window extends JFrame{
 
 	/**
 	 * Public class. Creates the window or the frame where the game board is set.
-	 * @author Luis Pedro Morales Rodríguez
+	 * @author Luis Pedro Morales Rodrï¿½guez
 	 * @version 3/5/2020
 	 */
 	private static final long serialVersionUID = 1L;
@@ -16,7 +16,7 @@ public class Window extends JFrame{
 	protected static GameBoard canvas;
 	
 	/**
-	 * Constructor method. Instantiates a GameBoard object
+	 * Constructor method. Instantiates a GamePanel object
 	 * {@link GameBoard}
 	 */
 	public Window() {

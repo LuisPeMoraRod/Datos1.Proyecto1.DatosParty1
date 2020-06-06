@@ -1,10 +1,12 @@
 package com.Datos1.Proyecto1.SpaceRace;
 
-public class SpaceMain {
-    private static Board myBoard;
+import java.io.IOException;
 
-    public static void main(String[] args) {
-        myBoard = new Board();
+public class SpaceMain {
+    private static GameFrame myBoard;
+
+    public static void main(String[] args) throws IOException {
+        myBoard = new GameFrame();
         myBoard.start();
 
     }
