@@ -1,6 +1,7 @@
 package com.Datos1.Proyecto1.Start;
 
 import javax.swing.*;
+import java.io.IOException;
 
 public class StartWindow extends JFrame {
 
@@ -9,7 +10,7 @@ public class StartWindow extends JFrame {
     private StartThread startThread;
     private StartBoard startBoard;
 
-    public StartWindow(){
+    public StartWindow() throws IOException {
 
         setSize(width, height);
         setLocationRelativeTo(null);

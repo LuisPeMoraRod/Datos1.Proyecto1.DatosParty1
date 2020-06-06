@@ -1,12 +1,12 @@
 package com.Datos1.Proyecto1.Start;
 
+import java.io.IOException;
+
 public class Main {
 
-    private static  StartWindow startWindow;
+    public static void main(String[] args) throws IOException {
 
-    public static void main(String[] args) {
-
-        startWindow = new StartWindow();
+        StartWindow startWindow = new StartWindow();
         startWindow.createWindow();
     }
 }
