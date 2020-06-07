@@ -160,8 +160,9 @@ public class Dice extends Component {
 			int randomInt;
 			for (int i = 0; i < 10; i++) {
 				transparency = 5;
-				randomInt =random.nextInt(2) + 1;
+				randomInt =random.nextInt(6) + 1;
 				number = randomInt;
+				
 				setPath(number);
 				try {
 					Thread.sleep(200);

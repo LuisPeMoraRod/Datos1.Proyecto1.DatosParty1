@@ -44,6 +44,12 @@ public class Node{
 	}
 	
 	/**
+	 * Node's box getter
+	 */
+	public Box getBox() {
+		return this.box;
+	}
+	/**
 	 * Node's player getter
 	 * @return player : Player
 	 */

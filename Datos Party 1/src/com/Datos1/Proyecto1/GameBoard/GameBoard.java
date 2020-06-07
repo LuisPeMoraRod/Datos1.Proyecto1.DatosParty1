@@ -14,6 +14,7 @@ import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.Random;
 
 import javax.imageio.ImageIO;
 import javax.swing.GroupLayout;
@@ -43,6 +44,7 @@ public class GameBoard extends JPanel implements ActionListener {
 	// correct node
 
 	private GameThread thread;
+	private Random random;
 	public static boolean moving;
 	public static boolean twoPaths1;
 	public static boolean twoPaths2;
@@ -58,7 +60,7 @@ public class GameBoard extends JPanel implements ActionListener {
 	private int transparency = 10;
 
 	public GameBoard() {
-
+		random = new Random();
 		setBackground(Color.white);
 		createLinkedCircularList();
 		createPhaseA();
@@ -73,7 +75,7 @@ public class GameBoard extends JPanel implements ActionListener {
 		downArrow = UpDownArrow.builder().down().build();
 
 		players.insertHead(new Player("P1", 1));
-		players.insertEnd(new Player("P2", 2));
+		//players.insertEnd(new Player("P2", 2));
 		// players.insertEnd(new Player("P2", 3));
 		// players.insertEnd(new Player("P4", 4));
 		playerInTurn = players.start;
@@ -81,7 +83,6 @@ public class GameBoard extends JPanel implements ActionListener {
 
 		timer = new Timer(10, this);
 		timer.start();
-
 	}
 
 	/**
@@ -90,6 +91,7 @@ public class GameBoard extends JPanel implements ActionListener {
 	 * the matrix
 	 */
 	public void createLinkedCircularList() {
+		// Creates nodes and its position indexes
 		int i = 0, j = 0;
 		Box first = new BlueBox();
 		mainLinkedList.insertHead(first, i, j);
@@ -139,31 +141,112 @@ public class GameBoard extends JPanel implements ActionListener {
 			i = i1;
 		}
 		mainLinkedList.printIndexes();
+
+		// sets the yellow boxes in the list (events)
+		int cont = 0;
+		Node pointer;
+		while (cont < 5) {
+
+			int randomInt = random.nextInt(9) + 8 * cont;
+			pointer = mainLinkedList.getNode(randomInt);
+			if (randomInt != 16) {
+				Box box = new YellowBox();
+				pointer.setBox(box);
+				cont++;
+			}
+		}
+
+		cont = 0;
+		// sets red boxes
+		while (cont < 7) {
+			int randomInt = random.nextInt(6) + 6 * cont;
+			pointer = mainLinkedList.getNode(randomInt);
+			if (randomInt != 16 && pointer.getBox().getClass().equals(first.getClass())) {
+				Box box = new RedBox();
+				pointer.setBox(box);
+				cont++;
+			}
+		}
+
+		cont = 0;
+		// sets green boxes
+		while (cont < 7) {
+			int randomInt = random.nextInt(6) + 6 * cont;
+			pointer = mainLinkedList.getNode(randomInt);
+			if (randomInt != 16 && pointer.getBox().getClass().equals(first.getClass())) {
+				Box box = new GreenBox();
+				pointer.setBox(box);
+				cont++;
+			}
+
+		}
+		mainLinkedList.getNode(0).setBox(new BlueBox());// first box is always blue
+
 	}
 
 	/**
 	 * Creates phase A: a simple linked list
 	 */
 	public void createPhaseA() {
+		// Creates nodes and its position indexes
 		int i = 2;
 		int j = 10;
-		Box head = new GreenBox();
+		Box head = new BlueBox();
 		phaseA.insertHead(head, i, j);
 		j++;
-		Box box1 = new GreenBox();
+		Box box1 = new BlueBox();
 		phaseA.insertEnd(box1, i, j);
 		j++;
 		for (int i1 = i; i1 <= 3; i1++) {
-			Box box = new GreenBox();
+			Box box = new BlueBox();
 			phaseA.insertEnd(box, i1, j);
 			i = i1;
 		}
 		i++;
 		for (int j1 = j; j1 > 9; j1--) {
-			Box box = new GreenBox();
+			Box box = new BlueBox();
 			phaseA.insertEnd(box, i, j1);
 			j = j1;
 		}
+
+		// sets color of boxes
+		Box green = new GreenBox();
+		Box red = new RedBox();
+		Box yellow = new YellowBox();
+		int cont = 0;
+		int randInt;
+		Node pointer;
+
+		while (cont < 3) {
+			switch (cont) {
+			case 0: {
+				randInt = random.nextInt(7);
+				pointer = phaseA.getNode(randInt);
+				pointer.setBox(green);
+				cont++;
+				break;
+			}
+			case 1:
+				randInt = random.nextInt(7);
+				pointer = phaseA.getNode(randInt);
+				if (pointer.getBox().getClass().equals(head.getClass())) {
+					pointer.setBox(red);
+					cont++;
+				}
+				break;
+			case 2:
+				randInt = random.nextInt(7);
+				pointer = phaseA.getNode(randInt);
+				if (pointer.getBox().getClass().equals(head.getClass())) {
+					pointer.setBox(yellow);
+					cont++;
+				}
+				break;
+			default:
+				break;
+			}
+		}
+
 	}
 
 	/**
@@ -172,17 +255,19 @@ public class GameBoard extends JPanel implements ActionListener {
 	public void createPhaseB() {
 		int i = 7;
 		int j = 6;
-		Box head = new GreenBox();
+		// Creates nodes and its position indexes
+		Box head = new YellowBox();
 		phaseB.insertHead(head, i, j);
 		i--;
-		Box box = new GreenBox();
+		Box box = new YellowBox();
 		phaseB.insertEnd(box, i, j);
 		j--;
 		for (int j1 = j; j1 > 0; j1--) {
-			Box box1 = new GreenBox();
+			Box box1 = new YellowBox();
 			phaseB.insertEnd(box1, i, j1);
 			j = j1;
 		}
+
 	}
 
 	/**
@@ -191,14 +276,17 @@ public class GameBoard extends JPanel implements ActionListener {
 	public void createPhaseC() {
 		int i = 4;
 		int j = 1;
-		Box head = new YellowBox();
-		phaseC.insertHead(head, i, j);
+		// Creates nodes and its position indexes
+		phaseC.insertHead(null, i, j);
 		j++;
 		while (j < 5) {
-			Box box = new YellowBox();
-			phaseC.insertEnd(box, i, j);
+			phaseC.insertEnd(null, i, j);
 			j++;
 		}
+		// sets color of boxes
+		phaseC.getNode(0).setBox(new GreenBox());
+		phaseC.getNode(1).setBox(new YellowBox());
+		phaseC.getNode(2).setBox(new RedBox());
 	}
 
 	/**
@@ -207,26 +295,70 @@ public class GameBoard extends JPanel implements ActionListener {
 	public void createPhaseD() {
 		int i = 6;
 		int j = 11;
-		Box first = new RedBox();
+
+		// Creates nodes and its position indexes
+		Box first = new BlueBox();
 		phaseD.insertHead(first, i, j);
 		j++;
 		for (int j1 = j; j1 < 17; j1++) {
-			Box newBox = new RedBox();
+			Box newBox = new BlueBox();
 			phaseD.insertEnd(newBox, i, j1);
 			j = j1;
 		}
 		i++;
-		Box box = new RedBox();
+		Box box = new BlueBox();
 		phaseD.insertEnd(box, i, j);
 		i++;
 		for (int j1 = j; j1 > 10; j1--) {
-			Box newBox = new RedBox();
+			Box newBox = new BlueBox();
 			phaseD.insertEnd(newBox, i, j1);
 			j = j1;
 		}
 		i--;
-		Box box1 = new RedBox();
+		Box box1 = new BlueBox();
 		phaseD.insertEnd(box1, i, j);
+
+		// sets color of boxes
+		// sets the yellow boxes in the list (events)
+		int cont = 0;
+		Node pointer;
+		int randomInt;
+		while (cont < 2) {
+
+			randomInt = random.nextInt(13);
+			pointer = phaseD.getNode(randomInt);
+			if (randomInt != 16) {
+				Box yellow = new YellowBox();
+				pointer.setBox(yellow);
+				cont++;
+			}
+		}
+
+		cont = 0;
+		// sets red boxes
+		while (cont < 3) {
+			randomInt = random.nextInt(13);
+			pointer = phaseD.getNode(randomInt);
+			if (pointer.getBox().getClass().equals(first.getClass())) {
+				Box red = new RedBox();
+				pointer.setBox(red);
+				cont++;
+			}
+		}
+
+		cont = 0;
+		// sets green boxes
+		while (cont < 3) {
+			randomInt = random.nextInt(13);
+			pointer = phaseD.getNode(randomInt);
+			if (pointer.getBox().getClass().equals(first.getClass())) {
+				Box green = new GreenBox();
+				pointer.setBox(green);
+				cont++;
+			}
+
+		}
+
 	}
 
 	/**
@@ -395,7 +527,10 @@ public class GameBoard extends JPanel implements ActionListener {
 			startMovement();
 		}
 		if (moving) {
-			this.remove(rightArrow);this.remove(leftArrow);this.remove(downArrow);this.remove(upArrow);
+			this.remove(rightArrow);
+			this.remove(leftArrow);
+			this.remove(downArrow);
+			this.remove(upArrow);
 			for (int i = 0; i < players.getSize(); i++) {// paints all players when one of them is moving
 				playerInTurn = playerInTurn.getPrev();
 				Point actualPos = playerInTurn.getPlayer().getLocation();
@@ -524,12 +659,14 @@ public class GameBoard extends JPanel implements ActionListener {
 
 		else {// if player is located in any other place
 			movingPointer = playerInTurn.getPlayer().getPointer();
-			movingPointer = movingPointer.getNext();
+			if (!playerInTurn.getPlayer().getClockWise()) {
+				movingPointer = movingPointer.getPrev();
+			} else {
+				movingPointer = movingPointer.getNext();
+			}
 			playerInTurn.getPlayer().setPointer(movingPointer);// Player pointer points to next node
 			moving = true;
 		}
-
-		
 
 		dice1.thrown = false;
 		dice2.thrown = false;
@@ -580,7 +717,7 @@ public class GameBoard extends JPanel implements ActionListener {
 				System.out.println(movingCont + " " + (dice1.number + dice2.number));
 
 				if (movingCont == dice1.number + dice2.number) {// if the sprite reached the correct node
-					
+
 					// if players falls in black hole in main linked list path
 					if (playerInTurn.getPlayer().getPointer().equals(mainLinkedList.getNode(16))) {
 						movingPointer = phaseD.getNode(13);
@@ -642,7 +779,7 @@ public class GameBoard extends JPanel implements ActionListener {
 				// if player reaches node 2 of phase C and moves clockwise, sets next pointer to
 				// node 18 in main path
 				else if (playerInTurn.getPlayer().getPointer().equals(phaseC.getNode(2))
-						&& !playerInTurn.getPlayer().getClockWise()) {
+						&& playerInTurn.getPlayer().getClockWise()) {
 
 					movingPointer = mainLinkedList.getNode(18);
 					playerInTurn.getPlayer().setPointer(movingPointer);
@@ -651,7 +788,7 @@ public class GameBoard extends JPanel implements ActionListener {
 				// pointer to
 				// node 40 in main path
 				else if (playerInTurn.getPlayer().getPointer().equals(phaseC.getNode(0))
-						&& playerInTurn.getPlayer().getClockWise()) {
+						&& !playerInTurn.getPlayer().getClockWise()) {
 
 					movingPointer = mainLinkedList.getNode(40);
 					playerInTurn.getPlayer().setPointer(movingPointer);
@@ -705,7 +842,7 @@ public class GameBoard extends JPanel implements ActionListener {
 		g.drawImage(getSprite("images/leftOrRight.png"), p1.x + 10, p1.y + 20, this);
 		leftArrow.paintsArrow(g);
 		rightArrow.paintsArrow(g);
-		
+
 	}
 
 	/**
