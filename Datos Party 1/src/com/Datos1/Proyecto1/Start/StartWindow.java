@@ -8,7 +8,7 @@ public class StartWindow extends JFrame {
     protected static final int width = 1400, height = 800;
 
     private StartThread startThread;
-    private StartBoard startBoard;
+    public StartBoard startBoard;
 
     public StartWindow() throws IOException {
 

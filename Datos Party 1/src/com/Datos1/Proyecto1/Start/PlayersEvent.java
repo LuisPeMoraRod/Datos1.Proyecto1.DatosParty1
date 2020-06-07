@@ -5,11 +5,16 @@ import java.awt.event.MouseListener;
 
 public class PlayersEvent implements MouseListener {
 
-    public boolean twoFlash = false, threeFlash = false, fourFlash = false;
+    public boolean twoFlash = false, threeFlash = false, fourFlash = false,submitPlayers = false;
     protected int players;
 
     @Override
     public void mouseClicked(MouseEvent e) {
+
+    }
+
+    @Override
+    public void mousePressed(MouseEvent e) {
 
         int mouseX = e.getX(), mouseY = e.getY();
 
@@ -26,12 +31,11 @@ public class PlayersEvent implements MouseListener {
             this.players = 4;
         }
 
-    }
-
-    @Override
-    public void mousePressed(MouseEvent e) {
-
-
+        if(twoFlash||threeFlash||fourFlash){
+            if(mouseX>StartWindow.width/2-50 && mouseX<StartWindow.width+50 && mouseY>StartWindow.height-150 && mouseY<StartWindow.height-100){
+                this.submitPlayers=true;
+            }
+        }
 
     }
 

@@ -8,5 +8,18 @@ public class Main {
 
         StartWindow startWindow = new StartWindow();
         startWindow.createWindow();
+
+        boolean startGame = false;
+
+        while(!startGame){
+            System.out.println("Main");
+            if(startWindow.startBoard.endStartWindow){
+                startGame = true;
+            }
+        }
+
+        if(startGame){
+            startWindow.dispose();
+        }
     }
 }
