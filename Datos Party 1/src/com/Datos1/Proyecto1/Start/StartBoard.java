@@ -1,5 +1,6 @@
 package com.Datos1.Proyecto1.Start;
 
+import com.Datos1.Proyecto1.GameBoard.CircularDoublyLinkedList;
 import com.Datos1.Proyecto1.simon.SimonWindow;
 
 import javax.imageio.ImageIO;
@@ -17,6 +18,7 @@ public class StartBoard extends JPanel {
     private BufferedImage coverBackground, gameName, playersWindow, player1, player2, player3, player4;
     private PlayersEvent playersEvent = new PlayersEvent();
 
+
     public StartBoard() throws IOException {
 
         coverBackground = ImageIO.read(new File("images/coverBackground.png"));
@@ -27,13 +29,12 @@ public class StartBoard extends JPanel {
         player3 = ImageIO.read(new File("images/P3.png"));
         player4 = ImageIO.read(new File("images/P4.png"));
 
+
         counter = 0;
         nameWidth = 540;
         nameHeight = 0;
         setPlayers = false;
         addMouseListener(playersEvent);
-
-
 
     }
 
@@ -67,7 +68,7 @@ public class StartBoard extends JPanel {
 
             g2.drawImage(playersWindow,0,0,StartWindow.width, StartWindow.height,this);
 
-            if(!PlayersEvent.twoFlash && !PlayersEvent.threeFlash && !PlayersEvent.fourFlash){
+            if(!playersEvent.twoFlash && !playersEvent.threeFlash && !playersEvent.fourFlash){
                 g2.setColor(new Color(171, 225, 223));
                 g2.fillRoundRect(StartWindow.width/4 - 50, StartWindow.height/3,100,100,20,20);
                 g2.setColor(new Color(205, 220, 57));
@@ -83,21 +84,65 @@ public class StartBoard extends JPanel {
             }
 
             else{
-                if(PlayersEvent.twoFlash){
-                    g2.drawImage(player1, SimonWindow.width/3, SimonWindow.height/3,50,50,this);
-                    g2.drawImage(player2, SimonWindow.width/3, SimonWindow.height/3+100,50,50,this);
+
+                g2.drawImage(player1, StartWindow.width/3, StartWindow.height/3,50,50,this);
+                g2.drawImage(player2, StartWindow.width/3, StartWindow.height/3+100,50,50,this);
+
+
+                JTextField namePlayer1 = new JTextField();
+                namePlayer1.setBackground(new Color(84, 96, 129));
+                namePlayer1.setText("Enter the name of the player");
+                namePlayer1.setSize(400,50);
+                namePlayer1.setLocation(StartWindow.width/3+75, StartWindow.height/3);
+                add(namePlayer1);
+                JTextField namePlayer2 = new JTextField();
+                namePlayer2.setBackground(new Color(84, 96, 129));
+                namePlayer2.setText("Enter the name of the player");
+                namePlayer2.setSize(400,50);
+                namePlayer2.setLocation(StartWindow.width/3+75, StartWindow.height/3+100);
+                add(namePlayer2);
+
+                if(playersEvent.getNumberPlayers()==3){
+                    g2.drawImage(player3, StartWindow.width/3, StartWindow.height/3+200,50,50,this);
+
+                    JTextField namePlayer3 = new JTextField();
+                    namePlayer3.setBackground(new Color(84, 96, 129));
+                    namePlayer3.setText("Enter the name of the player");
+                    namePlayer3.setSize(400,50);
+                    namePlayer3.setLocation(StartWindow.width/3+75, StartWindow.height/3+200);
+                    add(namePlayer3);
+
                 }
-                else if(PlayersEvent.threeFlash){
-                    g2.drawImage(player1, SimonWindow.width/3, SimonWindow.height/3,50,50,this);
-                    g2.drawImage(player2, SimonWindow.width/3, SimonWindow.height/3+100,50,50,this);
-                    g2.drawImage(player3, SimonWindow.width/3, SimonWindow.height/3+200,50,50,this);
+
+                else if(playersEvent.getNumberPlayers()==4){
+                    g2.drawImage(player3, StartWindow.width/3, StartWindow.height/3+200,50,50,this);
+                    g2.drawImage(player4, StartWindow.width/3, StartWindow.height/3+300,50,50,this);
+
+                    JTextField namePlayer3 = new JTextField();
+                    namePlayer3.setBackground(new Color(84, 96, 129));
+                    namePlayer3.setText("Enter the name of the player");
+                    namePlayer3.setSize(400,50);
+                    namePlayer3.setLocation(StartWindow.width/3+75, StartWindow.height/3+200);
+                    add(namePlayer3);
+
+                    JTextField namePlayer4 = new JTextField();
+                    namePlayer4.setBackground(new Color(84, 96, 129));
+                    namePlayer4.setText("Enter the name of the player");
+                    namePlayer4.setSize(400,50);
+                    namePlayer4.setLocation(StartWindow.width/3+75, StartWindow.height/3+300);
+                    add(namePlayer4);
+
                 }
-                else if(PlayersEvent.fourFlash){
-                    g2.drawImage(player1, SimonWindow.width/3, SimonWindow.height/3,50,50,this);
-                    g2.drawImage(player2, SimonWindow.width/3, SimonWindow.height/3+100,50,50,this);
-                    g2.drawImage(player3, SimonWindow.width/3, SimonWindow.height/3+200,50,50,this);
-                    g2.drawImage(player4, SimonWindow.width/3, SimonWindow.height/3+300,50,50,this);
-                }
+
+                JButton btnSubmitNames = new JButton();
+                btnSubmitNames.setLocation(StartWindow.width/2 - 50, StartWindow.height-150);
+                btnSubmitNames.setSize(100,50);
+                btnSubmitNames.setText("Submit");
+                btnSubmitNames.setForeground(Color.WHITE);
+                btnSubmitNames.setBackground(new Color(205, 220, 57));
+                btnSubmitNames.setOpaque(true);
+                btnSubmitNames.setBorderPainted(false);
+                add(btnSubmitNames);
             }
 
 
