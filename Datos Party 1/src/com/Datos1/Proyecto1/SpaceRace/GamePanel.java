@@ -7,54 +7,99 @@ import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import java.security.Key;
+import java.util.ArrayList;
+import java.util.concurrent.ThreadLocalRandom;
 
 public class GamePanel extends JPanel {
     public int players;
     private Ship ship1;
     private Timer timer;
-    //BufferedImage ship1 = ImageIO.read(new File("images/Ship1.png"));
+    private java.util.List<Asteroid> asteroidList;
+    private Image background;
 
 
     public GamePanel() throws IOException {
         super();
         start();
+        startAsteroid();
+        
 
     }
+
     public void start() throws IOException {
+        this.asteroidList = new ArrayList<>();
         this.setPreferredSize(new Dimension(350,350));
         this.setVisible(true);
-        this.setBackground(Color.black);
+        //this.setBackground(Color.black);
         this.ship1 = new Ship();
         addKeyListener(new GameEventListener(this));
         setFocusable(true);
         this.timer = new Timer(10, new GameLoop(this));
         this.timer.start();
-
+        setBackground();
     }
+
+    private void startAsteroid() throws IOException {
+        for(int i=0; i<10; i++){
+            int direction = ThreadLocalRandom.current().nextInt(0,2);
+            Asteroid asteroid = new Asteroid(ThreadLocalRandom.current().nextInt(8,332),
+                    ThreadLocalRandom.current().nextInt(8,245));
+            if (direction == 1){
+                asteroid.setMovingToRight(false);
+            }else{
+                asteroid.setMovingToRight(true);
+            }
+            this.asteroidList.add(asteroid);
+        }
+    }
+
     public void doLoop(){
-        update();
+        updateMovement();
         repaint();
 
     }
-    public void update(){
+    public void updateMovement(){
         this.ship1.move();
+        for(Asteroid asteroid:this.asteroidList){
+            asteroid.move();
+            if(asteroid.crashShip(ship1)){
+                ship1.setY(265);
+                ship1.setMovement(false);
+            }
+        }
+    }
+
+    public void setBackground() throws IOException {
+        this.background = ImageIO.read(new File("images/spaceRaceBG.png"));
+    }
+
+    public void paintComponent(Graphics g){
+        super.paintComponent(g);
+        drawBackground(g);
+        doDrawing(g);
+    }
+
+    private void doDrawing(Graphics g) {
+        drawShip(g);
+        drawAsteroids(g);
     }
 
     private void drawShip(Graphics g){
         g.drawImage(ship1.getImage(), ship1.getX(), ship1.getY(), this);
     }
 
-    public void paintComponent(Graphics g){
-        super.paintComponent(g);
-        doDrawing(g);
-
-
+    private void drawAsteroids(Graphics g) {
+        for(Asteroid asteroid:this.asteroidList){
+            if(asteroid.isVisible()){
+                g.drawImage(asteroid.getImage(), asteroid.getX(), asteroid.getY(),this);
+            }
+        }
     }
 
-    private void doDrawing(Graphics g) {
-        drawShip(g);
+    public void drawBackground(Graphics g){
+        g.drawImage(this.background, 0, 0,null);
     }
+
 
     public void keyReleased(KeyEvent e){
         this.ship1.keyReleased(e);

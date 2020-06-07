@@ -1,7 +1,6 @@
 package com.Datos1.Proyecto1.SpaceRace;
 
 import javax.swing.*;
-import java.awt.*;
 import java.io.IOException;
 
 public class GameFrame extends JFrame {

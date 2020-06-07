@@ -9,6 +9,7 @@ public abstract class Sprite {
 
     protected int x;
     protected int y;
+    protected int dy;
 
     public Image getImage() {
         return this.image;
@@ -50,18 +51,10 @@ public abstract class Sprite {
         this.dy = dy;
     }
 
-
-    protected int dy;
-    protected int dx;
-
     public abstract void move();
 
     public Sprite(){
         this.onScreen = false;
-    }
-
-    public void die(){
-        this.onScreen = true;
     }
 
 }
