@@ -151,6 +151,7 @@ public class UpDownArrow extends Component{
 	public void clickOnDice() {
 		this.addMouseListener(new MouseAdapter() {
 			public void mouseClicked(MouseEvent e) {
+				transparency = 10;
 				if (isUp) {
 					GameBoard.twoPaths2 = false;
 					GameBoard.moving = true;
