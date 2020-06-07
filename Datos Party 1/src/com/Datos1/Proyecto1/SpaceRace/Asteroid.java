@@ -58,9 +58,9 @@ public class Asteroid extends Sprite{
     }
 
     public boolean disappeared(){
-        if(this.isMovingToRight() && this.x > 355){
+        if(this.isMovingToRight() && this.x > 342){
             return true;
-        }else if(!this.isMovingToRight() && this.x < -5){
+        }else if(!this.isMovingToRight() && this.x < 0){
             return true;
         }
         return false;

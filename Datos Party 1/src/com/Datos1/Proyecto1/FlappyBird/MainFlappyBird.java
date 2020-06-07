@@ -12,7 +12,7 @@ public class MainFlappyBird {
 	 * @author Luis Pedro Morales Rodriguez
 	 * @version 3/30/2020
 	 */
-	public static int players=4;
+	public static int players=3;
 	static boolean startPlaying = false;
 
 	

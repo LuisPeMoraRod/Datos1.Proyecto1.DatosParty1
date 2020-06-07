@@ -4,7 +4,6 @@ import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.KeyEvent;
-import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -18,19 +17,18 @@ public class GamePanel extends JPanel {
     private Image background;
 
 
-    public GamePanel() throws IOException {
+    public GamePanel(int player) throws IOException {
         super();
+        //this.players = players;
         start();
         startAsteroid();
-        
-
     }
 
     public void start() throws IOException {
         this.asteroidList = new ArrayList<>();
-        this.setPreferredSize(new Dimension(350,350));
+        //setWindowSize(players);
+        setPreferredSize(new Dimension(350, 350));
         this.setVisible(true);
-        //this.setBackground(Color.black);
         this.ship1 = new Ship();
         addKeyListener(new GameEventListener(this));
         setFocusable(true);
@@ -65,6 +63,7 @@ public class GamePanel extends JPanel {
             if(asteroid.crashShip(ship1)){
                 ship1.setY(265);
                 ship1.setMovement(false);
+                System.out.println("Game over");
             }
         }
     }
@@ -99,7 +98,6 @@ public class GamePanel extends JPanel {
     public void drawBackground(Graphics g){
         g.drawImage(this.background, 0, 0,null);
     }
-
 
     public void keyReleased(KeyEvent e){
         this.ship1.keyReleased(e);
