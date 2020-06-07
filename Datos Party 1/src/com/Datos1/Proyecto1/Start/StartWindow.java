@@ -5,7 +5,7 @@ import java.io.IOException;
 
 public class StartWindow extends JFrame {
 
-    private static final int width = 1400, height = 800;
+    protected static final int width = 1400, height = 800;
 
     private StartThread startThread;
     private StartBoard startBoard;
