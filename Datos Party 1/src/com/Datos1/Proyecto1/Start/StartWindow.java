@@ -29,4 +29,17 @@ public class StartWindow extends JFrame {
     public void createWindow(){
         setVisible(true);
     }
+
+    public String getNamePlayer1(){
+        return this.startBoard.getNamePlayer1();
+    }
+    public String getNamePlayer2(){
+        return this.startBoard.getNamePlayer2();
+    }
+    public String getNamePlayer3(){
+        return this.startBoard.getNamePlayer3();
+    }
+    public String getNamePlayer4(){
+        return this.startBoard.getNamePlayer4();
+    }
 }

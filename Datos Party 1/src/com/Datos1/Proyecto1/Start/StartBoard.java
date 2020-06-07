@@ -46,6 +46,11 @@ public class StartBoard extends JPanel {
         setPlayers = false;
         addMouseListener(playersEvent);
 
+        namePlayer1 = "Player 1";
+        namePlayer2 = "Player 2";
+        namePlayer3 = "Player 3";
+        namePlayer4 = "Player 4";
+
 
     }
 

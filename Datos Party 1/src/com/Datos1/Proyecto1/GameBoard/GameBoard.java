@@ -54,10 +54,12 @@ public class GameBoard extends JPanel implements ActionListener {
 	public LeftRightArrow leftArrow, rightArrow;
 	public UpDownArrow upArrow, downArrow;
 
+	String namePlayer1, namePlayer2, namePlayer3, namePlayer4;
+
 	Timer timer;
 	private int transparency = 10;
 
-	public GameBoard() {
+	public GameBoard(String name1, String name2, String name3, String name4) {
 
 		setBackground(Color.white);
 		createLinkedCircularList();
@@ -71,6 +73,11 @@ public class GameBoard extends JPanel implements ActionListener {
 		rightArrow = LeftRightArrow.builder().right().build();
 		upArrow = UpDownArrow.builder().up().build();
 		downArrow = UpDownArrow.builder().down().build();
+
+		this.namePlayer1 = name1;
+		this.namePlayer2 = name2;
+		this.namePlayer3 = name3;
+		this.namePlayer4 = name4;
 
 		//players.insertHead(new Player("P1", 1));
 		//players.insertEnd(new Player("P2", 2));
