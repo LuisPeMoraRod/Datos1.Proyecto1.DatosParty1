@@ -1,13 +1,9 @@
 package com.Datos1.Proyecto1.GameBoard;
 
 import java.awt.AlphaComposite;
-import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.Component;
-import java.awt.FlowLayout;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.awt.LayoutManager;
 import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -17,9 +13,7 @@ import java.io.IOException;
 
 import javax.imageio.ImageIO;
 import javax.swing.GroupLayout;
-import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.SwingUtilities;
 import javax.swing.Timer;
 
 public class GameBoard extends JPanel implements ActionListener {
@@ -36,13 +30,12 @@ public class GameBoard extends JPanel implements ActionListener {
 	static LinkedList phaseB = new LinkedList();
 	static DoublyLinkedList phaseC = new DoublyLinkedList();
 	static CircularDoublyLinkedList phaseD = new CircularDoublyLinkedList();
-	static CircularDoublyLinkedList players = new CircularDoublyLinkedList();
+	private CircularDoublyLinkedList players = new CircularDoublyLinkedList();
 	public static Node playerInTurn;
 
 	public static Node movingPointer; // Pointer that moves to the next nodes of each player's until they get to the
 	// correct node
 
-	private GameThread thread;
 	public static boolean moving;
 	public static boolean twoPaths1;
 	public static boolean twoPaths2;
@@ -54,12 +47,11 @@ public class GameBoard extends JPanel implements ActionListener {
 	public LeftRightArrow leftArrow, rightArrow;
 	public UpDownArrow upArrow, downArrow;
 
-	String namePlayer1, namePlayer2, namePlayer3, namePlayer4;
 
 	Timer timer;
 	private int transparency = 10;
 
-	public GameBoard(String name1, String name2, String name3, String name4) {
+	public GameBoard(CircularDoublyLinkedList players) {
 
 		setBackground(Color.white);
 		createLinkedCircularList();
@@ -74,22 +66,12 @@ public class GameBoard extends JPanel implements ActionListener {
 		upArrow = UpDownArrow.builder().up().build();
 		downArrow = UpDownArrow.builder().down().build();
 
-		this.namePlayer1 = name1;
-		this.namePlayer2 = name2;
-		this.namePlayer3 = name3;
-		this.namePlayer4 = name4;
+		this.players = players;
 
-		//players.insertHead(new Player("P1", 1));
-		//players.insertEnd(new Player("P2", 2));
-		// players.insertEnd(new Player("P2", 3));
-		// players.insertEnd(new Player("P4", 4));
-		players.insertHead(new Player("P1", 1));
+		setPlayersInitialNode();
 
-		players.insertEnd(new Player("P2", 2));
-		// players.insertEnd(new Player("P2", 3));
-		// players.insertEnd(new Player("P4", 4));
 
-		playerInTurn = players.start;
+		this.playerInTurn = this.players.getStarNode();
 		setDices(this);
 
 		timer = new Timer(10, this);
@@ -794,5 +776,15 @@ public class GameBoard extends JPanel implements ActionListener {
 			e.printStackTrace();
 		}
 		return sprite;
+	}
+
+	public void setPlayersInitialNode(){
+		Node pointer = players.getStarNode();
+
+		for(int i = 0; i < players.getSize(); i++){
+
+			pointer.getPlayer().setPointer(mainLinkedList.start);
+			pointer = pointer.getNext();
+		}
 	}
 }

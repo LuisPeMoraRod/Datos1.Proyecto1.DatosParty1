@@ -14,15 +14,17 @@ public class Window extends JFrame{
 	public static int height = 800;//1000
 	
 	protected static GameBoard canvas;
+
 	
 	/**
 	 * Constructor method. Instantiates a GameBoard object
 	 * {@link GameBoard}
 	 */
-	public Window(String name1, String name2, String name3, String name4) {
+	public Window(CircularDoublyLinkedList players) {
 		createWindow();
-		canvas = new GameBoard(name1, name2, name3, name4);
-		this.add(canvas);	
+
+		canvas = new GameBoard(players);
+		this.add(canvas);
 	
 	}
 	

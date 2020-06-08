@@ -61,7 +61,7 @@ public class StartBoard extends JPanel {
         Graphics2D g2 = (Graphics2D)g;
 
         // Paints the elements for the game cover
-        if (counter<=1000){
+        if (counter<=500){
             g2.drawImage(coverBackground,0,0,1400,800,this);
             int finalNameHeight = gameName.getHeight();
 
@@ -75,7 +75,7 @@ public class StartBoard extends JPanel {
             }
             counter++;
 
-            if (counter == 1000){
+            if (counter == 500){
                 setPlayers = true;
             }
         }
