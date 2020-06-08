@@ -59,8 +59,8 @@ public class GameBoard extends JPanel implements ActionListener {
 		image = sprite.getBird();
 		wallpaper = getWallpaper();
 
-		frameWidth = Window.frameWidth;
-		frameHeight = Window.frameHeight;
+		frameWidth = WindowFB.frameWidth;
+		frameHeight = WindowFB.frameHeight;
 
 		birdWidth = sprite.birdWidth;
 		birdHeight = sprite.birdHeight;
@@ -85,8 +85,8 @@ public class GameBoard extends JPanel implements ActionListener {
 	 * Public method that creates two columns with the shape of pipelines and adds them to the columnsArray
 	 */
 	public void createColumn() {
-		int space = (int) (Window.frameHeight/2.8);
-		int width = (int)(Window.frameWidth*0.15)/10;
+		int space = (int) (WindowFB.frameHeight/2.8);
+		int width = (int)(WindowFB.frameWidth*0.15)/10;
 		width*=10;
 		int height = columnHeights[columnIndex];
 		Rectangle tube1 = new Rectangle(frameWidth, 0, width, height);
@@ -178,7 +178,7 @@ public class GameBoard extends JPanel implements ActionListener {
 			}
 			if (crash == true) {
 				x -= speed; //Bird falls moving to the left when it crashes
-				if (player == 1 && MainFlappyBird.players == 1) {
+				if (player == 1 && FlappyBirdLauncher.players == 1) {
 					sprite.path = "images/crashedPanda.png"; //Changes sprite
 					image = sprite.getBird();
 				}

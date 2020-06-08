@@ -15,13 +15,17 @@ public class CoverBoard extends JPanel {
     BufferedImage spacePress;
     BufferedImage instructions;
 
-    public CoverBoard(String logoPath, String backgroundPath, String enterPressPath, String spacePressPath, String instructionsPath ) throws IOException {
-        this.logo = ImageIO.read(new File(logoPath));
-        this.background = ImageIO.read(new File(backgroundPath));
-        this.enterPress = ImageIO.read(new File(enterPressPath));
-        this.spacePress = ImageIO.read(new File(spacePressPath));
-        this.instructions = ImageIO.read(new File(instructionsPath));
-
+    public CoverBoard(String logoPath, String backgroundPath, String enterPressPath, String spacePressPath, String instructionsPath ) {
+        try {
+			this.logo = ImageIO.read(new File(logoPath));
+			this.background = ImageIO.read(new File(backgroundPath));
+	        this.enterPress = ImageIO.read(new File(enterPressPath));
+	        this.spacePress = ImageIO.read(new File(spacePressPath));
+	        this.instructions = ImageIO.read(new File(instructionsPath));
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
     }
 
     @Override

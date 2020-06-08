@@ -23,7 +23,7 @@ public class ColumnHeights {
 		heights = new int[100];
 		random = new Random();
 		for (int i = 0; i < heights.length; i++) {
-			int height = (int) (Window.frameHeight*0.05+random.nextInt((int) (Window.frameHeight*0.45)));
+			int height = (int) (WindowFB.frameHeight*0.05+random.nextInt((int) (WindowFB.frameHeight*0.45)));
 			heights[i] = height;
 		}
 

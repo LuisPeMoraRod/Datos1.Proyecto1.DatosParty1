@@ -12,7 +12,7 @@ public class CoverWindow extends JFrame {
 
     String pathLogo, pathBackground, pathEnterPress, pathSpacePress, pathInstructions;
 
-    public CoverWindow( String pathLogo, String pathBackground,String pathEnterPress, String pathSpacePress, String pathInstructions) throws IOException {
+    public CoverWindow( String pathLogo, String pathBackground,String pathEnterPress, String pathSpacePress, String pathInstructions)  {
 
         setSize(width, height);
         setLocationRelativeTo(null);
@@ -32,6 +32,7 @@ public class CoverWindow extends JFrame {
 
         coverThread = new CoverThread(coverBoard);
         coverThread.start();
+        System.out.println("cover thread starts");
 
     }
 

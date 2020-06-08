@@ -7,7 +7,7 @@ public class Cover {
     CoverWindow coverWindow;
     String pathLogo, pathBackground, pathEnterPress, pathSpacePress, pathInstructions;
 
-    public Cover( String pathLogo, String pathBackground,String pathEnterPress, String pathSpacePress, String pathInstructions) throws IOException {
+    public Cover( String pathLogo, String pathBackground,String pathEnterPress, String pathSpacePress, String pathInstructions)  {
 
        this.coverWindow  = new CoverWindow(pathLogo,pathBackground,pathEnterPress,pathSpacePress,pathInstructions);
         this.pathBackground = pathBackground;
@@ -20,7 +20,7 @@ public class Cover {
     }
 
     public void createWindow(){
-
+    		System.out.println("visible");
             coverWindow.setVisible(true);
     }
 

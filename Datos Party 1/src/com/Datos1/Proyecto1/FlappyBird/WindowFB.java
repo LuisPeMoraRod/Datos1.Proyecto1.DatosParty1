@@ -10,7 +10,7 @@ import javax.swing.JFrame;
 import javax.swing.JInternalFrame;
 import javax.swing.JRootPane;
 
-public class Window extends JFrame {
+public class WindowFB extends JFrame {
 	/**
 	 * Public class that creates the window where the game develops
 	 * 
@@ -32,10 +32,10 @@ public class Window extends JFrame {
 	 * Constructor method. Creates an amount of internal frames depending on the
 	 * number of players
 	 * 
-	 * @param players {@link Window#setWindowSize(int)}
-	 *                {@link Window#createWindow(int)}
+	 * @param players {@link WindowFB#setWindowSize(int)}
+	 *                {@link WindowFB#createWindow(int)}
 	 */
-	public Window(int players) {
+	public WindowFB(int players) {
 		this.players = players;
 		desk = new JDesktopPane();
 		setTitle("Flappy Bird");

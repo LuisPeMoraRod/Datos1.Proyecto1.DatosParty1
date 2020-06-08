@@ -44,7 +44,7 @@ public class Bird extends Component {
 	 */
 	public void setPath(int player) {
 		if (player == 1) {
-			if (MainFlappyBird.players == 1) {
+			if (FlappyBirdLauncher.players == 1) {
 				path = "images/panda.png";
 			} else {
 				path = "images/player1FB.png";

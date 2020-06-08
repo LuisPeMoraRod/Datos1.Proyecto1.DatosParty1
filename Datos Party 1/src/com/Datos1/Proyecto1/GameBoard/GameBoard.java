@@ -1,13 +1,9 @@
 package com.Datos1.Proyecto1.GameBoard;
 
 import java.awt.AlphaComposite;
-import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.Component;
-import java.awt.FlowLayout;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.awt.LayoutManager;
 import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -18,10 +14,14 @@ import java.util.Random;
 
 import javax.imageio.ImageIO;
 import javax.swing.GroupLayout;
-import javax.swing.JLabel;
+import javax.swing.JFrame;
 import javax.swing.JPanel;
-import javax.swing.SwingUtilities;
 import javax.swing.Timer;
+
+import com.Datos1.Proyecto1.FlappyBird.*;
+import com.Datos1.Proyecto1.cover.Cover;
+import com.Datos1.Proyecto1.cover.CoverEvent;
+
 
 public class GameBoard extends JPanel implements ActionListener {
 	/**
@@ -55,6 +55,9 @@ public class GameBoard extends JPanel implements ActionListener {
 	public static Dice dice1, dice2;
 	public LeftRightArrow leftArrow, rightArrow;
 	public UpDownArrow upArrow, downArrow;
+	public static boolean FB;
+	
+	private Box red,yellow,blue, green;
 
 	Timer timer;
 	private int transparency = 10;
@@ -74,25 +77,20 @@ public class GameBoard extends JPanel implements ActionListener {
 		upArrow = UpDownArrow.builder().up().build();
 		downArrow = UpDownArrow.builder().down().build();
 
-		//players.insertHead(new Player("P1", 1));
-		//players.insertEnd(new Player("P2", 2));
-		// players.insertEnd(new Player("P2", 3));
-		// players.insertEnd(new Player("P4", 4));
+
 		players.insertHead(new Player("P1", 1));
-<<<<<<< HEAD
 		//players.insertEnd(new Player("P2", 2));
-=======
-
-		players.insertEnd(new Player("P2", 2));
->>>>>>> GameBoard
-		// players.insertEnd(new Player("P2", 3));
-		// players.insertEnd(new Player("P4", 4));
-
 		playerInTurn = players.start;
 		setDices(this);
 
 		timer = new Timer(10, this);
 		timer.start();
+		
+		//boxes used to compare their clases with the boxes where the players get in every turn (check if they fall into an event or not)
+		blue = new BlueBox();
+		red = new RedBox();
+		yellow = new YellowBox();
+		green = new GreenBox();
 	}
 
 	/**
@@ -100,6 +98,7 @@ public class GameBoard extends JPanel implements ActionListener {
 	 * j as indexes of an imaginary matrix where all the components are located in
 	 * the matrix
 	 */
+	
 	public void createLinkedCircularList() {
 		// Creates nodes and its position indexes
 		int i = 0, j = 0;
@@ -619,7 +618,6 @@ public class GameBoard extends JPanel implements ActionListener {
 			// it is located in node 11 (bifurcation)
 			twoPaths1 = true;
 			moving = false;
-			movingCont--; // this fixes counting bug
 		}
 
 		// get out of phase A
@@ -739,6 +737,7 @@ public class GameBoard extends JPanel implements ActionListener {
 						disappears = true;
 						movingCont = 0;// resets counter
 						moving = false;// stops moving routine
+						
 
 					} else if (playerInTurn.getPlayer().getPointer().equals(phaseD.getNode(13)))// if player falls in
 																								// the black hole
@@ -759,10 +758,17 @@ public class GameBoard extends JPanel implements ActionListener {
 						disappears = true;
 						movingCont = 0;// resets counter
 						moving = false;// stops moving routine
+						playerInTurn.getPlayer().setClockWise(true);
 					} else {
 						movingCont = 0;// resets counter
 						moving = false;// stops moving routine
-						playerInTurn = playerInTurn.getNext();// pointer to the next player in turn
+						try {
+							checksBox(movingPointer,playerInTurn);
+						} catch (IOException e1) {
+							// TODO Auto-generated catch block
+							e1.printStackTrace();
+						}
+						
 					}
 
 				}
@@ -928,5 +934,39 @@ public class GameBoard extends JPanel implements ActionListener {
 			e.printStackTrace();
 		}
 		return sprite;
+	}
+	
+	public void checksBox(Node movingPointer, Node player) throws IOException {
+		FB = true;
+		Box box = movingPointer.getBox();
+		if (box.getClass().equals(green.getClass())) {
+			//startFlappyBird();
+			System.out.println("Green");
+		}
+		else if (box.getClass().equals(red.getClass())) {
+			//startFlappyBird();
+			System.out.println("Red");
+		}
+		else if (box.getClass().equals(yellow.getClass())) {
+			//startFlappyBird();
+			System.out.println("Yellow");
+		}
+		else if (box.getClass().equals(blue.getClass())) {
+			//startFlappyBird();
+			System.out.println("Blue");
+		}
+		playerInTurn = playerInTurn.getNext();// pointer to the next player in turn
+	}
+	
+	
+	public void startFlappyBird() {
+		//Main.window.dispose();
+		FlappyBirdLauncher flappyBird = new FlappyBirdLauncher(2);
+		try {
+			flappyBird.launch();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 }

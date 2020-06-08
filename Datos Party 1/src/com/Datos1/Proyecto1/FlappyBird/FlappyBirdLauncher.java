@@ -6,23 +6,20 @@ import com.Datos1.Proyecto1.cover.CoverEvent;
 import javax.swing.JFrame;
 import java.io.IOException;
 
-public class MainFlappyBird {
+public class FlappyBirdLauncher {
 	/**
 	 * Main class
 	 * @author Luis Pedro Morales Rodriguez
 	 * @version 3/30/2020
 	 */
-	public static int players=4;
+	public static int players;
 	static boolean startPlaying = false;
 
-	
-	public MainFlappyBird(int players) {
+	public FlappyBirdLauncher(int players) {
 		this.players=players;
 	}
-
-
 	
-	public static void main (String[] args) throws IOException {
+	public void launch () throws IOException {
 
 		String pathLogo = "images/fBLogo.png";
 		String pathEnterPress = "images/enterPress.png";
@@ -30,7 +27,7 @@ public class MainFlappyBird {
 		String pathInstructions = "images/fBInstructions.png";
 		String pathBackground = "images/WallpaperFB.jpg";
 
-		MainFlappyBird main=new MainFlappyBird(players);
+		FlappyBirdLauncher main=new FlappyBirdLauncher(players);
 
 		Cover fbCover = new Cover(pathLogo,pathBackground,pathEnterPress,pathSpacePress,pathInstructions);
 		fbCover.createWindow();
@@ -49,12 +46,20 @@ public class MainFlappyBird {
 			fbCover.getWindow().setVisible(false);
 			fbCover.getWindow().dispose();
 
-			Window window=new Window(players);
+			WindowFB window=new WindowFB(players);
 			window.setVisible(true);
 			window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		}
-
-
+	}
+	
+	public static void main(String[] args) {
+		FlappyBirdLauncher fb = new FlappyBirdLauncher(2);
+		try {
+			fb.launch();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 }
