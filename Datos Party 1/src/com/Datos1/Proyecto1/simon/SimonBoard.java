@@ -31,7 +31,7 @@ public class SimonBoard extends JPanel implements ActionListener, MouseListener 
 
     public int ticks, dark, clickCounts;
 
-    public int reference=1, indexPattern, round=1,correct;
+    public int reference=1, indexPattern, round=1, correct;
 
     public boolean creatingPattern = true;
 
@@ -40,6 +40,16 @@ public class SimonBoard extends JPanel implements ActionListener, MouseListener 
     public ArrayList<Integer> pattern;
 
     public Random random;
+
+    protected int numPlayers, playingPlayer;
+
+    protected int coolDown = 0;
+
+    protected int scoreP1 = 0, scoreP2 = 0, scoreP3 = 0, scoreP4 = 0;
+
+    protected int changePlayerTimer = 0;
+
+
 
     Timer timer;
 
@@ -50,7 +60,7 @@ public class SimonBoard extends JPanel implements ActionListener, MouseListener 
     BufferedImage imgP3 = ImageIO.read(new File("images/P3.png"));
     BufferedImage imgP4 = ImageIO.read(new File("images/P4.png"));
 
-    public SimonBoard() throws IOException {
+    public SimonBoard(int numberPlayers) throws IOException {
 
 
         addMouseListener(this);
@@ -58,6 +68,11 @@ public class SimonBoard extends JPanel implements ActionListener, MouseListener 
         timer = new Timer(20,this);
 
         start();
+
+        this.numPlayers = numberPlayers;
+
+        playingPlayer = 1;
+
 
     }
 
@@ -80,48 +95,82 @@ public class SimonBoard extends JPanel implements ActionListener, MouseListener 
     @Override
     public void actionPerformed(ActionEvent e) {
 
-        System.out.println("here");
-
-        ticks++;
-        if(ticks%10 ==0){
-
-            flashed=0;
-
-            if (!gameOver){
-
-                if (creatingPattern && dark<=0){
-                    if (reference >pattern.size()){
-
-                        flashed = 1 + random.nextInt(6);
-                        pattern.add(flashed);
-                        creatingPattern = false;
-                        indexPattern=0;
-                        clickCounts = 0;
-
-                    }
-                    else{
-
-                        flashed = pattern.get(indexPattern);
-                        indexPattern++;
-
-                        if (indexPattern == pattern.size()){
-                            reference++;
-                        }
-                    }
-
-                    dark = 2;
+        if(gameOver){
+            if(changePlayerTimer <=200){
+                changePlayerTimer++;
+            }
+            else{
+                playingPlayer++;
+                if(playingPlayer<=numPlayers){
+                    coolDown=0;
+                    ticks = 0;
+                    flashed = 0;
+                    pattern.clear();
+                    gameOver = false;
+                    reference = 1;
+                    indexPattern = 0;
+                    round = 1;
+                    correct = 0;
+                    creatingPattern = true;
+                }
+                else{
+                    endgame();
                 }
 
             }
+        }
 
-            else if(dark<=0){
-                flashed = correct;
-                dark = 2;
+        if(coolDown <=100){
+            ticks = 0;
+            coolDown++;
+            changePlayerTimer = 0;
+        }
+
+        else{
+            ticks++;
+            if(ticks%10 ==0){
+
+                flashed=0;
+
+                if (!gameOver){
+
+                    if (creatingPattern && dark<=0){
+                        if (reference >pattern.size()){
+
+                            flashed = 1 + random.nextInt(6);
+                            pattern.add(flashed);
+                            creatingPattern = false;
+                            indexPattern=0;
+                            clickCounts = 0;
+
+                        }
+                        else{
+
+                            flashed = pattern.get(indexPattern);
+                            indexPattern++;
+
+                            if (indexPattern == pattern.size()){
+                                reference++;
+                            }
+                        }
+
+                        dark = 2;
+                    }
+
+                }
+
+                else if(dark<=0){
+                    flashed = correct;
+                    dark = 2;
+                }
+
+                dark--;
+
             }
 
-            dark--;
 
         }
+
 
     }
 
@@ -132,8 +181,15 @@ public class SimonBoard extends JPanel implements ActionListener, MouseListener 
         g.drawImage(imgBackground,0,0,SimonWindow.width,SimonWindow.height,this);
         g.drawImage(imgP1,30,125,50,50,this);
         g.drawImage(imgP2,30,225,50,50,this);
-        g.drawImage(imgP3,30,325,50,50,this);
-        g.drawImage(imgP4,30,425,50,50, this);
+
+        if (numPlayers == 3) {
+            g.drawImage(imgP3,30,325,50,50,this);
+        }
+
+        else if(numPlayers == 4){
+            g.drawImage(imgP3,30,325,50,50,this);
+            g.drawImage(imgP4,30,425,50,50, this);
+        }
 
         g.setColor(Color.WHITE);
         g.setFont(new Font("Lao Sangam LM", Font.BOLD,35));
@@ -291,6 +347,7 @@ public class SimonBoard extends JPanel implements ActionListener, MouseListener 
                     if(flashed!=pattern.get(indexPattern)){
                         gameOver=true;
                         correct = pattern.get(indexPattern);
+                        coolDown = 0;
                     }
 
                     indexPattern++;
@@ -340,5 +397,9 @@ public class SimonBoard extends JPanel implements ActionListener, MouseListener 
     @Override
     public void mouseExited(MouseEvent e) {
 
+    }
+
+    public void endgame(){
+        SimonLauncher.simonWindow.dispose();
     }
 }
