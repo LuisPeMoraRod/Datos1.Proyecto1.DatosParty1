@@ -35,9 +35,4 @@ public class CoverWindow extends JFrame {
 
     }
 
-    public void closeWindow(){
-        setVisible(false);
-        dispose();
-    }
-
 }

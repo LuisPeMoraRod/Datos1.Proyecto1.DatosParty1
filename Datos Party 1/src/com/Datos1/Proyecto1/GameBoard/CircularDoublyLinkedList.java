@@ -86,7 +86,7 @@ public class CircularDoublyLinkedList {
 	 * Public method. Inserts a node at the very end of the doubly linked list.
 	 * 
 	 * @param newBox : Box
-	 * @param id     : int
+
 	 */
 	public void insertEnd(Box newBox, int i, int j) {
 		// Node newNode = new Node(newBox, null, null, id);
@@ -133,8 +133,7 @@ public class CircularDoublyLinkedList {
 	 * Public method. Inserts a node in a certain index
 	 * 
 	 * @param index  : int
-	 * @param newBox : Box
-	 * @param id     : int
+	 *
 	 */
 	public void insert(Box box, int index, int i, int j) {
 		// Node newNode = new Node(box,null,null,id);
@@ -206,5 +205,9 @@ public class CircularDoublyLinkedList {
 				return pointer.box.getBox();
 			}
 		}else {return null;}
+	}
+
+	public Node getStarNode(){
+		return this.start;
 	}
 }

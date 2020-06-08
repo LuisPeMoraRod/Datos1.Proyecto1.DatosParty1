@@ -137,4 +137,7 @@ public class Player extends Component {
 		}
 		return sprite;
 	}
+
+	public String getName(){return this.name;}
+
 }
