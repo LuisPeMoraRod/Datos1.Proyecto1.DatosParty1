@@ -83,21 +83,7 @@ public class LeftRightArrow extends Component {
 			isRight = false;
 			return this;
 		}
-		public Builder up() {
-			path = "images/upArrow.png";
-			location = new Point(Window.width * 10 / 12, Window.height * 3 / 7);// sets location for left arrow
-			location.x -= 80;
-			isUp = true;
-			return this;
-		}
 		
-		public Builder down() {
-			path = "images/downArrow.png";
-			location = new Point(Window.width * 10 / 12, Window.height * 3 / 7);// sets location for left arrow
-			location.x -= 80;
-			isUp = false;
-			return this;
-		}
 
 		public String getPath() {
 			return this.path;
@@ -168,6 +154,7 @@ public class LeftRightArrow extends Component {
 	public void clickOnDice() {
 		this.addMouseListener(new MouseAdapter() {
 			public void mouseClicked(MouseEvent e) {
+				transparency = 10;
 				if (isRight) {
 					GameBoard.twoPaths1 = false;
 					GameBoard.moving = true;

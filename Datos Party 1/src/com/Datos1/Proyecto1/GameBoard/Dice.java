@@ -162,6 +162,7 @@ public class Dice extends Component {
 				transparency = 5;
 				randomInt =random.nextInt(6) + 1;
 				number = randomInt;
+				
 				setPath(number);
 				try {
 					Thread.sleep(200);
