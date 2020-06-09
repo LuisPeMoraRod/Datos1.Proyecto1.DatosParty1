@@ -33,7 +33,13 @@ public class SnakeBoard extends JPanel {
 
     private int dx, dy;
 
-    private final int snakeSize = 20;
+    protected static int speed = 1;
+
+    private int accelerator = 0;
+
+    private int initialTimer = 0;
+
+    private int endGameTimer;
 
 
     Random random = new Random();
@@ -44,8 +50,11 @@ public class SnakeBoard extends JPanel {
 
     ArrayList<SnakeTail> snakeTail;
 
-
     private boolean gameOver = false;
+
+    private int numPlayers;
+
+    private int playingPlayer;
 
     public SnakeBoard() throws IOException {
 
@@ -64,6 +73,11 @@ public class SnakeBoard extends JPanel {
         collisionDetector.setPosition(snakeHead.getHeadX(), snakeHead.getHeadY());
 
         snakeTail.add(collisionDetector);
+
+        this.numPlayers = 2;
+
+        playingPlayer = 0;
+
 
     }
 
@@ -97,35 +111,26 @@ public class SnakeBoard extends JPanel {
         }
 
         else{
-            g2.setColor(new Color(205, 220, 57));
 
-            food1 = f1.getFood(fx1,fy1);
-            g2.fill(food1);
+            if(playingPlayer<=numPlayers){
+                stageRound(g2);
 
-            createSnake();
-
-            if(!gameOver){
-                updateSnake();
+                if (gameOver){
+                    if(endGameTimer<=50){
+                        endGameTimer++;
+                    }
+                    else{
+                        resetGame();
+                    }
+                }
             }
+
             else{
-                g.setColor(Color.WHITE);
-                g.setFont(new Font("Lao Sangam LM", Font.BOLD,40));
-                g.drawString("Game over", 400,280);
-                g.setColor(new Color(173, 20, 87));
-                g.setFont(new Font("Lao Sangam LM", Font.BOLD,30));
-                g.drawString("Score: " + score, 450,320);
+                SnakeLauncher.snakeWindow.dispose();
             }
 
-            detectColliion();
-            detectFoodCollection();
 
 
-            g2.setColor(new Color(124, 60, 171));
-            for (SnakeTail t: snakeTail){
-                t.render(g2);
-            }
-
-            g2.drawImage(headImg, snakeHead.getHeadX(), snakeHead.getHeadY(),20,20,this);
         }
 
 
@@ -140,6 +145,7 @@ public class SnakeBoard extends JPanel {
 
         snakeHead.moveSnakeHead();
 
+        int snakeSize = 20;
         if(SnakeEvent.up && dy == 0){
             dy = -snakeSize;
             dx = 0;
@@ -198,6 +204,12 @@ public class SnakeBoard extends JPanel {
             t.setPosition(collisionDetector.getTailX() + ((snakeTail.size()+1)*20), collisionDetector.getTailY());
             snakeTail.add(t);
             score++;
+            accelerator++;
+
+            if(accelerator ==10){
+                accelerator = 0;
+                speed = speed+5;
+            }
         }
 
     }
@@ -208,6 +220,77 @@ public class SnakeBoard extends JPanel {
                 gameOver=true;
             }
         }
+    }
+
+    public void stageRound(Graphics2D g){
+        g.setColor(new Color(205, 220, 57));
+
+        food1 = f1.getFood(fx1,fy1);
+        g.fill(food1);
+
+
+
+        if(initialTimer<=100){
+            initialTimer++;
+            System.out.println(initialTimer);
+        }
+
+        else{
+
+            if(!gameOver){
+                createSnake();
+                updateSnake();
+            }
+            else{
+                g.setColor(Color.WHITE);
+                g.setFont(new Font("Lao Sangam LM", Font.BOLD,40));
+                g.drawString("Game over", 400,280);
+                g.setColor(new Color(173, 20, 87));
+                g.setFont(new Font("Lao Sangam LM", Font.BOLD,30));
+                g.drawString("Score: " + score, 450,320);
+            }
+
+            detectColliion();
+            detectFoodCollection();
+
+
+            g.setColor(new Color(124, 60, 171));
+            for (SnakeTail t: snakeTail){
+                t.render(g);
+            }
+
+            g.drawImage(headImg, snakeHead.getHeadX(), snakeHead.getHeadY(),20,20,this);
+        }
+
+    }
+
+    public void resetGame(){
+        snakeHead.setHeadPosition(80,80);
+
+        fx1 = random.nextInt(980);
+        fy1 = random.nextInt(580);
+
+        f1 = new Food();
+
+        score = 0;
+
+        snakeTail.clear();
+
+        collisionDetector = new SnakeTail();
+        collisionDetector.setPosition(snakeHead.getHeadX(), snakeHead.getHeadY());
+
+        snakeTail.add(collisionDetector);
+
+        playingPlayer++;
+
+        initialTimer = 0;
+        endGameTimer = 0;
+
+        gameOver = false;
+
+        speed = 1;
+
+        accelerator = 0;
     }
 
 }
