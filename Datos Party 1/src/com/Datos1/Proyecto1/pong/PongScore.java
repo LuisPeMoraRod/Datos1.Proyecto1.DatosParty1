@@ -26,4 +26,9 @@ public class PongScore {
         return scoreP1;
     }
 
+    public void resetScore(){
+        this.scoreP1=0;
+        this.scoreP2=0;
+    }
+
 }
