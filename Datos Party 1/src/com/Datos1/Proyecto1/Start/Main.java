@@ -13,7 +13,7 @@ public class Main {
 
         String namePlayer1, namePlayer2, namePlayer3, namePlayer4;
 
-
+        
         StartWindow startWindow = new StartWindow();
         startWindow.createWindow();
 
@@ -57,7 +57,6 @@ public class Main {
            }
 
         }
-
 
         if(startGame){
 

@@ -33,6 +33,7 @@ public class CoverWindow extends JFrame {
         coverThread = new CoverThread(coverBoard);
         coverThread.start();
 
+
     }
 
 }
