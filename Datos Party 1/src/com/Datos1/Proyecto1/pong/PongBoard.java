@@ -15,6 +15,7 @@ public class PongBoard extends JPanel {
     Ball ball = new Ball(490,290);
     PongPallets pallet1 = new PongPallets(20,275);
     PongPallets pallet2 = new PongPallets(960,275);
+
     BufferedImage imgBackground = ImageIO.read(new File("images/bgPong.png"));
     BufferedImage pongLogo = ImageIO.read(new File("images/pongLogo.png"));
     BufferedImage leftControls = ImageIO.read(new File("images/leftControls.png"));
@@ -25,12 +26,31 @@ public class PongBoard extends JPanel {
 
     public PongScore pongScore;
     public int scoreP1, scoreP2;
+    public int numPlayers;
+
+    public int initialTimer;
+
+    public int endTimer;
+
+    protected int round;
+
+    protected boolean endRound;
 
     public PongBoard() throws IOException {
 
         pongScore = new PongScore();
         scoreP1 = 0;
         scoreP2 = 0;
+
+        numPlayers = 4;
+
+        initialTimer = 0;
+
+        endTimer = 0;
+
+        endRound = false;
+
+        round = 1;
 
     }
 
@@ -58,20 +78,28 @@ public class PongBoard extends JPanel {
         }
 
         else{
-            g2.setColor(new Color(205, 220, 57));
-            drawElement(g2);
-            updateElement();
 
-            g2.setColor(Color.WHITE);
-            g2.fill(pallet1.getPallet());
-            g2.fill(pallet2.getPallet());
-            g2.drawString(String.valueOf(scoreP1),250,50);
-            g2.drawString(String.valueOf(scoreP2),750,50);
+            if(numPlayers==2){
+                setRound(g2);
 
-            if(scoreP2 == 5 || scoreP1 == 5){
-                g.setFont(new Font("Lao Sangam LM", Font.BOLD,40));
-                g.drawString("Game over", 400,280);
+                if(endRound){
+                    if(endTimer<=1000){
+                        endTimer++;
+                    }
+                    else{
+                        closeGame();
+                    }
+
+                }
+
             }
+
+            else if(numPlayers==3 || numPlayers ==4){
+                threeRoundLogic(g2);
+
+            }
+
+
         }
 
 
@@ -98,5 +126,70 @@ public class PongBoard extends JPanel {
         scoreP1 = pongScore.setScoreP1(ball);
         scoreP2 = pongScore.setScoreP2(ball);
     }
+
+    public void reset(){
+        ball = new Ball(490,290);
+        pallet1 = new PongPallets(20,275);
+        pallet2 = new PongPallets(960,275);
+        pongScore.resetScore();
+        scoreP1 = pongScore.setScoreP1(ball);
+        scoreP2 = pongScore.setScoreP2(ball);
+        initialTimer = 0;
+        endTimer = 0;
+        endRound = false;
+        round++;
+    }
+
+    public void setRound(Graphics2D g2){
+        g2.setColor(new Color(205, 220, 57));
+        drawElement(g2);
+
+        if(initialTimer<=500){
+            initialTimer++;
+            g2.setColor(Color.WHITE);
+            g2.setFont(new Font("Lao Sangam LM", Font.BOLD,40));
+            g2.drawString("Ready?", 430,280);
+        }
+
+        else{
+            updateElement();
+        }
+
+        g2.setColor(Color.WHITE);
+        g2.fill(pallet1.getPallet());
+        g2.fill(pallet2.getPallet());
+        g2.drawString(String.valueOf(scoreP1),250,50);
+        g2.drawString(String.valueOf(scoreP2),750,50);
+
+        if(scoreP2 == 5 || scoreP1 == 5){
+            g2.setFont(new Font("Lao Sangam LM", Font.BOLD,40));
+            g2.drawString("Game over", 400,280);
+            endRound = true;
+
+        }
+    }
+
+    public void closeGame(){
+        PongLauncher.pongWindow.dispose();
+    }
+
+    public void threeRoundLogic(Graphics2D g2){
+        if(round<=3){
+            setRound(g2);
+
+            if(endRound){
+                if(endTimer<=1000){
+                    endTimer++;
+                }
+                else{
+                    reset();
+                }
+            }
+        }
+        else{
+            closeGame();
+        }
+    }
+
 
 }
