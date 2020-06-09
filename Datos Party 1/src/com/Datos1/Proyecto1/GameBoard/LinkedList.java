@@ -8,6 +8,14 @@ public class LinkedList {
 		head = null;
 	}
 
+	public Node getHead() {
+		return this.head;
+	}
+	
+	
+	public int getSize() {
+		return this.size;
+	}
 	/**
 	 * Public method. Inserts a node at the very beginning of the linked list.
 	 * 
@@ -16,6 +24,17 @@ public class LinkedList {
 	 */
 	public void insertHead(Box newBox, int i, int j) {
 		Node newNode = Node.builder().withBox(newBox).withIndex(i, j).build();
+		newNode.setNext(head);
+		head = newNode;
+		size++;
+	}
+	
+	/**
+	 * 	Inserts node at the beginning of linked list formed by players nodes
+	 * @param player : Player
+	 */
+	public void insertHead(Player player) {
+		Node newNode = Node.builder().withPlayer(player).build();
 		newNode.setNext(head);
 		head = newNode;
 		size++;
@@ -29,6 +48,22 @@ public class LinkedList {
 	 */
 	public void insertEnd(Box newBox, int i, int j) {
 		Node newNode = Node.builder().withBox(newBox).withIndex(i, j).build();
+		Node pointer = head;
+		while (pointer.getNext() != null) {
+			pointer = pointer.getNext();
+		}
+
+		pointer.setNext(newNode);
+		size++;
+	}
+	
+	
+/**
+ * 	Inserts node at the end of linked list formed by players nodes
+ * @param player : Player
+ */
+	public void inserEnd(Player player) {
+		Node newNode = Node.builder().withPlayer(player).build();
 		Node pointer = head;
 		while (pointer.getNext() != null) {
 			pointer = pointer.getNext();

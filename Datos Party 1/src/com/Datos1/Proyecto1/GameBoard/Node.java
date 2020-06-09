@@ -56,6 +56,10 @@ public class Node{
 	public Player getPlayer() {
 		return this.player;
 	}
+	
+	public void setPlayer(Player player) {
+		this.player=player;
+	}
 	/**
 	 * Previous node getter
 	 * @return prev : Node

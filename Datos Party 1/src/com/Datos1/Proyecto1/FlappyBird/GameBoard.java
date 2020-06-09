@@ -19,6 +19,8 @@ import javax.imageio.ImageIO;
 import javax.swing.JPanel;
 import javax.swing.Timer;
 
+import com.Datos1.Proyecto1.GameBoard.Player;
+
 public class GameBoard extends JPanel implements ActionListener {
 	/**
 	 * Public class that creates the canvas where the game develops
@@ -26,7 +28,7 @@ public class GameBoard extends JPanel implements ActionListener {
 	 * @version 4/1/2020
 	 */
 	private static final long serialVersionUID = 1L;
-	public int player;
+	public Player player;
 	public Bird sprite;
 	int frameWidth, frameHeight, birdWidth, birdHeight;
 	BufferedImage image;
@@ -52,10 +54,10 @@ public class GameBoard extends JPanel implements ActionListener {
 	public int contTimer;
 	Timer timer;
 
-	public GameBoard(int player) {
+	public GameBoard(Player player) {
 		this.player = player;
 
-		sprite = new Bird(player);
+		sprite = new Bird(player.getId());
 		image = sprite.getBird();
 		wallpaper = getWallpaper();
 
@@ -109,7 +111,7 @@ public class GameBoard extends JPanel implements ActionListener {
 	 * the image moves up.
 	 */
 	public void jump() {
-		if (!gameOver) {
+		if (!crash) {
 			if (dy > 0) {
 				dy = 0;
 			}
@@ -161,31 +163,34 @@ public class GameBoard extends JPanel implements ActionListener {
 			}
 
 			if ((y + birdHeight) <= 0 || y >= (frameHeight)) {//Stops the game when the bird falls down or reaches the top
+				
+				player.incremetCoins(score); //increments coins by the amount of points achieved
+				player.setPoints(score);
+				FlappyBirdLauncher.results.insertHead(player);
 				gameOver = true;
-				System.out.println("Game Over");
 				repaint();
 				timer.stop();
 			}
 
 			for (Rectangle column : columnsArray) {
 				if (column.intersects(x, y, birdWidth, birdHeight)) { //Checks if the bird object intersects any of the rectangles
-					gameOver = true;
 					crash = true;
 					if (column.x>x) {
 						speed+=4;
 					}
+					
 				}
 			}
 			if (crash == true) {
 				x -= speed; //Bird falls moving to the left when it crashes
-				if (player == 1 && MainFlappyBird.players == 1) {
+				if (player.getId() == 1 && FlappyBirdLauncher.players.getSize() == 1) {
 					sprite.path = "images/crashedPanda.png"; //Changes sprite
 					image = sprite.getBird();
 				}
 			}
 			for (int i = 0; i < columnsArray.size(); i += 4) { //Increases score if the bird surpasses the columns
 				Rectangle column = columnsArray.get(i);
-				if (column.x + column.width == x && !gameOver) {
+				if (column.x + column.width == x && !crash) {
 					score++;
 				}
 
@@ -209,16 +214,16 @@ public class GameBoard extends JPanel implements ActionListener {
 		g.setColor(Color.white);
 		g.setFont(new Font("Arial", 1, 25));
 		if (!gameOn) {
-			if (player == 1) {
+			if (player.getId() == 1) {
 				g.drawString("Tap w to start", 160, 50);
 			}
-			if (player == 2) {
+			if (player.getId() == 2) {
 				g.drawString("Tap space bar to start", 100, 50);
 			}
-			if (player == 3) {
+			if (player.getId() == 3) {
 				g.drawString("Tap p to start", 160, 50);
 			}
-			if (player == 4) {
+			if (player.getId() == 4) {
 				g.drawString("Tap up key to start", 120, 50);
 			}
 

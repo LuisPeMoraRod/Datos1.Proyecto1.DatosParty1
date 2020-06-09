@@ -20,6 +20,7 @@ public class Player extends Component {
 	private String name;
 	private int coins;
 	private int stars;
+	private int minigamePoints;
 	private Node node;
 	private String path;
 	private int id;
@@ -40,6 +41,35 @@ public class Player extends Component {
 		clockWise=true;
 	}
 	
+	public int getId() {
+		return this.id;
+	}
+	
+	public void setId(int id) {
+		this.id = id;
+	}
+	public int getCoins() {
+		return this.coins;
+	}
+	
+	public void setCoins(int coins) {
+		this.coins=coins;
+	}
+	
+	/**
+	 * Increments the amount of coins of a player
+	 * @param newCoins
+	 */
+	public void incremetCoins(int newCoins) {
+		this.coins+=newCoins;
+	}
+	
+	public void setPoints(int points) {
+		this.minigamePoints=points;
+	}
+	public int getPoints() {
+		return this.minigamePoints;
+	}
 	/**
 	 * Getter of the flag that indicates the direction of the player's movement
 	 * @return left : boolen 
