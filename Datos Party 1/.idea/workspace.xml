@@ -3,11 +3,6 @@
   <component name="ChangeListManager">
     <list default="true" id="96e47d97-ddec-413d-ada9-5c582e94ae1c" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/Datos Party 1/com/Datos1/Proyecto1/pong/PongBoard.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Datos Party 1/com/Datos1/Proyecto1/pong/PongBoard.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/Datos Party 1/com/Datos1/Proyecto1/pong/PongScore.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Datos Party 1/com/Datos1/Proyecto1/pong/PongScore.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/com/Datos1/Proyecto1/pong/PongBoard.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/Datos1/Proyecto1/pong/PongBoard.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/com/Datos1/Proyecto1/pong/PongMain.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/Datos1/Proyecto1/pong/PongLauncher.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/com/Datos1/Proyecto1/pong/PongScore.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/Datos1/Proyecto1/pong/PongScore.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -56,7 +51,6 @@
       <recent name="$PROJECT_DIR$/src/com/Datos1/Proyecto1/pong" />
     </key>
   </component>
-  <component name="RunManager" selected="Application.PongLauncher">
     <configuration name="GameBoardLauncher" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="com.Datos1.Proyecto1.GameBoard.GameBoardLauncher" />
       <module name="Datos Party 1" />
@@ -109,8 +103,6 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="PongLauncher" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
-      <option name="MAIN_CLASS_NAME" value="com.Datos1.Proyecto1.pong.PongLauncher" />
       <module name="Datos Party 1" />
       <extension name="coverage">
         <pattern>
@@ -124,7 +116,6 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="Application.PongLauncher" />
         <item itemvalue="Application.Main" />
         <item itemvalue="Application.Main (1)" />
         <item itemvalue="Application.GameBoardLauncher" />
@@ -189,6 +180,7 @@
     <state width="1398" height="245" key="GridCell.Tab.0.bottom/0.23.1440.821@0.23.1440.821" timestamp="1590164225808" />
     <state width="1398" height="205" key="GridCell.Tab.0.bottom/0.23.1440.825@0.23.1440.825" timestamp="1591052362824" />
     <state width="1398" height="245" key="GridCell.Tab.0.bottom/0.23.1440.826@0.23.1440.826" timestamp="1589526580951" />
+
     <state width="1398" height="205" key="GridCell.Tab.0.center" timestamp="1591671762930">
       <screen x="0" y="0" width="1440" height="900" />
     </state>
@@ -198,19 +190,23 @@
     <state width="1398" height="245" key="GridCell.Tab.0.center/0.23.1440.821@0.23.1440.821" timestamp="1590164225807" />
     <state width="1398" height="205" key="GridCell.Tab.0.center/0.23.1440.825@0.23.1440.825" timestamp="1591052362785" />
     <state width="1398" height="245" key="GridCell.Tab.0.center/0.23.1440.826@0.23.1440.826" timestamp="1589526580950" />
+
     <state width="1398" height="205" key="GridCell.Tab.0.left" timestamp="1591671762929">
       <screen x="0" y="0" width="1440" height="900" />
     </state>
     <state width="1398" height="205" key="GridCell.Tab.0.left/0.0.1440.900@0.0.1440.900" timestamp="1591671762929" />
+
     <state width="1398" height="206" key="GridCell.Tab.0.left/0.23.1440.806@0.23.1440.806" timestamp="1590195304195" />
     <state width="1398" height="206" key="GridCell.Tab.0.left/0.23.1440.812@0.23.1440.812" timestamp="1590258318608" />
     <state width="1398" height="245" key="GridCell.Tab.0.left/0.23.1440.821@0.23.1440.821" timestamp="1590164225806" />
     <state width="1398" height="205" key="GridCell.Tab.0.left/0.23.1440.825@0.23.1440.825" timestamp="1591052362764" />
     <state width="1398" height="245" key="GridCell.Tab.0.left/0.23.1440.826@0.23.1440.826" timestamp="1589526580950" />
+
     <state width="1398" height="205" key="GridCell.Tab.0.right" timestamp="1591671762931">
       <screen x="0" y="0" width="1440" height="900" />
     </state>
     <state width="1398" height="205" key="GridCell.Tab.0.right/0.0.1440.900@0.0.1440.900" timestamp="1591671762931" />
+
     <state width="1398" height="206" key="GridCell.Tab.0.right/0.23.1440.806@0.23.1440.806" timestamp="1590195304195" />
     <state width="1398" height="206" key="GridCell.Tab.0.right/0.23.1440.812@0.23.1440.812" timestamp="1590258318608" />
     <state width="1398" height="245" key="GridCell.Tab.0.right/0.23.1440.821@0.23.1440.821" timestamp="1590164225807" />
