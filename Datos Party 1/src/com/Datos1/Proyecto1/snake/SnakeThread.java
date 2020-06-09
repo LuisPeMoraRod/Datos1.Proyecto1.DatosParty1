@@ -15,7 +15,7 @@ public class SnakeThread extends Thread {
         super.run();
         while(true){
             try {
-                Thread.sleep(50);
+                Thread.sleep(50-SnakeBoard.speed);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }

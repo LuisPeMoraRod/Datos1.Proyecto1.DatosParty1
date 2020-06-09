@@ -63,4 +63,8 @@ public class SnakeHead {
 
     }
 
+    public void setHeadPosition(int headX, int headY) {
+        this.headX = headX;
+        this.headY = headY;
+    }
 }
