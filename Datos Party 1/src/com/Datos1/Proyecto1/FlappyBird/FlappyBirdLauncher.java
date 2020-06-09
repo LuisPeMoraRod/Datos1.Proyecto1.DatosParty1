@@ -92,18 +92,15 @@ public class FlappyBirdLauncher {
 				}
 		}
 		window.dispose();
-		ResultsFB resultBoard = new ResultsFB(results);
+		
 	
 		results= new BubbleSort(results).execute();
 		
-		
+		ResultsFB resultBoard = new ResultsFB(results);
 		for (int i = 0; i< results.getSize();i++) {
 			results.getNode(i).getPlayer().setPoints(0);
 		}
-		
-		for (int i = 0; i< results.getSize();i++) {
-			results.getNode(i).getPlayer().setPoints(0);
-		}
+
 	
 		System.out.println("FB ended");
 	}

@@ -31,7 +31,7 @@ public class GameBoard extends JPanel implements ActionListener {
 	static LinkedList phaseB = new LinkedList();
 	static DoublyLinkedList phaseC = new DoublyLinkedList();
 	static CircularDoublyLinkedList phaseD = new CircularDoublyLinkedList();
-	private CircularDoublyLinkedList players = new CircularDoublyLinkedList();
+	public static CircularDoublyLinkedList players = new CircularDoublyLinkedList();
 	public static Node playerInTurn;
 
 	public static Node movingPointer; // Pointer that moves to the next nodes of each player's until they get to the
