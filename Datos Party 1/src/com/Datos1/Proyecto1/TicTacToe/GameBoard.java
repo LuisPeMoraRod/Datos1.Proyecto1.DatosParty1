@@ -31,22 +31,22 @@ public class GameBoard extends JPanel {
 	 * @author Luis Pedro Morales Rodriguez
 	 * @version 25/3/2020
 	 */
-	public static boolean gameEnded = false;
+	public static boolean gameEnded;
 	private JLabel infoLabel = new JLabel();
 	private JLabel turnLabel=new JLabel();
-	static Squares S1 = new Squares();
-	static Squares S2 = new Squares();
-	static Squares S3 = new Squares();
-	static Squares S4 = new Squares();
-	static Squares S5 = new Squares();
-	static Squares S6 = new Squares();
-	static Squares S7 = new Squares();
-	static Squares S8 = new Squares();
-	static Squares S9 = new Squares();
+	static Squares S1;
+	static Squares S2;
+	static Squares S3;
+	static Squares S4;
+	static Squares S5;
+	static Squares S6;
+	static Squares S7;
+	static Squares S8;
+	static Squares S9;
 
-	static int gameStatus[][] = new int[3][3]; // Array that controls the status of the game and is used to determine if
+	static int gameStatus[][]; // Array that controls the status of the game and is used to determine if
 	// a player has won or of the game ended in a draw
-	static int cont = 0;
+	static int cont;
 	static String winnerName;
 	private String name1, name2;
 	private Player winnerPlayer;
@@ -66,6 +66,18 @@ public class GameBoard extends JPanel {
 		this.player2 = player2;
 		this.name1 = player1.getName();
 		this.name2 = player2.getName();
+		gameEnded = false;
+		S1 = new Squares();
+		S2 = new Squares();
+		S3 = new Squares();
+		S4 = new Squares();
+		S5 = new Squares();
+		S6 = new Squares();
+		S7 = new Squares();
+		S8 = new Squares();
+		S9 = new Squares();
+		gameStatus = new int [3][3];
+		cont=0;
 		setPanel(S1, S2, S3, S4, S5, S6, S7, S8, S9);
 
 	}

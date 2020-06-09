@@ -21,15 +21,26 @@ public class TicTacToeLauncher implements Observer {
 
 	static boolean startPlaying = false;
 	private LinkedList players;
-	private LinkedList sortedPlayers; // linked list sorted by the amount of coins gained
 	private EndObservable observable;
 	private Window tictactoe;
+	private int gamesCont = 0;
+	private int games;
+	private Player[] newGame;
+	private Player[] game0 = new Player[2];
+	private Player[] game1 = new Player[2];
+	private Player[] game2 = new Player[2];
+	private Player[] game3 = new Player[2];
+	private Player[] game4 = new Player[2];
+	private Player[] game5 = new Player[2];
+	private Player[][] gamesArray = new Player[6][2];
 
 	public TicTacToeLauncher(CircularDoublyLinkedList players) {
-		this.players = circularToSimple(players);
-		sortedPlayers = new BubbleSort(this.players).execute2();
+		this.players = circularToSimple(players);// BubbleSort logic requires a simple linked list
+		this.players = new BubbleSort(this.players).execute2(); // bubble sorts the list considering the amount of
+																// coins
 		observable = new EndObservable(false);
 		observable.addObserver(this);
+		setGamesAmount(this.players);
 
 	}
 
@@ -53,13 +64,25 @@ public class TicTacToeLauncher implements Observer {
 			}
 		}
 
+		/**
+		 * 
+		 * 
+		 * if (startPlaying) { tttCover.getWindow().setVisible(false);
+		 * tttCover.getWindow().dispose(); tictactoe = new
+		 * Window(sortedPlayers.getHead().getPlayer(),
+		 * sortedPlayers.getNode(1).getPlayer(), observable);
+		 * tictactoe.setVisible(true);
+		 * tictactoe.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); }
+		 */
+
 		if (startPlaying) {
 			tttCover.getWindow().setVisible(false);
 			tttCover.getWindow().dispose();
-			tictactoe = new Window(sortedPlayers.getHead().getPlayer(), sortedPlayers.getNode(1).getPlayer(),
-					observable);
-			tictactoe.setVisible(true);
-			tictactoe.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+			tournament(players);
+			newGame = game0;
+			game(newGame);
+			gamesCont++; // first game
+
 		}
 
 	}
@@ -67,8 +90,24 @@ public class TicTacToeLauncher implements Observer {
 	@Override
 	public void update(Observable o, Object arg) {
 		if (observable.getEnd()) {
-			tictactoe.dispose();
-			observable.setEnd(false);
+
+			if (gamesCont < games) {
+				tictactoe.dispose();
+				observable.setEnd(false);
+				newGame = gamesArray[gamesCont];
+				try {
+					game(newGame);
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				gamesCont++;
+
+			} else {
+				tictactoe.dispose();
+				observable.setEnd(false);
+
+			}
 		}
 
 	}
@@ -85,7 +124,85 @@ public class TicTacToeLauncher implements Observer {
 	}
 
 	public void tournament(LinkedList players) {
+		switch (players.getSize()) {
+		case 2:
+			game0[0] = players.getNode(0).getPlayer();
+			game0[1] = players.getNode(1).getPlayer();
+			gamesArray[0] = game0;
+			break;
+		case 3:
+			game2[0] = players.getNode(0).getPlayer();
+			game2[1] = players.getNode(1).getPlayer();
+			gamesArray[2] = game2;
 
+			game1[0] = players.getNode(0).getPlayer();
+			game1[1] = players.getNode(2).getPlayer();
+			gamesArray[1] = game1;
+
+			game0[0] = players.getNode(1).getPlayer();
+			game0[1] = players.getNode(2).getPlayer();
+			gamesArray[0] = game0;
+
+			break;
+		case 4:
+
+			game0[0] = players.getNode(0).getPlayer();
+			game0[1] = players.getNode(3).getPlayer();
+			gamesArray[0] = game0;
+
+			game1[0] = players.getNode(1).getPlayer();
+			game1[1] = players.getNode(2).getPlayer();
+			gamesArray[1] = game1;
+
+			game2[0] = players.getNode(0).getPlayer();
+			game2[1] = players.getNode(1).getPlayer();
+			gamesArray[2] = game2;
+
+			game3[0] = players.getNode(2).getPlayer();
+			game3[1] = players.getNode(3).getPlayer();
+			gamesArray[3] = game3;
+
+			game4[0] = players.getNode(0).getPlayer();
+			game4[1] = players.getNode(2).getPlayer();
+			gamesArray[4] = game4;
+
+			game5[0] = players.getNode(1).getPlayer();
+			game5[1] = players.getNode(3).getPlayer();
+			gamesArray[5] = game5;
+
+		default:
+			break;
+		}
+	}
+
+	/**
+	 * Lunches one tic tac toe match
+	 * 
+	 * @param game
+	 * @throws IOException
+	 */
+	public void game(Player[] game) throws IOException {
+		tictactoe = new Window(game[0], game[1], observable);
+		tictactoe.setVisible(true);
+		tictactoe.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+	}
+
+	public void setGamesAmount(LinkedList players) {
+		switch (players.getSize()) {
+		case 2:
+			games = 1;
+			break;
+		case 3:
+			games = 3;
+			break;
+		case 4:
+			games = 6;
+			break;
+
+		default:
+			break;
+		}
 	}
 
 }

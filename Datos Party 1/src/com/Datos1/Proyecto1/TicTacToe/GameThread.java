@@ -1,5 +1,7 @@
 package com.Datos1.Proyecto1.TicTacToe;
 
+import com.Datos1.Proyecto1.GameBoard.Square;
+
 public class GameThread extends Thread {
 	/**
 	 * Public class that runs the thread in charge of constantly repaint the
@@ -27,6 +29,7 @@ public class GameThread extends Thread {
 		while (!GameBoard.gameEnded) {
 			board.repaint();
 		}
+		Squares.column=Squares.row=0; //Necessary to rebuild the matrix for next game
 		System.out.println("Winner: " + GameBoard.winnerName);
 		int cont = 0;
 		while (cont <= 3) {

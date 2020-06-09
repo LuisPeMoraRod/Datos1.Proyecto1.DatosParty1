@@ -10,7 +10,10 @@ public class MouseClickedEvent extends MouseAdapter{
 	 * @version 25/3/2020
 	 * {@link MouseAdapter}
 	 */
-	static boolean isFirstPlayer=true;
+	static boolean isFirstPlayer;
+	public  MouseClickedEvent() {
+		isFirstPlayer = true;
+	}
 
 	@Override
 	public void mouseClicked(MouseEvent e) {

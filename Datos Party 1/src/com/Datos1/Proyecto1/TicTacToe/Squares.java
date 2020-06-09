@@ -19,11 +19,11 @@ public class Squares extends Component {
 	private static final long serialVersionUID = 1L;
 	private BufferedImage image;
 	private String path;
-	public boolean hasChanged = false, isChanging = false;
+	public boolean hasChanged, isChanging;
 	public int whichPlayer;
 
-	static int row = 0;
-	static int column = 0;
+	static int row=0;
+	static int column=0;
 	int row1;
 	int column1;
 	int transparency=7;
@@ -34,6 +34,7 @@ public class Squares extends Component {
 	 * located {@link MouseClickedEvent} {@link Squares#changeImage()}
 	 */
 	public Squares() {
+		hasChanged = false; isChanging = false;
 		row1 = row;
 		column1 = column;
 		this.addMouseListener(new MouseClickedEvent());
