@@ -5,7 +5,7 @@ import com.Datos1.Proyecto1.cover.CoverEvent;
 
 import java.io.IOException;
 
-public class SimonMain {
+public class SimonLauncher {
 
     public static SimonWindow simonWindow;
     static boolean startPlaying = false;
@@ -34,8 +34,9 @@ public class SimonMain {
 
             simonCover.getWindow().setVisible(false);
             simonCover.getWindow().dispose();
-            simonWindow = new SimonWindow();
+            simonWindow = new SimonWindow(3);
             simonWindow.setVisible(true);
+
         }
     }
 }
