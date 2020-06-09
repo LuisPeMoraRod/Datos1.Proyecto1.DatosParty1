@@ -19,6 +19,8 @@ import javax.swing.GroupLayout;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
+import com.Datos1.Proyecto1.GameBoard.Player;
+
 
 public class GameBoard extends JPanel {
 
@@ -45,8 +47,10 @@ public class GameBoard extends JPanel {
 	static int gameStatus[][] = new int[3][3]; // Array that controls the status of the game and is used to determine if
 	// a player has won or of the game ended in a draw
 	static int cont = 0;
-	public static String winner;
-	public String player1, player2;
+	static String winnerName;
+	private String name1, name2;
+	private Player winnerPlayer;
+	private Player player1,player2;
 
 	private static final long serialVersionUID = 1L;
 	final Image wallpaper = requestImage();
@@ -57,9 +61,11 @@ public class GameBoard extends JPanel {
 	 * @param player1 : String
 	 * @param player2 : String
 	 */
-	public GameBoard(String player1, String player2) {
+	public GameBoard(Player player1, Player player2) {
 		this.player1 = player1;
 		this.player2 = player2;
+		this.name1 = player1.getName();
+		this.name2 = player2.getName();
 		setPanel(S1, S2, S3, S4, S5, S6, S7, S8, S9);
 
 	}
@@ -83,11 +89,11 @@ public class GameBoard extends JPanel {
 		GroupLayout layout = new GroupLayout(this);
 		setLayout(layout);
 		//String infoText = "<html><body><font size=6> <span style=\"color: #000080;\"><span style=\"color: #00ffff;\">Tic</span> <span style=\"color: #ff0000;\">Tac</span> <span style=\"color: #00ffff;\">Toe</span></span<br><br>Player 1: "+player1+"<br>Player 2: "+player2+" </font></body></html>";
-		String infoText = "<html><body><font size=6>TIC-TAC-TOE<br><br>Player 1: "+player1+"<br>Player 2: "+player2+" </font></body></html>";
+		String infoText = "<html><body><font size=6>TIC-TAC-TOE<br><br>Player 1: "+name1+"<br>Player 2: "+name2+" </font></body></html>";
 		infoLabel.setText(infoText);
 		infoLabel.setForeground(Color.white);
 
-		String turnText="<html><body ><font size=6><br>It's "+player1+"'s turn"+"  </font> </body></html>";
+		String turnText="<html><body ><font size=6><br>It's "+name1+"'s turn"+"  </font> </body></html>";
 		turnLabel.setText(turnText);
 		turnLabel.setForeground(Color.white);
 
@@ -293,33 +299,45 @@ public class GameBoard extends JPanel {
 	}
 
 	public void setTurnText(JLabel label) {
-		winner = checkVictory(player1, player2);
+		winnerName = checkVictory(name1, name2);
+		
 		String text;
-		if (winner != null) {
+		if (winnerName != null) {
 			GameBoard.gameEnded = true;// Game ended with a winner
-			text="<html><body><font size=6><br>Winner: "+winner+".</font> </body></html>";
+			text="<html><body><font size=6><br>Winner: "+winnerName+"</font> </body></html>";
 			turnLabel.setText(text);
-
+			setsWinner();
 		}
-		if (winner == null && cont > 8) {
+		if (winnerName == null && cont > 8) {
 			GameBoard.gameEnded = true;
-			winner = "draw";
-			text="<html><body><font size=6><br>Game ended: "+winner+".</font> </body></html>";
+			winnerName = "draw";
+			text="<html><body><font size=6><br>Game ended: "+winnerName+"</font> </body></html>";
 			turnLabel.setText(text);
-
+			setsWinner();
 		}
 
 		if (!GameBoard.gameEnded) {
 			if (MouseClickedEvent.isFirstPlayer) {
-				text="<html><body><font size=6><br>It's "+player1+"'s turn</font> </body></html>";
+				text="<html><body><font size=6><br>It's "+name1+"'s turn</font> </body></html>";
 				turnLabel.setText(text);
 			}else {
-				text="<html><body><font size=6><br>It's "+player2+"'s turn</font> </body></html>";
+				text="<html><body><font size=6><br>It's "+name2+"'s turn</font> </body></html>";
 				turnLabel.setText(text);
 			}
 
 		}
 	}
-
+	
+	public void setsWinner() {
+		if (winnerName.equals(player1.getName())) {
+			winnerPlayer = player1;
+		}else if (winnerName.equals(player2.getName())) {
+			winnerPlayer = player2;
+		}else {
+			winnerPlayer = null; //draw
+		}
+	}
+	
+	
 
 }
