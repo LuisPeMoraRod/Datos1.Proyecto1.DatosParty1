@@ -2,6 +2,7 @@ package com.Datos1.Proyecto1.GameBoard;
 
 import java.awt.AlphaComposite;
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Point;
@@ -33,6 +34,7 @@ public class GameBoard extends JPanel implements ActionListener {
 	static CircularDoublyLinkedList phaseD = new CircularDoublyLinkedList();
 	public static CircularDoublyLinkedList players = new CircularDoublyLinkedList();
 	public static Node playerInTurn;
+	private BufferedImage heyYou;
 
 	public static Node movingPointer; // Pointer that moves to the next nodes of each player's until they get to the
 	// correct node
@@ -51,7 +53,6 @@ public class GameBoard extends JPanel implements ActionListener {
 	public LeftRightArrow leftArrow, rightArrow;
 	public UpDownArrow upArrow, downArrow;
 
-
 	Timer timer;
 	private int transparency = 10;
 	public GameBoard(CircularDoublyLinkedList players) {
@@ -69,12 +70,14 @@ public class GameBoard extends JPanel implements ActionListener {
 		rightArrow = LeftRightArrow.builder().right().build();
 		upArrow = UpDownArrow.builder().up().build();
 		downArrow = UpDownArrow.builder().down().build();
+		
+		heyYou = getSprite("images/heyYou.png");
     
-		this.players = players;
+		GameBoard.players = players;
 
 		setPlayersInitialNode();
 
-		this.playerInTurn = this.players.getStarNode();
+		GameBoard.playerInTurn = GameBoard.players.getStarNode();
 		setDices(this);
 
 		timer = new Timer(10, this);
@@ -680,7 +683,10 @@ public class GameBoard extends JPanel implements ActionListener {
 			g2d.drawImage(playerInTurn.getPlayer().getSprite(), pt.x, pt.y, this);// draws player's sprite in canvas
 			playerInTurn.getPlayer().setLocation(pt);// sets actual location of the sprite
 			// playerInTurn = playerInTurn.getNext();// pointer to the next player in turn
+			
 		}
+		g2d.drawImage(heyYou, Window.width*5/9+20, 30,this);
+		g2d.drawImage(playerInTurn.getPlayer().getSprite(), Window.width*6/9+65,23,this);
 
 	}
 
