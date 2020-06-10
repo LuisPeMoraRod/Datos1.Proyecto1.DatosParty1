@@ -1,8 +1,11 @@
-package com.Datos1.Proyecto1.TicTacToe;
+package com.Datos1.Proyecto1.FourInLine;
 
-import com.Datos1.Proyecto1.GameBoard.*;
-import com.Datos1.Proyecto1.Results.ResultsFB;
-import com.Datos1.Proyecto1.Results.ResultsTTT;
+import com.Datos1.Proyecto1.GameBoard.BubbleSort;
+import com.Datos1.Proyecto1.GameBoard.CircularDoublyLinkedList;
+import com.Datos1.Proyecto1.GameBoard.LinkedList;
+import com.Datos1.Proyecto1.GameBoard.Node;
+import com.Datos1.Proyecto1.GameBoard.Player;
+import com.Datos1.Proyecto1.Results.Results4IL;
 import com.Datos1.Proyecto1.cover.Cover;
 import com.Datos1.Proyecto1.cover.CoverEvent;
 
@@ -11,20 +14,20 @@ import java.io.IOException;
 import java.util.Observable;
 import java.util.Observer;
 
-public class TicTacToeLauncher implements Observer {
-
+public class FourInLineLauncher implements Observer {
 	/**
 	 * Main method that creates the window object
 	 * 
 	 * @author Luis Pedro Morales Rodriguez
-	 * @version 25/3/2020 {@link Window}
+	 * @version 4/5/2020
 	 * @param args
+	 *
 	 */
 
 	static boolean startPlaying = false;
 	private LinkedList players;
 	private EndObservable observable;
-	private Window tictactoe;
+	private Window4IL fourInLine;
 	private int gamesCont = 0;
 	private int games;
 	private Player[] newGame;
@@ -36,7 +39,7 @@ public class TicTacToeLauncher implements Observer {
 	private Player[] game5 = new Player[2];
 	private Player[][] gamesArray = new Player[6][2];
 
-	public TicTacToeLauncher(CircularDoublyLinkedList players) {
+	public FourInLineLauncher(CircularDoublyLinkedList players) {
 		this.players = circularToSimple(players);// BubbleSort logic requires a simple linked list
 		this.players = new BubbleSort(this.players).execute2(); // bubble sorts the list considering the amount of
 																// coins
@@ -48,14 +51,14 @@ public class TicTacToeLauncher implements Observer {
 
 	public void launch() throws IOException {
 
-		String pathLogo = "images/tttLogo.png";
-		String pathEnterPress = "images/enterPress.png";
-		String pathSpacePress = "images/spacePress.png";
-		String pathInstructions = "images/tttInstructions.png";
-		String pathBackground = "images/Wallpaper.jpg";
+		String pathLogo = "images/filLogo.png";
+		String pathEnterPress = "images/enterContinue.png";
+		String pathSpacePress = "images/spaceContinue.png";
+		String pathInstructions = "images/filInstructions.png";
+		String pathBackground = "images/filBackground.png";
 
-		Cover tttCover = new Cover(pathLogo, pathBackground, pathEnterPress, pathSpacePress, pathInstructions);
-		tttCover.createWindow();
+		Cover filCover = new Cover(pathLogo, pathBackground, pathEnterPress, pathSpacePress, pathInstructions);
+		filCover.createWindow();
 
 		while (!startPlaying) {
 
@@ -66,15 +69,15 @@ public class TicTacToeLauncher implements Observer {
 			}
 		}
 
-		
 		if (startPlaying) {
-			tttCover.getWindow().setVisible(false);
-			tttCover.getWindow().dispose();
+
+			filCover.getWindow().setVisible(false);
+			filCover.getWindow().dispose();
+
 			tournament(players);
 			newGame = game0;
 			game(newGame);
 			gamesCont++; // first game
-
 		}
 
 	}
@@ -84,7 +87,7 @@ public class TicTacToeLauncher implements Observer {
 		if (observable.getEnd()) {
 
 			if (gamesCont < games) {
-				tictactoe.dispose();
+				fourInLine.dispose();
 				observable.setEnd(false);
 				newGame = gamesArray[gamesCont];
 				try {
@@ -96,12 +99,12 @@ public class TicTacToeLauncher implements Observer {
 				gamesCont++;
 
 			} else { //end of the game
-				tictactoe.dispose();
+				fourInLine.dispose();
 				observable.setEnd(false);
 				//sorts by mini game points
 				players= new BubbleSort(players).execute();
 				try {
-					ResultsTTT resultBoard = new ResultsTTT(players); //displays results window
+					Results4IL resultBoard = new Results4IL(players); //displays results window
 				} catch (IOException e) {
 					e.printStackTrace();
 				}
@@ -111,9 +114,8 @@ public class TicTacToeLauncher implements Observer {
 
 			}
 		}
-
 	}
-
+	
 	public LinkedList circularToSimple(CircularDoublyLinkedList list) {
 		LinkedList simple = new LinkedList();
 		Node pointer = list.getNode(0);
@@ -124,7 +126,7 @@ public class TicTacToeLauncher implements Observer {
 
 		return simple;
 	}
-
+	
 	/**
 	 * Defines the players that will play in every match
 	 * @param players
@@ -180,7 +182,7 @@ public class TicTacToeLauncher implements Observer {
 			break;
 		}
 	}
-
+	
 	/**
 	 * Lunches one tic tac toe match
 	 * 
@@ -188,12 +190,12 @@ public class TicTacToeLauncher implements Observer {
 	 * @throws IOException
 	 */
 	public void game(Player[] game) throws IOException {
-		tictactoe = new Window(game[0], game[1], observable);
-		tictactoe.setVisible(true);
-		tictactoe.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		fourInLine = new Window4IL(game[0], game[1], observable);
+		fourInLine.setVisible(true);
+		fourInLine.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
 	}
-
+	
 	public void setGamesAmount(LinkedList players) {
 		switch (players.getSize()) {
 		case 2:

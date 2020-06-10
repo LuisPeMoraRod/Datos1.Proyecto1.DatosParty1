@@ -1,6 +1,5 @@
 package com.Datos1.Proyecto1.TicTacToe;
 
-import com.Datos1.Proyecto1.GameBoard.Square;
 
 public class GameThread extends Thread {
 	/**
@@ -11,7 +10,6 @@ public class GameThread extends Thread {
 	 * @version 25/3/2020
 	 */
 	GameBoard board;
-	public static boolean disposeWindow;
 	private EndObservable observable;
 
 	public GameThread(GameBoard board, EndObservable observable) {
@@ -42,7 +40,7 @@ public class GameThread extends Thread {
 			}
 			cont++;
 		}
-		observable.setEnd(true);
+		observable.setEnd(true);//sets observable flag
 		
 
 	}
