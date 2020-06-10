@@ -62,7 +62,7 @@ public class LinkedList {
  * 	Inserts node at the end of linked list formed by players nodes
  * @param player : Player
  */
-	public void inserEnd(Player player) {
+	public void insertEnd(Player player) {
 		Node newNode = Node.builder().withPlayer(player).build();
 		Node pointer = head;
 		while (pointer.getNext() != null) {

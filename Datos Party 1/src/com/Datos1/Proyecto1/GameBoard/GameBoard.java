@@ -2,7 +2,6 @@ package com.Datos1.Proyecto1.GameBoard;
 
 import java.awt.AlphaComposite;
 import java.awt.Color;
-import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Point;
@@ -41,7 +40,12 @@ public class GameBoard extends JPanel implements ActionListener {
 	private Box yellow;
 	private Box blue;
 	private Point imagesPos;
+
 	private Node pointerToStar;
+	private int starTransparency;
+	private float alpha;
+	private AlphaComposite alcom;
+	private int timerStar;
 
 	public static boolean drawCoins;
 	public static boolean staticCoins;
@@ -100,6 +104,8 @@ public class GameBoard extends JPanel implements ActionListener {
 		blue = new BlueBox();
 
 		pointerToStar = mainLinkedList.getNode(3);
+		starTransparency = 10;
+		timerStar = 6;
 
 		imagesPos = new Point();
 
@@ -388,7 +394,7 @@ public class GameBoard extends JPanel implements ActionListener {
 	 * 
 	 * @param g : Graphics2D
 	 */
-	public void setImages(Graphics2D g) {
+	public void setImages(Graphics2D g, Graphics2D g2) {
 		imagesPos = mainLinkedList.getNode(16).getIndex();
 		imagesPos.x = (imagesPos.x * 80) + 2;
 		imagesPos.y = (imagesPos.y * 83) + 2;
@@ -423,11 +429,37 @@ public class GameBoard extends JPanel implements ActionListener {
 			g.drawImage(getSprite("images/throwAgain.png"), imagesPos.x + 30, imagesPos.y + 20, this);
 		}
 
-		if (roundsCont >= 1) {
+		// paints Star
+		if (roundsCont >= 1 ) {
 			imagesPos = pointerToStar.getIndex();
 			imagesPos.x = (imagesPos.x * 80) + 12;
 			imagesPos.y = (imagesPos.y * 83) + 10;
-			g.drawImage(getSprite("images/star.png"), imagesPos.x, imagesPos.y, this);
+
+			if (timerStar < 6 && !drawCoins) {// blinking star
+				if (transparency == 10) {
+					transparency = 0;
+				} else {
+					transparency = 10;
+				}
+				alpha = (float) ((transparency) * 0.1f);
+				alcom = AlphaComposite.getInstance(AlphaComposite.SRC_OVER, alpha);
+				g2.setComposite(alcom);
+				g2.drawImage(getSprite("images/star.png"), imagesPos.x, imagesPos.y, this);
+				timerStar++;
+				try {
+					Thread.sleep(500);
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+
+			} else {
+				alpha = (float) ((transparency) * 0.1f);
+				alcom = AlphaComposite.getInstance(AlphaComposite.SRC_OVER, alpha);
+				g2.setComposite(alcom);
+				g2.drawImage(getSprite("images/star.png"), imagesPos.x, imagesPos.y, this);
+			}
+
 		}
 
 	}
@@ -552,7 +584,9 @@ public class GameBoard extends JPanel implements ActionListener {
 		super.paintComponent(g);
 
 		Graphics2D g2d = (Graphics2D) g.create();
-		setImages(g2d); // sets images like black hole and throw again message
+		Graphics2D g2d2 = (Graphics2D) g.create();
+
+		setImages(g2d, g2d2); // sets images like black hole and throw again message
 
 		if (dice1.thrown && dice2.thrown) {
 			startMovement();
@@ -617,8 +651,8 @@ public class GameBoard extends JPanel implements ActionListener {
 					spriteAppears(g2d, imagesPos);
 
 				} else {
-					Point actualPos = playerInTurn.getPlayer().getLocation();
-					g2d.drawImage(playerInTurn.getPlayer().getSprite(), actualPos.x, actualPos.y, this);
+					imagesPos = playerInTurn.getPlayer().getLocation();
+					g2d.drawImage(playerInTurn.getPlayer().getSprite(), imagesPos.x, imagesPos.y, this);
 				}
 			}
 		} else {
@@ -633,9 +667,6 @@ public class GameBoard extends JPanel implements ActionListener {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-
-		} else if (staticCoins) {
-
 		}
 
 		try {
@@ -805,6 +836,10 @@ public class GameBoard extends JPanel implements ActionListener {
 						playerInTurn = playerInTurn.getNext();// pointer to the next player in turn
 						if (playerInTurn.equals(players.getStart())) { // increments counter when round finishes
 							roundsCont++;
+							if (roundsCont == 1) {
+								newStar();
+							}
+							newStar();
 						}
 					}
 
@@ -992,12 +1027,12 @@ public class GameBoard extends JPanel implements ActionListener {
 	 * @param pointer : Node
 	 */
 	public void checksNewBox(Node pointer) {
-		Node ptr = players.getStart();
-		for (int i = 0; i < players.getSize(); i++) {
-			System.out.println(ptr.getPlayer().getCoins());//prints the amount coins of every player
-			ptr = ptr.getNext();
-
-		}
+		/**
+		 * Node ptr = players.getStart(); for (int i = 0; i < players.getSize(); i++) {
+		 * ptr = ptr.getNext();
+		 * 
+		 * }
+		 */
 
 		Box box = pointer.getPlayer().getPointer().getBox();
 
@@ -1032,12 +1067,14 @@ public class GameBoard extends JPanel implements ActionListener {
 	 * @throws InterruptedException
 	 */
 	public void drawCoins(Graphics2D g) throws InterruptedException {
-		int width, height;
 		Box box = playerInTurn.getPrev().getPlayer().getPointer().getBox();
 
 		if (box.getClass().equals(green.getClass())) {
 			if (staticCoins) {
 				g.drawImage(plus7, xCoins, yCoins, dxCoins, dyCoins, this);// static image
+				Thread.sleep(1000);
+				staticCoins=false;
+				drawCoins=false;
 			} else {
 				g.drawImage(plus7, xCoins, yCoins, dxCoins, dyCoins, this);
 				yCoins--;
@@ -1051,7 +1088,10 @@ public class GameBoard extends JPanel implements ActionListener {
 
 		} else if (box.getClass().equals(red.getClass())) {
 			if (staticCoins) {
-				g.drawImage(plus7, xCoins, yCoins, dxCoins, dyCoins, this);// static image
+				g.drawImage(minus7, xCoins, yCoins, dxCoins, dyCoins, this);// static image
+				Thread.sleep(1000);
+				staticCoins=false;
+				drawCoins=false;
 			} else {
 				g.drawImage(minus7, xCoins, yCoins, dxCoins, dyCoins, this);
 				yCoins++;
@@ -1064,5 +1104,32 @@ public class GameBoard extends JPanel implements ActionListener {
 			}
 		}
 
+	}
+
+	/**
+	 * Sets new random position of the star
+	 */
+	public void newStar() {
+		int newNodeId = random.nextInt(75);
+		System.out.println(newNodeId);
+		Node playerPtr = playerInTurn;
+		timerStar = 0;
+
+		if (newNodeId < 44) {
+			pointerToStar = mainLinkedList.getNode(newNodeId);
+		} else if (newNodeId < 51) {
+			newNodeId -= 44;
+			pointerToStar = phaseA.getNode(newNodeId);
+		} else if (newNodeId < 59) {
+			newNodeId -= 51;
+			pointerToStar = phaseB.getNode(newNodeId);
+		} else if (newNodeId < 62) {
+			newNodeId -= 59;
+			pointerToStar = phaseC.getNode(newNodeId);
+		} else {
+			newNodeId -= 62;
+			pointerToStar = phaseD.getNode(newNodeId);
+		}
+		System.out.println(newNodeId);
 	}
 }
