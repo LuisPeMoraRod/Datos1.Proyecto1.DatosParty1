@@ -1,6 +1,9 @@
 package com.Datos1.Proyecto1.TicTacToe;
 
 import javax.swing.JFrame;
+
+import com.Datos1.Proyecto1.GameBoard.Player;
+
 import java.io.IOException;
 
 public class Window extends JFrame{
@@ -11,22 +14,22 @@ public class Window extends JFrame{
 	private static final long serialVersionUID = 1L;
 
 	
-	public String player1,player2;
+	public Player player1,player2;
 	private final int width=850, length=570;
 	GameBoard board;
 	GameThread thread;
 	
 	
-	public Window (String player1, String player2) throws IOException {
+	public Window (Player player1, Player player2, EndObservable observable) throws IOException {
 		this.player1=player1;
 		this.player2=player2;
 		createWindow(player1,player2);
-		thread = new GameThread(board);
+		thread = new GameThread(board,observable);
 		thread.start();
 		
 	}
 	
-	public void createWindow(String player1, String player2) throws IOException {
+	public void createWindow(Player player1, Player player2) throws IOException {
 		setTitle("Tic-Tac-Toe");
 		setSize(width,length);
 		setLocationRelativeTo(null);

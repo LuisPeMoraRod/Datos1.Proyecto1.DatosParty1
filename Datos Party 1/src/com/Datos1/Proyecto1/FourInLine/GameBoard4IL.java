@@ -11,36 +11,49 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.Timer;
 
+import com.Datos1.Proyecto1.GameBoard.Player;
+
 public class GameBoard4IL extends JPanel implements ActionListener {
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	public String player1, player2, currentPlayer;
-	public static Circles[][] circlesArray = new Circles[7][7];
+	public String name1, name2, currentPlayer;
+	private Player player1, player2;
+	public static Circles[][] circlesArray;
 	private JLabel playersLabel = new JLabel();
 
 	private JLabel turnLabel = new JLabel();
 
 	public static boolean gameEnded;
 	public static boolean draw;
-	public static boolean playerOne = true;
+	public static boolean playerOne;
 	public static int columnInPlay;
 	public static int rowToken;
-	public int[][] line4 = new int[4][2];
+	public int[][] line4;
 
 	public Color lightYellow;
 	public Thread thread;
 	public Timer timer;
 
-	public GameBoard4IL(String player1, String player2) {
+	private EndObservable observable;
+
+	public GameBoard4IL(Player player1, Player player2, EndObservable observable) {
+		gameEnded = false;
+		playerOne = true;
+		circlesArray = new Circles[7][7];
+		line4 = new int[4][2];
 		this.player1 = player1;
 		this.player2 = player2;
+		this.name1 = player1.getName();
+		this.name2 = player2.getName();
 		lightYellow = new Color(250, 249, 222);
 		setBackground(lightYellow);
 		instantiateCircles(circlesArray);
 		timer = new Timer(300, this);
-
+		this.observable = observable;
+		thread = new hideShow(this,line4, observable,circlesArray);
+		thread.start();
 	}
 
 	@Override
@@ -87,9 +100,9 @@ public class GameBoard4IL extends JPanel implements ActionListener {
 		GroupLayout layout = new GroupLayout(this);
 		setLayout(layout);
 		if (playerOne) {
-			currentPlayer = player1;
+			currentPlayer = name1;
 		} else {
-			currentPlayer = player2;
+			currentPlayer = name2;
 		}
 		String turn;
 		if (!GameBoard4IL.gameEnded) {
@@ -99,9 +112,9 @@ public class GameBoard4IL extends JPanel implements ActionListener {
 		} else {
 			turn = "Winner: " + currentPlayer;
 		}
-		String playersText = "<html><body><font size=6>Player 1: " + player1
+		String playersText = "<html><body><font size=6>Player 1: " + name1
 				+ "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; " + turn + "<br>Player 2: "
-				+ player2 + " </font></body></html>";
+				+ name2 + " </font></body></html>";
 		playersLabel.setText(playersText);
 		playersLabel.setForeground(Color.black);
 
@@ -417,14 +430,11 @@ public class GameBoard4IL extends JPanel implements ActionListener {
 			if (!gameEnded && !draw) {
 				playerOne = !playerOne;
 			} else if (draw) {
+				drawPoints();
 				gameEnded = true;
 			} else {
-
-				thread = new hideShow(line4);
-				thread.start();
-
-				// thread = new hideShow(line4);
-				// thread.start();
+				winnerPoints();
+				
 
 			}
 
@@ -448,6 +458,27 @@ public class GameBoard4IL extends JPanel implements ActionListener {
 			}
 		}
 
+	}
+
+	/**
+	 * Adds 2 coins and points to each player
+	 */
+	public void drawPoints() {
+		player1.incrementCoins(6);
+		player1.incrementPoints(6);
+	}
+
+	/**
+	 * Adds 6 coins and points to winner player
+	 */
+	public void winnerPoints() {
+		if (currentPlayer.equals(player1.getName())) {
+			player1.incrementCoins(6);
+			player1.incrementPoints(6);
+		} else if (currentPlayer.equals(player2.getName())) {
+			player2.incrementCoins(6);
+			player2.incrementPoints(6);
+		}
 	}
 
 }

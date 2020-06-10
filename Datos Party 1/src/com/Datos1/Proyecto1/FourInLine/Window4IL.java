@@ -2,6 +2,8 @@ package com.Datos1.Proyecto1.FourInLine;
 
 import javax.swing.JFrame;
 
+import com.Datos1.Proyecto1.GameBoard.Player;
+
 
 public class Window4IL extends JFrame {
 	/**
@@ -21,9 +23,9 @@ public class Window4IL extends JFrame {
 	 * @param player1 : String
 	 * @param player2 : String
 	 */
-	public Window4IL(String player1, String player2) {
+	public Window4IL(Player player1, Player player2, EndObservable observable) {
 		createWindow();
-		canvas = new GameBoard4IL(player1, player2);
+		canvas = new GameBoard4IL(player1, player2,observable);
 		add(canvas);
 	}
 

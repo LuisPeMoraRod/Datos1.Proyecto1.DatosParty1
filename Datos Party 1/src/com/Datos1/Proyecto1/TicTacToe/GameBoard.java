@@ -19,6 +19,8 @@ import javax.swing.GroupLayout;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
+import com.Datos1.Proyecto1.GameBoard.Player;
+
 
 public class GameBoard extends JPanel {
 
@@ -29,24 +31,26 @@ public class GameBoard extends JPanel {
 	 * @author Luis Pedro Morales Rodriguez
 	 * @version 25/3/2020
 	 */
-	public static boolean gameEnded = false;
+	public static boolean gameEnded;
 	private JLabel infoLabel = new JLabel();
 	private JLabel turnLabel=new JLabel();
-	static Squares S1 = new Squares();
-	static Squares S2 = new Squares();
-	static Squares S3 = new Squares();
-	static Squares S4 = new Squares();
-	static Squares S5 = new Squares();
-	static Squares S6 = new Squares();
-	static Squares S7 = new Squares();
-	static Squares S8 = new Squares();
-	static Squares S9 = new Squares();
+	static Squares S1;
+	static Squares S2;
+	static Squares S3;
+	static Squares S4;
+	static Squares S5;
+	static Squares S6;
+	static Squares S7;
+	static Squares S8;
+	static Squares S9;
 
-	static int gameStatus[][] = new int[3][3]; // Array that controls the status of the game and is used to determine if
+	static int gameStatus[][]; // Array that controls the status of the game and is used to determine if
 	// a player has won or of the game ended in a draw
-	static int cont = 0;
-	public static String winner;
-	public String player1, player2;
+	static int cont;
+	static String winnerName;
+	private Player player1, player2;
+	private Player winnerPlayer;
+	private String name1,name2;
 
 	private static final long serialVersionUID = 1L;
 	final Image wallpaper = requestImage();
@@ -57,9 +61,23 @@ public class GameBoard extends JPanel {
 	 * @param player1 : String
 	 * @param player2 : String
 	 */
-	public GameBoard(String player1, String player2) {
+	public GameBoard(Player player1, Player player2) {
 		this.player1 = player1;
 		this.player2 = player2;
+		this.name1 = player1.getName();
+		this.name2 = player2.getName();
+		gameEnded = false;
+		S1 = new Squares();
+		S2 = new Squares();
+		S3 = new Squares();
+		S4 = new Squares();
+		S5 = new Squares();
+		S6 = new Squares();
+		S7 = new Squares();
+		S8 = new Squares();
+		S9 = new Squares();
+		gameStatus = new int [3][3];
+		cont=0;
 		setPanel(S1, S2, S3, S4, S5, S6, S7, S8, S9);
 
 	}
@@ -83,11 +101,11 @@ public class GameBoard extends JPanel {
 		GroupLayout layout = new GroupLayout(this);
 		setLayout(layout);
 		//String infoText = "<html><body><font size=6> <span style=\"color: #000080;\"><span style=\"color: #00ffff;\">Tic</span> <span style=\"color: #ff0000;\">Tac</span> <span style=\"color: #00ffff;\">Toe</span></span<br><br>Player 1: "+player1+"<br>Player 2: "+player2+" </font></body></html>";
-		String infoText = "<html><body><font size=6>TIC-TAC-TOE<br><br>Player 1: "+player1+"<br>Player 2: "+player2+" </font></body></html>";
+		String infoText = "<html><body><font size=6>TIC-TAC-TOE<br><br>Player 1: "+name1+"<br>Player 2: "+name2+" </font></body></html>";
 		infoLabel.setText(infoText);
 		infoLabel.setForeground(Color.white);
 
-		String turnText="<html><body ><font size=6><br>It's "+player1+"'s turn"+"  </font> </body></html>";
+		String turnText="<html><body ><font size=6><br>It's "+name1+"'s turn"+"  </font> </body></html>";
 		turnLabel.setText(turnText);
 		turnLabel.setForeground(Color.white);
 
@@ -179,7 +197,9 @@ public class GameBoard extends JPanel {
 		setMatrix(S8);
 		S9.setTypeSquare();
 		setMatrix(S9);
-		setTurnText(turnLabel);
+		if (!gameEnded) {
+			setTurnText(turnLabel);
+		}
 
 	}
 
@@ -213,7 +233,8 @@ public class GameBoard extends JPanel {
 	 * @return String object that represents the name of the winner player. If no
 	 *         body won, the method returns null
 	 */
-	public String checkVictory(String player1, String player2) {
+	public Player checkVictory() {
+		
 		int pos00 = gameStatus[0][0];
 		int pos01 = gameStatus[0][1];
 		int pos02 = gameStatus[0][2];
@@ -293,33 +314,54 @@ public class GameBoard extends JPanel {
 	}
 
 	public void setTurnText(JLabel label) {
-		winner = checkVictory(player1, player2);
-		String text;
-		if (winner != null) {
-			GameBoard.gameEnded = true;// Game ended with a winner
-			text="<html><body><font size=6><br>Winner: "+winner+".</font> </body></html>";
-			turnLabel.setText(text);
-
+		try {
+			winnerName = checkVictory().getName();
+		} catch (Exception e) {
+			winnerName = null;
 		}
-		if (winner == null && cont > 8) {
-			GameBoard.gameEnded = true;
-			winner = "draw";
-			text="<html><body><font size=6><br>Game ended: "+winner+".</font> </body></html>";
+		
+		
+		
+		String text;
+		if (winnerName != null) {
+			setsWinnerCoins();// increments coins for the winner
+			GameBoard.gameEnded = true;// Game ended with a winner
+			text="<html><body><font size=6><br>Winner: "+winnerName+"</font> </body></html>";
 			turnLabel.setText(text);
-
+		}
+		if (winnerName == null && cont > 8) {
+			//2 points for every player in case of draw
+			player1.incrementCoins(2); player1.incrementPoints(2);
+			player2.incrementCoins(2); player2.incrementPoints(2);
+			GameBoard.gameEnded = true;
+			winnerName = "draw";
+			text="<html><body><font size=6><br>Game ended: "+winnerName+"</font> </body></html>";
+			turnLabel.setText(text);
 		}
 
 		if (!GameBoard.gameEnded) {
 			if (MouseClickedEvent.isFirstPlayer) {
-				text="<html><body><font size=6><br>It's "+player1+"'s turn</font> </body></html>";
+				text="<html><body><font size=6><br>It's "+name1+"'s turn</font> </body></html>";
 				turnLabel.setText(text);
 			}else {
-				text="<html><body><font size=6><br>It's "+player2+"'s turn</font> </body></html>";
+				text="<html><body><font size=6><br>It's "+name2+"'s turn</font> </body></html>";
 				turnLabel.setText(text);
 			}
 
 		}
 	}
-
+	
+	public void setsWinnerCoins() {
+		if (winnerName.equals(player1.getName())) {
+			player1.incrementCoins(6); player1.incrementPoints(6);
+		}else if (winnerName.equals(player2.getName())) {
+			player2.incrementCoins(6); player2.incrementPoints(6);
+		}
+		else {
+			winnerName = null;
+		}
+	}
+	
+	
 
 }

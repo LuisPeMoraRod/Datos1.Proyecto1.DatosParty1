@@ -164,7 +164,7 @@ public class GameBoard extends JPanel implements ActionListener {
 
 			if ((y + birdHeight) <= 0 || y >= (frameHeight)) {//Stops the game when the bird falls down or reaches the top
 				
-				player.incremetCoins(score); //increments coins by the amount of points achieved
+				player.incrementCoins(score); //increments coins by the amount of points achieved
 				player.setPoints(score);
 				FlappyBirdLauncher.results.insertHead(player);
 				gameOver = true;

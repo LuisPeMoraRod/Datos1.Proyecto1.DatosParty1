@@ -1,30 +1,36 @@
 package com.Datos1.Proyecto1.TicTacToe;
 
+
 public class GameThread extends Thread {
 	/**
-	 * Public class that runs the thread in charge of constantly repaint the components in the canvas
+	 * Public class that runs the thread in charge of constantly repaint the
+	 * components in the canvas
 	 * 
 	 * @author Luis Pedro Morales Rodriguez
 	 * @version 25/3/2020
 	 */
 	GameBoard board;
+	private EndObservable observable;
 
-	public GameThread(GameBoard board) {
+	public GameThread(GameBoard board, EndObservable observable) {
 		this.board = board;
+		this.observable = observable;
 	}
 
 	/**
-	 * Overrided public method that runs when the thread starts.  While the game is being played, it repaints all the canvas' components. 
-	 * When the game ends, the hide and show method is called in a loop
-	 * {@link GameThread#hideShow()}
+	 * Overrided public method that runs when the thread starts. While the game is
+	 * being played, it repaints all the canvas' components. When the game ends, the
+	 * hide and show method is called in a loop {@link GameThread#hideShow()}
 	 */
 	@Override
 	public void run() {
 		while (!GameBoard.gameEnded) {
 			board.repaint();
 		}
-		System.out.println("Winner: " + GameBoard.winner);
-		while (GameBoard.gameEnded) {
+		Squares.column=Squares.row=0; //Necessary to rebuild the matrix for next game
+		System.out.println("Winner: " + GameBoard.winnerName);
+		int cont = 0;
+		while (cont <= 3) {
 			try {
 				hideShow();
 			} catch (InterruptedException e) {
@@ -32,12 +38,16 @@ public class GameThread extends Thread {
 				System.out.println("falla");
 				e.printStackTrace();
 			}
+			cont++;
 		}
+		observable.setEnd(true);//sets observable flag
+		
 
 	}
 
 	/**
 	 * Public method that hides the objects
+	 * 
 	 * @param S1 : Squares
 	 * @param S2 : Squares
 	 * @param S3 : Squares
@@ -52,6 +62,7 @@ public class GameThread extends Thread {
 
 	/**
 	 * Public method that shows the objects
+	 * 
 	 * @param S1 : Squares
 	 * @param S2 : Squares
 	 * @param S3 : Squares
@@ -65,7 +76,9 @@ public class GameThread extends Thread {
 	}
 
 	/**
-	 * Public method that hides and shows the three squares that gave the win to the player
+	 * Public method that hides and shows the three squares that gave the win to the
+	 * player
+	 * 
 	 * @throws InterruptedException
 	 */
 	public void hideShow() throws InterruptedException {

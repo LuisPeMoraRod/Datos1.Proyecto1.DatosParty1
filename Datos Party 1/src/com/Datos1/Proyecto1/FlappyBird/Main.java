@@ -16,7 +16,7 @@ public class Main {
 		CircularDoublyLinkedList players = new CircularDoublyLinkedList();
 
 		players.insertHead(new Player("Sofi", 1));
-		//players.insertEnd(new Player("Luis", 2));
+		players.insertEnd(new Player("Luis", 2));
 		//players.insertEnd(new Player("Moni", 3));
 		//players.insertEnd(new Player("Rob", 4));
 		FlappyBirdLauncher fb = new FlappyBirdLauncher(players);
@@ -28,13 +28,7 @@ public class Main {
 			e.printStackTrace();
 		}
 
-		/**
-		 * GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
-		 * Font[] fonts = ge.getAllFonts();
-		 * 
-		 * for (Font font : fonts) { System.out.print(font.getFontName() + " : ");
-		 * System.out.println(font.getFamily()); }
-		 */
+	
 	}
 
 }
