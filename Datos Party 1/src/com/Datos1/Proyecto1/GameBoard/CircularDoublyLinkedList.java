@@ -31,6 +31,14 @@ public class CircularDoublyLinkedList {
 	public int getSize() {
 		return size;
 	}
+	
+	/**
+	 * Getter for first node in the list
+	 * @return start : Node 
+	 */
+	public Node getStart(){
+		return this.start;
+	}
 
 	/**
 	 * Public method. Inserts a node at the very beginning of the doubly linked
@@ -207,7 +215,5 @@ public class CircularDoublyLinkedList {
 		}else {return null;}
 	}
 
-	public Node getStarNode(){
-		return this.start;
-	}
+	
 }

@@ -66,11 +66,22 @@ public class Player extends Component {
 
 	/**
 	 * Increments the amount of coins of a player
-	 * 
 	 * @param newCoins
 	 */
 	public void incrementCoins(int newCoins) {
 		this.coins += newCoins;
+	}
+	
+	/**
+	 * Decrements the amount of coins of a player
+	 * @param newCoins
+	 */
+	public void decrementsCoins(int lessCoins) {
+		if (coins>=7) {
+			this.coins -= lessCoins;
+		}else {
+			this.coins=0;
+		}
 	}
 
 	/**

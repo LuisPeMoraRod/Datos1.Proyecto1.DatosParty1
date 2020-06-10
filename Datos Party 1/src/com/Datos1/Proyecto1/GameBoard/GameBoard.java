@@ -34,11 +34,17 @@ public class GameBoard extends JPanel implements ActionListener {
 	static CircularDoublyLinkedList phaseD = new CircularDoublyLinkedList();
 	public static CircularDoublyLinkedList players = new CircularDoublyLinkedList();
 	public static Node playerInTurn;
-	private BufferedImage heyYou;
+	private BufferedImage heyYou, plus7, minus7;
+	private boolean drawCoins;
+	private Box green;
+	private Box red;
+	private Box yellow;
+	private Box blue;
 
+	private int xCoins,yCoins, dxCoins, dyCoins;
 	public static Node movingPointer; // Pointer that moves to the next nodes of each player's until they get to the
 	// correct node
-  
+
 	private GameThread thread;
 	private Random random;
 
@@ -55,6 +61,7 @@ public class GameBoard extends JPanel implements ActionListener {
 
 	Timer timer;
 	private int transparency = 10;
+
 	public GameBoard(CircularDoublyLinkedList players) {
 		random = new Random();
 
@@ -70,15 +77,22 @@ public class GameBoard extends JPanel implements ActionListener {
 		rightArrow = LeftRightArrow.builder().right().build();
 		upArrow = UpDownArrow.builder().up().build();
 		downArrow = UpDownArrow.builder().down().build();
-		
+
 		heyYou = getSprite("images/heyYou.png");
-    
+		plus7 = getSprite("images/plus7.png");
+		minus7 = getSprite("images/minus7.png");
+
 		GameBoard.players = players;
 
 		setPlayersInitialNode();
 
-		GameBoard.playerInTurn = GameBoard.players.getStarNode();
+		GameBoard.playerInTurn = GameBoard.players.getStart();
 		setDices(this);
+
+		green = new GreenBox();
+		red = new RedBox();
+		yellow = new YellowBox();
+		blue = new BlueBox();
 
 		timer = new Timer(10, this);
 		timer.start();
@@ -403,8 +417,8 @@ public class GameBoard extends JPanel implements ActionListener {
 
 	public void setDices(JPanel canvas) {
 		this.setLayout(null);
-		dice1.setBounds(Window.width * 6 / 8 + 20, 30, 96, 96);
-		dice2.setBounds(Window.width * 6 / 7, 30, 96, 96);
+		dice1.setBounds(Window.width * 6 / 8 + 70, 30, 96, 96);
+		dice2.setBounds(Window.width * 7 / 8, 30, 96, 96);
 
 		canvas.add(dice1);
 		canvas.add(dice2);
@@ -519,6 +533,7 @@ public class GameBoard extends JPanel implements ActionListener {
 	@Override
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
+
 		Graphics2D g2d = (Graphics2D) g.create();
 		setImages(g2d); // sets images like black hole and throw again message
 
@@ -590,7 +605,17 @@ public class GameBoard extends JPanel implements ActionListener {
 				}
 			}
 		} else {
+
 			setPlayers(g2d);
+		}
+
+		if (drawCoins) {
+			try {
+				drawCoins(g2d);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 
 		}
 
@@ -683,10 +708,11 @@ public class GameBoard extends JPanel implements ActionListener {
 			g2d.drawImage(playerInTurn.getPlayer().getSprite(), pt.x, pt.y, this);// draws player's sprite in canvas
 			playerInTurn.getPlayer().setLocation(pt);// sets actual location of the sprite
 			// playerInTurn = playerInTurn.getNext();// pointer to the next player in turn
-			
+
 		}
-		g2d.drawImage(heyYou, Window.width*5/9+20, 30,this);
-		g2d.drawImage(playerInTurn.getPlayer().getSprite(), Window.width*6/9+65,23,this);
+		// Message: hey, you, throw the dices
+		g2d.drawImage(heyYou, Window.width * 5 / 9 + 45, 30, this);
+		g2d.drawImage(playerInTurn.getPlayer().getSprite(), Window.width * 6 / 9 + 90, 23, this);
 
 	}
 
@@ -754,6 +780,9 @@ public class GameBoard extends JPanel implements ActionListener {
 					} else {
 						movingCont = 0;// resets counter
 						moving = false;// stops moving routine
+
+						checksNewBox(playerInTurn);// activates event depending on new position
+
 						playerInTurn = playerInTurn.getNext();// pointer to the next player in turn
 					}
 
@@ -922,13 +951,80 @@ public class GameBoard extends JPanel implements ActionListener {
 		return sprite;
 	}
 
-	public void setPlayersInitialNode(){
-		Node pointer = players.getStarNode();
+	/**
+	 * Sets pointer of all the players to the first node of the main path
+	 */
+	public void setPlayersInitialNode() {
+		Node pointer = players.getStart();
 
-		for(int i = 0; i < players.getSize(); i++){
+		for (int i = 0; i < players.getSize(); i++) {
 
 			pointer.getPlayer().setPointer(mainLinkedList.start);
 			pointer = pointer.getNext();
 		}
+	}
+
+	/**
+	 * Public method. Activates events depending on the box where the player falls
+	 * 
+	 * @param pointer : Node
+	 */
+	public void checksNewBox(Node pointer) {
+		Node ptr = players.getStart();
+		for (int i = 0; i < players.getSize(); i++) {
+			System.out.println(ptr.getPlayer().getCoins());
+			ptr = ptr.getNext();
+
+		}
+
+		Box box = pointer.getPlayer().getPointer().getBox();
+
+		if (box.getClass().equals(green.getClass())) {
+			pointer.getPlayer().incrementCoins(5);
+			xCoins=1150;yCoins=300;dxCoins=80; dyCoins = 50;
+			drawCoins = true;
+
+		} else if (box.getClass().equals(red.getClass())) {
+			pointer.getPlayer().decrementsCoins(5);
+			xCoins=1150;yCoins=250; dxCoins=150; dyCoins = 120;
+			drawCoins = true;
+
+		} else if (box.getClass().equals(yellow.getClass())) {
+			System.out.println("yellow");
+		} else {
+			System.out.println("blue");
+			
+		}
+	}
+
+	/**
+	 * Draws coins and moves them while changing the image size
+	 * @param g
+	 * @throws InterruptedException
+	 */
+	public void drawCoins(Graphics2D g) throws InterruptedException {
+		int width, height;
+		Box box = playerInTurn.getPrev().getPlayer().getPointer().getBox();
+		if (box.getClass().equals(green.getClass())) {
+			
+			g.drawImage(plus7, xCoins, yCoins, dxCoins, dyCoins, this);
+			yCoins--;dxCoins++;dyCoins++;
+			Thread.sleep(7);
+			if (dxCoins >= 140) {
+				drawCoins = false;
+				System.out.println(drawCoins);
+			}
+
+		} else {
+			
+			g.drawImage(minus7, xCoins, yCoins,  dxCoins, dyCoins, this);
+			yCoins++;dxCoins--;dyCoins--;
+			Thread.sleep(7);
+			if (dxCoins <= 80) {
+				drawCoins = false;
+				System.out.println(drawCoins);
+			}
+		}
+
 	}
 }
