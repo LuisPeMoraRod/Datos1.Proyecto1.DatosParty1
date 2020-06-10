@@ -17,6 +17,7 @@ public class Node{
 	private int j;
 	private int id;
 	private boolean hasPointer;
+	private boolean hasStar;
 
 	/**
 	 * Constructor method. Receives Builder object and initializes its attributes with the builder parameters.
@@ -34,6 +35,23 @@ public class Node{
 		this.j=builder.j;
 		this.id = builder.id;
 		this.hasPointer= true;
+		this.hasStar = false;
+	}
+	
+	/**
+	 * hasStar setter
+	 * @param star : boolean 
+	 */
+	public void setStar(boolean star) {
+		this.hasStar = star;
+	}
+	
+	/**
+	 * hasStar getter
+	 * @return hasSta : boolean
+	 */
+	public boolean getStar () {
+		return this.hasStar;
 	}
 	
 	/**

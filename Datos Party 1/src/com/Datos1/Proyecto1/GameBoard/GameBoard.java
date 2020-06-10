@@ -35,32 +35,37 @@ public class GameBoard extends JPanel implements ActionListener {
 	public static CircularDoublyLinkedList players = new CircularDoublyLinkedList();
 	public static Node playerInTurn;
 	private BufferedImage heyYou, plus7, minus7;
-	private boolean drawCoins;
+
 	private Box green;
 	private Box red;
 	private Box yellow;
 	private Box blue;
+	private Point imagesPos;
+	private Node pointerToStar;
 
-	private int xCoins,yCoins, dxCoins, dyCoins;
+	public static boolean drawCoins;
+	public static boolean staticCoins;
+	private int xCoins, yCoins, dxCoins, dyCoins;// position and size of the +-7 coins images
 	public static Node movingPointer; // Pointer that moves to the next nodes of each player's until they get to the
 	// correct node
 
 	private GameThread thread;
 	private Random random;
 
-	public static boolean moving;
-	public static boolean twoPaths1;
-	public static boolean twoPaths2;
-	private boolean disappears;
-	private boolean appears;
-	public static boolean throwAgain;
+	public static boolean moving; // indicates if a player is moving
+	public static boolean twoPaths1; // tells if left/right message should appear
+	public static boolean twoPaths2;// tells if up/down message should appear
+	private boolean disappears;// sprite disappears
+	private boolean appears;// sprite appears
+	public static boolean throwAgain;// player must throwo dices again (after blackhole)
 	public static int movingCont;// indicates through how many nodes the sprite has moved
+	private int roundsCont;// tells how many rounds have been played
 	public static Dice dice1, dice2;
 	public LeftRightArrow leftArrow, rightArrow;
 	public UpDownArrow upArrow, downArrow;
 
 	Timer timer;
-	private int transparency = 10;
+	private int transparency = 10;// sprites transparency (10 is completely solid)
 
 	public GameBoard(CircularDoublyLinkedList players) {
 		random = new Random();
@@ -93,6 +98,10 @@ public class GameBoard extends JPanel implements ActionListener {
 		red = new RedBox();
 		yellow = new YellowBox();
 		blue = new BlueBox();
+
+		pointerToStar = mainLinkedList.getNode(3);
+
+		imagesPos = new Point();
 
 		timer = new Timer(10, this);
 		timer.start();
@@ -380,37 +389,45 @@ public class GameBoard extends JPanel implements ActionListener {
 	 * @param g : Graphics2D
 	 */
 	public void setImages(Graphics2D g) {
-		Point pos = mainLinkedList.getNode(16).getIndex();
-		pos.x = (pos.x * 80) + 2;
-		pos.y = (pos.y * 83) + 2;
+		imagesPos = mainLinkedList.getNode(16).getIndex();
+		imagesPos.x = (imagesPos.x * 80) + 2;
+		imagesPos.y = (imagesPos.y * 83) + 2;
 		BufferedImage blackHole = getSprite("images/blackHole.png"); // black hole image
-		g.drawImage(blackHole, pos.x, pos.y, this); // places black hole in node 16 of main linked list
-		pos = phaseD.getNode(13).getIndex();
-		pos.x = (pos.x * 80) + 2;
-		pos.y = (pos.y * 83) + 2;
-		g.drawImage(blackHole, pos.x, pos.y, this); // places black hole in node 13 of phase D
+		g.drawImage(blackHole, imagesPos.x, imagesPos.y, this); // places black hole in node 16 of main linked list
+		imagesPos = phaseD.getNode(13).getIndex();
+		imagesPos.x = (imagesPos.x * 80) + 2;
+		imagesPos.y = (imagesPos.y * 83) + 2;
+		g.drawImage(blackHole, imagesPos.x, imagesPos.y, this); // places black hole in node 13 of phase D
 
-		pos = mainLinkedList.getNode(18).getIndex();
-		pos.x = (pos.x * 80) + 14;
-		pos.y = (pos.y * 83) + 12;
+		imagesPos = mainLinkedList.getNode(18).getIndex();
+		imagesPos.x = (imagesPos.x * 80) + 14;
+		imagesPos.y = (imagesPos.y * 83) + 12;
 		BufferedImage leftArrow = getSprite("images/leftArrow2.png");
-		g.drawImage(leftArrow, pos.x, pos.y, this); // draws left arrow in node 18 of main linked list
+		g.drawImage(leftArrow, imagesPos.x, imagesPos.y, this); // draws left arrow in node 18 of main linked list
 
-		pos = mainLinkedList.getNode(30).getIndex();
-		pos.x = (pos.x * 80) + 10;
-		pos.y = (pos.y * 83) + 13;
+		imagesPos = mainLinkedList.getNode(30).getIndex();
+		imagesPos.x = (imagesPos.x * 80) + 10;
+		imagesPos.y = (imagesPos.y * 83) + 13;
 		BufferedImage upArrow = getSprite("images/upArrow2.png");
-		g.drawImage(upArrow, pos.x, pos.y, this); // draws up arrow in node 30 of main linked list
+		g.drawImage(upArrow, imagesPos.x, imagesPos.y, this); // draws up arrow in node 30 of main linked list
 
-		pos = mainLinkedList.getNode(40).getIndex();
-		pos.x = (pos.x * 80) + 9;
-		pos.y = (pos.y * 83) + 10;
+		imagesPos = mainLinkedList.getNode(40).getIndex();
+		imagesPos.x = (imagesPos.x * 80) + 9;
+		imagesPos.y = (imagesPos.y * 83) + 10;
 		BufferedImage rightArrow = getSprite("images/rightArrow2.png");
-		g.drawImage(rightArrow, pos.x, pos.y, this); // draws right arrow in node 40 of main linked list
+		g.drawImage(rightArrow, imagesPos.x, imagesPos.y, this); // draws right arrow in node 40 of main linked list
 
 		if (throwAgain) { // draws message of throwing dices again after falling in the black hole
-			Point p1 = new Point(Window.width * 9 / 12, Window.height / 4);
-			g.drawImage(getSprite("images/throwAgain.png"), p1.x + 30, p1.y + 20, this);
+			imagesPos.x = Window.width * 9 / 12;
+			imagesPos.y = Window.height / 4;
+			g.drawImage(getSprite("images/throwAgain.png"), imagesPos.x + 30, imagesPos.y + 20, this);
+		}
+
+		if (roundsCont >= 1) {
+			imagesPos = pointerToStar.getIndex();
+			imagesPos.x = (imagesPos.x * 80) + 12;
+			imagesPos.y = (imagesPos.y * 83) + 10;
+			g.drawImage(getSprite("images/star.png"), imagesPos.x, imagesPos.y, this);
 		}
 
 	}
@@ -547,32 +564,32 @@ public class GameBoard extends JPanel implements ActionListener {
 			this.remove(upArrow);
 			for (int i = 0; i < players.getSize(); i++) {// paints all players when one of them is moving
 				playerInTurn = playerInTurn.getPrev();
-				Point actualPos = playerInTurn.getPlayer().getLocation();
-				g2d.drawImage(playerInTurn.getPlayer().getSprite(), actualPos.x, actualPos.y, this);
+				imagesPos = playerInTurn.getPlayer().getLocation();
+				g2d.drawImage(playerInTurn.getPlayer().getSprite(), imagesPos.x, imagesPos.y, this);
 			}
 
 		} else if (twoPaths1) {// if flag is set
 			for (int i = 0; i < players.getSize(); i++) {// paints all players
 				playerInTurn = playerInTurn.getPrev();
-				Point actualPos = playerInTurn.getPlayer().getLocation();
-				g2d.drawImage(playerInTurn.getPlayer().getSprite(), actualPos.x, actualPos.y, this);
+				imagesPos = playerInTurn.getPlayer().getLocation();
+				g2d.drawImage(playerInTurn.getPlayer().getSprite(), imagesPos.x, imagesPos.y, this);
 			}
 			paintRLArrows(g2d);// paint arrows to chose path (left or right)
 		} else if (twoPaths2) {// if flag is set
 			for (int i = 0; i < players.getSize(); i++) {// paints all players
 				playerInTurn = playerInTurn.getPrev();
-				Point actualPos = playerInTurn.getPlayer().getLocation();
-				g2d.drawImage(playerInTurn.getPlayer().getSprite(), actualPos.x, actualPos.y, this);
+				imagesPos = playerInTurn.getPlayer().getLocation();
+				g2d.drawImage(playerInTurn.getPlayer().getSprite(), imagesPos.x, imagesPos.y, this);
 			}
 			paintUDArrows(g2d);// paint arrows to chose path (up or down)
 		} else if (disappears) {
 			for (int i = 0; i < players.getSize(); i++) {// paints all players
 				playerInTurn = playerInTurn.getPrev();
 				if (playerInTurn.getPlayer().getPointer().equals(phaseD.getNode(13))) {
-					Point actualPos = new Point(mainLinkedList.getNode(16).getIndex()); // change for 16
-					actualPos.x = (actualPos.x * 80) + 20;
-					actualPos.y = (actualPos.y * 83) + 25;
-					spriteDisappears(g2d, actualPos);
+					imagesPos = mainLinkedList.getNode(16).getIndex(); // change for 16
+					imagesPos.x = (imagesPos.x * 80) + 20;
+					imagesPos.y = (imagesPos.y * 83) + 25;
+					spriteDisappears(g2d, imagesPos);
 				} else if (playerInTurn.getPlayer().getPointer().equals(mainLinkedList.getNode(16))) {// change for 16
 					Point actualPos = phaseD.getNode(13).getIndex();
 					actualPos.x = (actualPos.x * 80) + 20;
@@ -580,8 +597,8 @@ public class GameBoard extends JPanel implements ActionListener {
 					spriteDisappears(g2d, actualPos);
 
 				} else {
-					Point actualPos = playerInTurn.getPlayer().getLocation();
-					g2d.drawImage(playerInTurn.getPlayer().getSprite(), actualPos.x, actualPos.y, this);
+					imagesPos = playerInTurn.getPlayer().getLocation();
+					g2d.drawImage(playerInTurn.getPlayer().getSprite(), imagesPos.x, imagesPos.y, this);
 				}
 			}
 
@@ -589,15 +606,15 @@ public class GameBoard extends JPanel implements ActionListener {
 			for (int i = 0; i < players.getSize(); i++) {// paints all players
 				playerInTurn = playerInTurn.getPrev();
 				if (playerInTurn.getPlayer().getPointer().equals(phaseD.getNode(13))) {
-					Point actualPos = phaseD.getNode(13).getIndex();
-					actualPos.x = (actualPos.x * 80) + 20;
-					actualPos.y = (actualPos.y * 83) + 25;
-					spriteAppears(g2d, actualPos);
+					imagesPos = phaseD.getNode(13).getIndex();
+					imagesPos.x = (imagesPos.x * 80) + 20;
+					imagesPos.y = (imagesPos.y * 83) + 25;
+					spriteAppears(g2d, imagesPos);
 				} else if (playerInTurn.getPlayer().getPointer().equals(mainLinkedList.getNode(16))) {// change for 16
-					Point actualPos = mainLinkedList.getNode(16).getIndex();// change for 16
-					actualPos.x = (actualPos.x * 80) + 20;
-					actualPos.y = (actualPos.y * 83) + 25;
-					spriteAppears(g2d, actualPos);
+					imagesPos = mainLinkedList.getNode(16).getIndex();// change for 16
+					imagesPos.x = (imagesPos.x * 80) + 20;
+					imagesPos.y = (imagesPos.y * 83) + 25;
+					spriteAppears(g2d, imagesPos);
 
 				} else {
 					Point actualPos = playerInTurn.getPlayer().getLocation();
@@ -616,6 +633,8 @@ public class GameBoard extends JPanel implements ActionListener {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
+
+		} else if (staticCoins) {
 
 		}
 
@@ -784,6 +803,9 @@ public class GameBoard extends JPanel implements ActionListener {
 						checksNewBox(playerInTurn);// activates event depending on new position
 
 						playerInTurn = playerInTurn.getNext();// pointer to the next player in turn
+						if (playerInTurn.equals(players.getStart())) { // increments counter when round finishes
+							roundsCont++;
+						}
 					}
 
 				}
@@ -972,7 +994,7 @@ public class GameBoard extends JPanel implements ActionListener {
 	public void checksNewBox(Node pointer) {
 		Node ptr = players.getStart();
 		for (int i = 0; i < players.getSize(); i++) {
-			System.out.println(ptr.getPlayer().getCoins());
+			System.out.println(ptr.getPlayer().getCoins());//prints the amount coins of every player
 			ptr = ptr.getNext();
 
 		}
@@ -981,48 +1003,64 @@ public class GameBoard extends JPanel implements ActionListener {
 
 		if (box.getClass().equals(green.getClass())) {
 			pointer.getPlayer().incrementCoins(5);
-			xCoins=1150;yCoins=300;dxCoins=80; dyCoins = 50;
+			xCoins = 1150;
+			yCoins = 300;
+			dxCoins = 75;
+			dyCoins = 45;
 			drawCoins = true;
 
 		} else if (box.getClass().equals(red.getClass())) {
 			pointer.getPlayer().decrementsCoins(5);
-			xCoins=1150;yCoins=250; dxCoins=150; dyCoins = 120;
+			xCoins = 1150;
+			yCoins = 250;
+			dxCoins = 150;
+			dyCoins = 120;
 			drawCoins = true;
 
 		} else if (box.getClass().equals(yellow.getClass())) {
 			System.out.println("yellow");
 		} else {
 			System.out.println("blue");
-			
+
 		}
 	}
 
 	/**
 	 * Draws coins and moves them while changing the image size
+	 * 
 	 * @param g
 	 * @throws InterruptedException
 	 */
 	public void drawCoins(Graphics2D g) throws InterruptedException {
 		int width, height;
 		Box box = playerInTurn.getPrev().getPlayer().getPointer().getBox();
+
 		if (box.getClass().equals(green.getClass())) {
-			
-			g.drawImage(plus7, xCoins, yCoins, dxCoins, dyCoins, this);
-			yCoins--;dxCoins++;dyCoins++;
-			Thread.sleep(7);
-			if (dxCoins >= 140) {
-				drawCoins = false;
-				System.out.println(drawCoins);
+			if (staticCoins) {
+				g.drawImage(plus7, xCoins, yCoins, dxCoins, dyCoins, this);// static image
+			} else {
+				g.drawImage(plus7, xCoins, yCoins, dxCoins, dyCoins, this);
+				yCoins--;
+				dxCoins++;
+				dyCoins++;
+				Thread.sleep(7);
+				if (dxCoins >= 140) {
+					staticCoins = true;
+				}
 			}
 
-		} else {
-			
-			g.drawImage(minus7, xCoins, yCoins,  dxCoins, dyCoins, this);
-			yCoins++;dxCoins--;dyCoins--;
-			Thread.sleep(7);
-			if (dxCoins <= 80) {
-				drawCoins = false;
-				System.out.println(drawCoins);
+		} else if (box.getClass().equals(red.getClass())) {
+			if (staticCoins) {
+				g.drawImage(plus7, xCoins, yCoins, dxCoins, dyCoins, this);// static image
+			} else {
+				g.drawImage(minus7, xCoins, yCoins, dxCoins, dyCoins, this);
+				yCoins++;
+				dxCoins--;
+				dyCoins--;
+				Thread.sleep(7);
+				if (dxCoins <= 80) {
+					staticCoins = true;
+				}
 			}
 		}
 
