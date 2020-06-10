@@ -13,7 +13,7 @@ public class Main {
 		list.insertHead(new Player("Sofi", 1));
 		list.insertEnd(new Player("Luis", 2));
 		list.insertEnd(new Player("Moni", 3));
-		list.insertEnd(new Player("Camila", 3));
+		//list.insertEnd(new Player("Camila", 3));
 		
 		TicTacToeLauncher ttt = new TicTacToeLauncher(list);
 		try {

@@ -1,6 +1,8 @@
 package com.Datos1.Proyecto1.TicTacToe;
 
 import com.Datos1.Proyecto1.GameBoard.*;
+import com.Datos1.Proyecto1.Results.ResultsFB;
+import com.Datos1.Proyecto1.Results.ResultsTTT;
 import com.Datos1.Proyecto1.cover.Cover;
 import com.Datos1.Proyecto1.cover.CoverEvent;
 
@@ -106,6 +108,17 @@ public class TicTacToeLauncher implements Observer {
 			} else {
 				tictactoe.dispose();
 				observable.setEnd(false);
+				//sorts by mini game points
+				players= new BubbleSort(players).execute();
+				try {
+					ResultsTTT resultBoard = new ResultsTTT(players); //displays results window
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				for (int i = 0; i< players.getSize();i++) {
+					players.getNode(i).getPlayer().setPoints(0);
+				}
 
 			}
 		}

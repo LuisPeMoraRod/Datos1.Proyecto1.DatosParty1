@@ -48,9 +48,9 @@ public class GameBoard extends JPanel {
 	// a player has won or of the game ended in a draw
 	static int cont;
 	static String winnerName;
-	private String name1, name2;
+	private Player player1, player2;
 	private Player winnerPlayer;
-	private Player player1,player2;
+	private String name1,name2;
 
 	private static final long serialVersionUID = 1L;
 	final Image wallpaper = requestImage();
@@ -197,7 +197,9 @@ public class GameBoard extends JPanel {
 		setMatrix(S8);
 		S9.setTypeSquare();
 		setMatrix(S9);
-		setTurnText(turnLabel);
+		if (!gameEnded) {
+			setTurnText(turnLabel);
+		}
 
 	}
 
@@ -231,7 +233,8 @@ public class GameBoard extends JPanel {
 	 * @return String object that represents the name of the winner player. If no
 	 *         body won, the method returns null
 	 */
-	public String checkVictory(String player1, String player2) {
+	public Player checkVictory() {
+		
 		int pos00 = gameStatus[0][0];
 		int pos01 = gameStatus[0][1];
 		int pos02 = gameStatus[0][2];
@@ -311,21 +314,29 @@ public class GameBoard extends JPanel {
 	}
 
 	public void setTurnText(JLabel label) {
-		winnerName = checkVictory(name1, name2);
+		try {
+			winnerName = checkVictory().getName();
+		} catch (Exception e) {
+			winnerName = null;
+		}
+		
+		
 		
 		String text;
 		if (winnerName != null) {
+			setsWinnerCoins();// increments coins for the winner
 			GameBoard.gameEnded = true;// Game ended with a winner
 			text="<html><body><font size=6><br>Winner: "+winnerName+"</font> </body></html>";
 			turnLabel.setText(text);
-			setsWinner();
 		}
 		if (winnerName == null && cont > 8) {
+			//2 points for every player in case of draw
+			player1.incrementCoins(2); player1.incrementPoints(2);
+			player2.incrementCoins(2); player2.incrementPoints(2);
 			GameBoard.gameEnded = true;
 			winnerName = "draw";
 			text="<html><body><font size=6><br>Game ended: "+winnerName+"</font> </body></html>";
 			turnLabel.setText(text);
-			setsWinner();
 		}
 
 		if (!GameBoard.gameEnded) {
@@ -340,13 +351,14 @@ public class GameBoard extends JPanel {
 		}
 	}
 	
-	public void setsWinner() {
+	public void setsWinnerCoins() {
 		if (winnerName.equals(player1.getName())) {
-			winnerPlayer = player1;
+			player1.incrementCoins(6); player1.incrementPoints(6);
 		}else if (winnerName.equals(player2.getName())) {
-			winnerPlayer = player2;
-		}else {
-			winnerPlayer = null; //draw
+			player2.incrementCoins(6); player2.incrementPoints(6);
+		}
+		else {
+			winnerName = null;
 		}
 	}
 	
