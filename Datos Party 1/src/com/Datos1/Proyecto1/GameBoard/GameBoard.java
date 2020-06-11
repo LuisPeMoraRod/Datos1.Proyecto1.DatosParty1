@@ -2,6 +2,7 @@ package com.Datos1.Proyecto1.GameBoard;
 
 import java.awt.AlphaComposite;
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Point;
@@ -11,6 +12,7 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.Random;
+import com.Datos1.Proyecto1.Results.*;
 
 import javax.imageio.ImageIO;
 import javax.swing.GroupLayout;
@@ -613,6 +615,7 @@ public class GameBoard extends JPanel implements ActionListener {
 
 		Graphics2D g2d = (Graphics2D) g.create();
 		Graphics2D g2d2 = (Graphics2D) g.create();
+		stats(g2d);
 
 		try {
 			setImages(g2d, g2d2);// sets images like black hole, star messages or throw again message
@@ -1230,5 +1233,30 @@ public class GameBoard extends JPanel implements ActionListener {
 		}else if (player.getPointer().equals(pointerToStar) && coins<25) {
 			sorry = true;
 		}
+	}
+	
+	/**
+	 * Draws statistics: amount of stars and coins
+	 * @param g : Graphics2D 
+	 */
+	public void stats(Graphics2D g) {
+		Node playerNode = players.getStart();
+		Player player;
+		imagesPos.x = 90;
+		imagesPos.y = 30;
+		for (int i = 0; i < players.getSize(); i++) {// paints all players
+			player = playerNode.getPlayer();
+			imagesPos.y+=65;
+			g.setFont(new Font("Arial", 1, 18));
+			drawString(g,": "+player.getCoins()+" coins, "+player.getStar()+" stars", imagesPos.x+40, imagesPos.y+5);
+			g.drawImage(player.getSprite(), imagesPos.x, imagesPos.y, this);
+			playerNode = playerNode.getNext();
+		}
+		
+	}
+	
+	public void drawString(Graphics g, String text, int x, int y) {
+		for (String line : text.split("\n"))
+			g.drawString(line, x, y += g.getFontMetrics().getHeight());
 	}
 }

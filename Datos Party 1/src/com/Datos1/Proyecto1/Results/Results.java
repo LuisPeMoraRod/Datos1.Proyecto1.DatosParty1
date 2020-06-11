@@ -89,7 +89,7 @@ abstract class Results extends JFrame {
 		 * @param x
 		 * @param y
 		 */
-		void drawString(Graphics g, String text, int x, int y) {
+		public void drawString(Graphics g, String text, int x, int y) {
 			for (String line : text.split("\n"))
 				g.drawString(line, x, y += g.getFontMetrics().getHeight());
 		}
