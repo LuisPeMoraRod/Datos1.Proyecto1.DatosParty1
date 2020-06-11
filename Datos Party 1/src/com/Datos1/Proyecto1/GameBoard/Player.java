@@ -1,5 +1,6 @@
 package com.Datos1.Proyecto1.GameBoard;
 
+import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.image.BufferedImage;
@@ -29,6 +30,7 @@ public class Player extends Component {
 	private Node pointer;
 	private boolean inTurn;
 	private boolean clockWise;
+	private Color playerColor;
 
 	public Player(String name, int id) {
 		this.name = name;
@@ -201,6 +203,29 @@ public class Player extends Component {
 
 	public String getName() {
 		return this.name;
+	}
+	
+	public Color getColor() {
+		
+		switch(id) {
+		
+		case 1: 
+			playerColor = new Color(184, 188, 198,100);
+			break;
+		
+		case 2:
+			playerColor = new Color(229, 102, 139,100);
+			break;
+			
+		case 3:
+			playerColor = new Color(105, 188, 221,100);
+			break;
+		case 4:
+			playerColor = new Color(176, 128, 228,100);
+		}
+		
+		return playerColor;
+		
 	}
 
 }

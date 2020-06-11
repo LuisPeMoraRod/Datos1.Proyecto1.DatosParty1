@@ -2,6 +2,10 @@ package com.Datos1.Proyecto1.simon;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
+
+import com.Datos1.Proyecto1.GameBoard.CircularDoublyLinkedList;
+import com.Datos1.Proyecto1.GameBoard.LinkedList;
+
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -18,16 +22,16 @@ import java.util.Random;
  *
  * this class contains the logic that controlls the Simon game
  *
- * @author Luis Pedro Morales Rodriguez
+ * @author Monica Waterhouse Montoya
  *
- * @version 4/29/2020
+ * @version 6/10/2020
  */
 
 public class SimonBoard extends JPanel implements ActionListener, MouseListener {
 
+	private static final long serialVersionUID = 1L;
 
-
-    public int flashed = 0;
+	public int flashed = 0;
 
     public int ticks, dark, clickCounts;
 
@@ -38,21 +42,22 @@ public class SimonBoard extends JPanel implements ActionListener, MouseListener 
     public boolean gameOver;
 
     public ArrayList<Integer> pattern;
+    
+    public ArrayList<Integer> results;
 
     public Random random;
 
     protected int numPlayers, playingPlayer;
 
     protected int coolDown = 0;
-
-    protected int scoreP1 = 0, scoreP2 = 0, scoreP3 = 0, scoreP4 = 0;
+    
+    protected boolean prepare = true;
 
     protected int changePlayerTimer = 0;
-
-
+    
+    protected CircularDoublyLinkedList players;
 
     Timer timer;
-
 
     BufferedImage imgBackground = ImageIO.read(new File("images/SimonBackground.png"));
     BufferedImage imgP1 = ImageIO.read(new File("images/P1.png"));
@@ -60,7 +65,7 @@ public class SimonBoard extends JPanel implements ActionListener, MouseListener 
     BufferedImage imgP3 = ImageIO.read(new File("images/P3.png"));
     BufferedImage imgP4 = ImageIO.read(new File("images/P4.png"));
 
-    public SimonBoard(int numberPlayers) throws IOException {
+    public SimonBoard(CircularDoublyLinkedList players ) throws IOException {
 
 
         addMouseListener(this);
@@ -68,8 +73,10 @@ public class SimonBoard extends JPanel implements ActionListener, MouseListener 
         timer = new Timer(20,this);
 
         start();
+        
+        this.players = players;
 
-        this.numPlayers = numberPlayers;
+        this.numPlayers = players.getSize();
 
         playingPlayer = 1;
 
@@ -96,25 +103,21 @@ public class SimonBoard extends JPanel implements ActionListener, MouseListener 
     public void actionPerformed(ActionEvent e) {
 
         if(gameOver){
+        	players.getNode(playingPlayer-1).getPlayer().setPoints(round-1);
             if(changePlayerTimer <=200){
                 changePlayerTimer++;
             }
             else{
+            	
                 playingPlayer++;
+                
                 if(playingPlayer<=numPlayers){
-                    coolDown=0;
-                    ticks = 0;
-                    flashed = 0;
-                    pattern.clear();
-                    gameOver = false;
-                    reference = 1;
-                    indexPattern = 0;
-                    round = 1;
-                    correct = 0;
-                    creatingPattern = true;
+                    resetGame();
                 }
-                else{
-                    endgame();
+                else{ 
+       
+               		endgame();
+                    
                 }
 
             }
@@ -127,6 +130,7 @@ public class SimonBoard extends JPanel implements ActionListener, MouseListener 
         }
 
         else{
+        	prepare = false;
             ticks++;
             if(ticks%10 ==0){
 
@@ -179,21 +183,40 @@ public class SimonBoard extends JPanel implements ActionListener, MouseListener 
         super.paintComponent(g);
 
         g.drawImage(imgBackground,0,0,SimonWindow.width,SimonWindow.height,this);
-        g.drawImage(imgP1,30,125,50,50,this);
-        g.drawImage(imgP2,30,225,50,50,this);
+        
+        highlightPlayer(g);
+        
+        if(playingPlayer==numPlayers && gameOver) {
+        	g.setColor(new Color(205, 220, 57));
+            g.setFont(new Font("Lao Sangam LM", Font.BOLD,25));
+            g.drawString("Final score ", 125, 70);
+        }
+        
+        g.setColor(Color.WHITE);
+        g.setFont(new Font("Lao Sangam LM", Font.PLAIN,20));
+        g.drawString(players.getNode(0).getPlayer().getName() + "'s score: " + players.getNode(0).getPlayer().getPoints(), 100,145);
+        g.drawString(players.getNode(1).getPlayer().getName() + "'s score: " + players.getNode(1).getPlayer().getPoints(), 100,245);
+        
+        g.drawImage(players.getNode(0).getPlayer().getSprite(), 30,125,30,30,this);
+        g.drawImage(players.getNode(1).getPlayer().getSprite(),30,225,30,30,this);
 
         if (numPlayers == 3) {
-            g.drawImage(imgP3,30,325,50,50,this);
+            g.drawImage(players.getNode(2).getPlayer().getSprite(),30,325,30,30,this);
+            g.drawString(players.getNode(2).getPlayer().getName() + "'s score: " + players.getNode(2).getPlayer().getPoints(), 100,345);
+            
         }
 
         else if(numPlayers == 4){
-            g.drawImage(imgP3,30,325,50,50,this);
-            g.drawImage(imgP4,30,425,50,50, this);
+            g.drawImage(players.getNode(2).getPlayer().getSprite(),30,325,30,30,this);
+            g.drawImage(players.getNode(3).getPlayer().getSprite(),30,425,30,30, this);
+            g.drawString(players.getNode(2).getPlayer().getName() + "'s score: " + players.getNode(2).getPlayer().getPoints(), 100,345);
+            g.drawString(players.getNode(3).getPlayer().getName() + "'s score: " + players.getNode(3).getPlayer().getPoints(), 100,445);
         }
 
         g.setColor(Color.WHITE);
         g.setFont(new Font("Lao Sangam LM", Font.BOLD,35));
         g.drawString("Round " + round, 600,150);
+        
 
         if(flashed == 1){
             g.setColor(new Color(231, 44, 187));
@@ -248,6 +271,12 @@ public class SimonBoard extends JPanel implements ActionListener, MouseListener 
             g.setFont(new Font("Arial",Font.PLAIN,40));
             g.drawString("Game over", 570,475);
         }
+        else {
+        	g.setColor(Color.WHITE);
+            g.setFont(new Font("Arial",Font.PLAIN,30));
+            g.drawString(players.getNode(playingPlayer-1).getPlayer().getName()+" is playing", 570,475);
+        }
+        
     }
 
 
@@ -348,6 +377,7 @@ public class SimonBoard extends JPanel implements ActionListener, MouseListener 
                         gameOver=true;
                         correct = pattern.get(indexPattern);
                         coolDown = 0;
+                        
                     }
 
                     indexPattern++;
@@ -401,5 +431,42 @@ public class SimonBoard extends JPanel implements ActionListener, MouseListener 
 
     public void endgame(){
         SimonLauncher.simonWindow.dispose();
+
     }
+    
+    public void resetGame() {
+    	coolDown=0;
+        ticks = 0;
+        flashed = 0;
+        pattern.clear();
+        gameOver = false;
+        reference = 1;
+        indexPattern = 0;
+        round = 1;
+        correct = 0;
+        creatingPattern = true;
+        prepare = true;
+    }
+    
+    public void highlightPlayer(Graphics g) {
+    	switch(playingPlayer) {
+    	case 1:
+    		g.setColor(players.getNode(0).getPlayer().getColor());
+    		g.fillRect(25,120, 400, 40);
+    		break;
+    	case 2:
+    		g.setColor(players.getNode(1).getPlayer().getColor());
+    		g.fillRect(25,220, 400, 40);
+    		break;
+    	case 3:
+    		g.setColor(players.getNode(2).getPlayer().getColor());
+    		g.fillRect(25,320, 400, 40);
+    		break;
+    	case 4:
+    		g.setColor(players.getNode(3).getPlayer().getColor());
+    		g.fillRect(25,420, 400, 40);
+    		break;
+    	}
+    }
+    
 }
