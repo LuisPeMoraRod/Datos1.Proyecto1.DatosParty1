@@ -2,6 +2,9 @@ package com.Datos1.Proyecto1.snake;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
+
+import com.Datos1.Proyecto1.GameBoard.CircularDoublyLinkedList;
+
 import java.awt.*;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
@@ -12,7 +15,11 @@ import java.util.Random;
 
 public class SnakeBoard extends JPanel {
 
-    private BufferedImage imgBackground = ImageIO.read(new File("images/SnakeBackground.jpg"));
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	private BufferedImage imgBackground = ImageIO.read(new File("images/SnakeBackground.jpg"));
     private BufferedImage snakeLogo = ImageIO.read(new File("images/snakeLogo.png"));
     private BufferedImage snakeCL = ImageIO.read(new File("images/snakeCL.png"));
     private BufferedImage snakeCR = ImageIO.read(new File("images/snakeCR.png"));
@@ -22,6 +29,7 @@ public class SnakeBoard extends JPanel {
 
     private SnakeHead snakeHead;
 
+    Color snakeColor;
 
     public BufferedImage headImg;
 
@@ -55,8 +63,10 @@ public class SnakeBoard extends JPanel {
     private int numPlayers;
 
     private int playingPlayer;
-
-    public SnakeBoard() throws IOException {
+    
+    protected CircularDoublyLinkedList players;
+    
+    public SnakeBoard(CircularDoublyLinkedList players) throws IOException {
 
         snakeHead = new SnakeHead(80,80);
 
@@ -73,8 +83,11 @@ public class SnakeBoard extends JPanel {
         collisionDetector.setPosition(snakeHead.getHeadX(), snakeHead.getHeadY());
 
         snakeTail.add(collisionDetector);
-
-        this.numPlayers = 2;
+        
+        this.players= players;
+        
+        this.numPlayers = players.getSize();
+        
 
         playingPlayer = 0;
 
@@ -112,7 +125,7 @@ public class SnakeBoard extends JPanel {
 
         else{
 
-            if(playingPlayer<=numPlayers){
+            if(playingPlayer<numPlayers){
                 stageRound(g2);
 
                 if (gameOver){
@@ -126,7 +139,16 @@ public class SnakeBoard extends JPanel {
             }
 
             else{
-                SnakeLauncher.snakeWindow.dispose();
+            	
+            	if(endGameTimer<=100){
+            		giveFinalResults(g2);
+            		endGameTimer++;
+            	}
+            	else {
+            		SnakeLauncher.snakeWindow.dispose();
+            	}
+            
+                
             }
 
 
@@ -134,11 +156,6 @@ public class SnakeBoard extends JPanel {
         }
 
 
-    }
-
-    public void createSnake(){
-
-        headImg = snakeHead.getSnakeHead();
     }
 
     public void updateSnake(){
@@ -196,7 +213,7 @@ public class SnakeBoard extends JPanel {
 
     }
 
-    public void detectFoodCollection(){
+    public void detectFoodGrab(){
         if(snakeTail.get(0).getTail().intersects(food1)){
             fx1 = f1.setCoordX();
             fy1 = f1.setCoordY();
@@ -218,6 +235,7 @@ public class SnakeBoard extends JPanel {
         for(SnakeTail t : snakeTail){
             if(t.isCollision(collisionDetector) || collisionDetector.getTailX()==0 || collisionDetector.getTailX()==980 || collisionDetector.getTailY() == 0 || collisionDetector.getTailY()==580){
                 gameOver=true;
+                setScore();
             }
         }
     }
@@ -230,15 +248,13 @@ public class SnakeBoard extends JPanel {
 
 
 
-        if(initialTimer<=100){
+        if(initialTimer<=50){
             initialTimer++;
-            System.out.println(initialTimer);
         }
 
         else{
 
             if(!gameOver){
-                createSnake();
                 updateSnake();
             }
             else{
@@ -251,10 +267,10 @@ public class SnakeBoard extends JPanel {
             }
 
             detectColliion();
-            detectFoodCollection();
-
-
-            g.setColor(new Color(124, 60, 171));
+            detectFoodGrab();
+            
+            setSnakeColor(players.getNode(playingPlayer).getPlayer().getId());
+            g.setColor(snakeColor);
             for (SnakeTail t: snakeTail){
                 t.render(g);
             }
@@ -291,6 +307,66 @@ public class SnakeBoard extends JPanel {
         speed = 1;
 
         accelerator = 0;
+        
+        SnakeEvent.left= false;
+        SnakeEvent.up= false;
+        SnakeEvent.down= false;
+        SnakeEvent.right = true;
+    }
+    
+    public void setSnakeColor(int id) {
+    	switch(id) {
+    	case 1:
+    		this.snakeColor = new Color(134, 154, 164);
+    		break;
+    	
+    	case 2:
+    		this.snakeColor = new Color(207, 57, 34);
+    		break;
+    		
+    	case 3:
+    		this.snakeColor = new Color(43, 151, 175);
+    		break;
+    	
+    	case 4:
+    		this.snakeColor = new Color(124, 60, 171);
+    		break;
+    	}
+    }
+    
+    public void setScore() {
+    	this.players.getNode(playingPlayer).getPlayer().setPoints(score);
+    }
+    
+    public void giveFinalResults(Graphics2D g2) {
+    	g2.setColor(new Color(173, 20, 87));
+    	g2.setFont(new Font("Lao Sangam LM", Font.BOLD,50));
+        g2.drawString("Final score", SnakeWindow.width/2-150, 200);
+        
+        g2.setColor(Color.WHITE);
+        g2.setFont(new Font("Lao Sangam LM", Font.BOLD,25));
+        
+        switch(numPlayers) {
+        
+        case 2:
+        	 g2.drawString(players.getNode(0).getPlayer().getName() +": " + players.getNode(0).getPlayer().getPoints(), SnakeWindow.width/2-75, 300);
+        	 g2.drawString(players.getNode(1).getPlayer().getName() +": " + players.getNode(1).getPlayer().getPoints(), SnakeWindow.width/2-75, 350);
+        	break;
+        case 3:
+        	g2.drawString(players.getNode(0).getPlayer().getName() +": " + players.getNode(0).getPlayer().getPoints(), SnakeWindow.width/2-75, 300);
+        	g2.drawString(players.getNode(1).getPlayer().getName() +": " + players.getNode(1).getPlayer().getPoints(), SnakeWindow.width/2-75, 350);
+        	g2.drawString(players.getNode(2).getPlayer().getName() +": " + players.getNode(2).getPlayer().getPoints(), SnakeWindow.width/2-75, 400);
+    
+        	break;
+        case 4:
+        	g2.drawString(players.getNode(0).getPlayer().getName() +": " + players.getNode(0).getPlayer().getPoints(), SnakeWindow.width/2-75, 300);
+       	    g2.drawString(players.getNode(1).getPlayer().getName() +": " + players.getNode(1).getPlayer().getPoints(), SnakeWindow.width/2-75, 350);
+       	    g2.drawString(players.getNode(2).getPlayer().getName() +": " + players.getNode(2).getPlayer().getPoints(), SnakeWindow.width/2-75, 400);
+   	        g2.drawString(players.getNode(3).getPlayer().getName() +": " + players.getNode(3).getPlayer().getPoints(), SnakeWindow.width/2-75, 450);
+        	break;
+        	
+        }  
+        
     }
 
 }
