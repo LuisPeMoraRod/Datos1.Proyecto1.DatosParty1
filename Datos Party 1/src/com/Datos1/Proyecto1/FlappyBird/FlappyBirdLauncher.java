@@ -60,7 +60,6 @@ public class FlappyBirdLauncher {
 		boolean gameOver = false;
 		while (!gameOver) {
 			
-			
 				switch (players.getSize()) {
 				case 1:
 					System.out.println(Window.canvas1.gameOver);

@@ -11,8 +11,8 @@ public class Main {
 		list = new CircularDoublyLinkedList();
 		list.insertHead(new Player("Sofi", 1));
 		list.insertEnd(new Player("Luis", 2));
-		list.insertEnd(new Player("Moni", 3));
-		list.insertEnd(new Player("Camila", 3));
+		//list.insertEnd(new Player("Moni", 3));
+		//list.insertEnd(new Player("Camila", 3));
 		
 		FourInLineLauncher ttt = new FourInLineLauncher(list);
 		try {

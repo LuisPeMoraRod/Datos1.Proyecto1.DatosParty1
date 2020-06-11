@@ -2,6 +2,7 @@ package com.Datos1.Proyecto1.GameBoard;
 
 import java.awt.AlphaComposite;
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Point;
@@ -11,6 +12,7 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.Random;
+import com.Datos1.Proyecto1.Results.*;
 
 import javax.imageio.ImageIO;
 import javax.swing.GroupLayout;
@@ -33,27 +35,50 @@ public class GameBoard extends JPanel implements ActionListener {
 	static CircularDoublyLinkedList phaseD = new CircularDoublyLinkedList();
 	public static CircularDoublyLinkedList players = new CircularDoublyLinkedList();
 	public static Node playerInTurn;
+	private BufferedImage heyYou, plus7, minus7;
 
+	private Box green;
+	private Box red;
+	private Box yellow;
+	private Box blue;
+	private Point imagesPos;
+
+	private Node pointerToStar;
+	private float alpha;
+	private boolean newStarFlag; //flag that tells when to create a new star
+	
+	private AlphaComposite alcom;
+	private float alphaP;
+	private AlphaComposite alcomP;
+	private int timerStar;
+	private boolean congrats;//draw congratulations message
+	private int contCongrats; //counter that helps to display the congratulations message
+	private boolean sorry;//draw sorry message
+
+	public static boolean drawCoins;
+	public static boolean staticCoins;
+	private int xCoins, yCoins, dxCoins, dyCoins;// position and size of the +-7 coins images
 	public static Node movingPointer; // Pointer that moves to the next nodes of each player's until they get to the
 	// correct node
-  
+
 	private GameThread thread;
 	private Random random;
 
-	public static boolean moving;
-	public static boolean twoPaths1;
-	public static boolean twoPaths2;
-	private boolean disappears;
-	private boolean appears;
-	public static boolean throwAgain;
+	public static boolean moving; // indicates if a player is moving
+	public static boolean twoPaths1; // tells if left/right message should appear
+	public static boolean twoPaths2;// tells if up/down message should appear
+	private boolean disappears;// sprite disappears
+	private boolean appears;// sprite appears
+	public static boolean throwAgain;// player must throwo dices again (after blackhole)
 	public static int movingCont;// indicates through how many nodes the sprite has moved
+	private int roundsCont;// tells how many rounds have been played
 	public static Dice dice1, dice2;
 	public LeftRightArrow leftArrow, rightArrow;
 	public UpDownArrow upArrow, downArrow;
 
-
 	Timer timer;
-	private int transparency = 10;
+	private int transparencyPlayers;// sprites transparency (10 is completely solid)
+	private int transparencyStar;
 	public GameBoard(CircularDoublyLinkedList players) {
 		random = new Random();
 
@@ -69,13 +94,30 @@ public class GameBoard extends JPanel implements ActionListener {
 		rightArrow = LeftRightArrow.builder().right().build();
 		upArrow = UpDownArrow.builder().up().build();
 		downArrow = UpDownArrow.builder().down().build();
-    
-		this.players = players;
+
+		heyYou = getSprite("images/heyYou.png");
+		plus7 = getSprite("images/plus7.png");
+		minus7 = getSprite("images/minus7.png");
+
+		GameBoard.players = players;
+		
+		transparencyPlayers = 10;
 
 		setPlayersInitialNode();
 
-		this.playerInTurn = this.players.getStarNode();
+		GameBoard.playerInTurn = GameBoard.players.getStart();
 		setDices(this);
+
+		green = new GreenBox();
+		red = new RedBox();
+		yellow = new YellowBox();
+		blue = new BlueBox();
+
+		
+		transparencyStar = 10;
+		timerStar = 6;
+
+		imagesPos = new Point();
 
 		timer = new Timer(10, this);
 		timer.start();
@@ -361,47 +403,101 @@ public class GameBoard extends JPanel implements ActionListener {
 	 * Paints static images such as the black holes or arrows in the canvas
 	 * 
 	 * @param g : Graphics2D
+	 * @throws InterruptedException 
 	 */
-	public void setImages(Graphics2D g) {
-		Point pos = mainLinkedList.getNode(16).getIndex();
-		pos.x = (pos.x * 80) + 2;
-		pos.y = (pos.y * 83) + 2;
+	public void setImages(Graphics2D g, Graphics2D g2) throws InterruptedException {
+		imagesPos = mainLinkedList.getNode(16).getIndex();
+		imagesPos.x = (imagesPos.x * 80) + 2;
+		imagesPos.y = (imagesPos.y * 83) + 2;
 		BufferedImage blackHole = getSprite("images/blackHole.png"); // black hole image
-		g.drawImage(blackHole, pos.x, pos.y, this); // places black hole in node 16 of main linked list
-		pos = phaseD.getNode(13).getIndex();
-		pos.x = (pos.x * 80) + 2;
-		pos.y = (pos.y * 83) + 2;
-		g.drawImage(blackHole, pos.x, pos.y, this); // places black hole in node 13 of phase D
+		g.drawImage(blackHole, imagesPos.x, imagesPos.y, this); // places black hole in node 16 of main linked list
+		imagesPos = phaseD.getNode(13).getIndex();
+		imagesPos.x = (imagesPos.x * 80) + 2;
+		imagesPos.y = (imagesPos.y * 83) + 2;
+		g.drawImage(blackHole, imagesPos.x, imagesPos.y, this); // places black hole in node 13 of phase D
 
-		pos = mainLinkedList.getNode(18).getIndex();
-		pos.x = (pos.x * 80) + 14;
-		pos.y = (pos.y * 83) + 12;
+		imagesPos = mainLinkedList.getNode(18).getIndex();
+		imagesPos.x = (imagesPos.x * 80) + 14;
+		imagesPos.y = (imagesPos.y * 83) + 12;
 		BufferedImage leftArrow = getSprite("images/leftArrow2.png");
-		g.drawImage(leftArrow, pos.x, pos.y, this); // draws left arrow in node 18 of main linked list
+		g.drawImage(leftArrow, imagesPos.x, imagesPos.y, this); // draws left arrow in node 18 of main linked list
 
-		pos = mainLinkedList.getNode(30).getIndex();
-		pos.x = (pos.x * 80) + 10;
-		pos.y = (pos.y * 83) + 13;
+		imagesPos = mainLinkedList.getNode(30).getIndex();
+		imagesPos.x = (imagesPos.x * 80) + 10;
+		imagesPos.y = (imagesPos.y * 83) + 13;
 		BufferedImage upArrow = getSprite("images/upArrow2.png");
-		g.drawImage(upArrow, pos.x, pos.y, this); // draws up arrow in node 30 of main linked list
+		g.drawImage(upArrow, imagesPos.x, imagesPos.y, this); // draws up arrow in node 30 of main linked list
 
-		pos = mainLinkedList.getNode(40).getIndex();
-		pos.x = (pos.x * 80) + 9;
-		pos.y = (pos.y * 83) + 10;
+		imagesPos = mainLinkedList.getNode(40).getIndex();
+		imagesPos.x = (imagesPos.x * 80) + 9;
+		imagesPos.y = (imagesPos.y * 83) + 10;
 		BufferedImage rightArrow = getSprite("images/rightArrow2.png");
-		g.drawImage(rightArrow, pos.x, pos.y, this); // draws right arrow in node 40 of main linked list
+		g.drawImage(rightArrow, imagesPos.x, imagesPos.y, this); // draws right arrow in node 40 of main linked list
 
 		if (throwAgain) { // draws message of throwing dices again after falling in the black hole
-			Point p1 = new Point(Window.width * 9 / 12, Window.height / 4);
-			g.drawImage(getSprite("images/throwAgain.png"), p1.x + 30, p1.y + 20, this);
+			imagesPos.x = Window.width * 9 / 12;
+			imagesPos.y = Window.height / 4;
+			g.drawImage(getSprite("images/throwAgain.png"), imagesPos.x + 30, imagesPos.y + 20, this);
+		}
+
+		// paints Star
+		if (roundsCont >= 1) {
+			imagesPos = pointerToStar.getIndex();
+			imagesPos.x = (imagesPos.x * 80) + 12;
+			imagesPos.y = (imagesPos.y * 83) + 10;
+
+			if (timerStar < 6 && !drawCoins) {// blinking star
+				if (transparencyStar == 10) {
+					transparencyStar = 0;
+				} else {
+					transparencyStar = 10;
+				}
+				alpha = (float) ((transparencyStar) * 0.1f);
+				alcom = AlphaComposite.getInstance(AlphaComposite.SRC_OVER, alpha);
+				g2.setComposite(alcom);
+				g2.drawImage(getSprite("images/star.png"), imagesPos.x, imagesPos.y, this);
+				timerStar++;
+				try {
+					Thread.sleep(500);
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+
+			} else if (!newStarFlag){
+				alpha = (float) ((transparencyStar) * 0.1f);
+				alcom = AlphaComposite.getInstance(AlphaComposite.SRC_OVER, alpha);
+				g2.setComposite(alcom);
+				g2.drawImage(getSprite("images/star.png"), imagesPos.x, imagesPos.y, this);
+			}
+
+		}
+		
+		if (congrats) {
+			imagesPos.x = Window.width * 9 / 12;
+			imagesPos.y = Window.height / 4;
+			g.drawImage(getSprite("images/congrats.png"), imagesPos.x-20, imagesPos.y -10, this);
+			if (contCongrats>=1) {
+				Thread.sleep(2500);
+				congrats = false;
+				contCongrats=0;
+			}else {
+				contCongrats++;
+			}
+			
+			
+		}else if (sorry) {
+			imagesPos.x = Window.width * 5 / 12;
+			imagesPos.y = Window.height / 4;
+			g.drawImage(getSprite("images/sorry.png"), imagesPos.x, imagesPos.y + 50, this);
 		}
 
 	}
 
 	public void setDices(JPanel canvas) {
 		this.setLayout(null);
-		dice1.setBounds(Window.width * 6 / 8 + 20, 30, 96, 96);
-		dice2.setBounds(Window.width * 6 / 7, 30, 96, 96);
+		dice1.setBounds(Window.width * 6 / 8 + 70, 30, 96, 96);
+		dice2.setBounds(Window.width * 7 / 8, 30, 96, 96);
 
 		canvas.add(dice1);
 		canvas.add(dice2);
@@ -516,8 +612,16 @@ public class GameBoard extends JPanel implements ActionListener {
 	@Override
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
+
 		Graphics2D g2d = (Graphics2D) g.create();
-		setImages(g2d); // sets images like black hole and throw again message
+		Graphics2D g2d2 = (Graphics2D) g.create();
+		stats(g2d);
+
+		try {
+			setImages(g2d, g2d2);// sets images like black hole, star messages or throw again message
+		} catch (InterruptedException e1) {
+			e1.printStackTrace();
+		} 
 
 		if (dice1.thrown && dice2.thrown) {
 			startMovement();
@@ -529,32 +633,32 @@ public class GameBoard extends JPanel implements ActionListener {
 			this.remove(upArrow);
 			for (int i = 0; i < players.getSize(); i++) {// paints all players when one of them is moving
 				playerInTurn = playerInTurn.getPrev();
-				Point actualPos = playerInTurn.getPlayer().getLocation();
-				g2d.drawImage(playerInTurn.getPlayer().getSprite(), actualPos.x, actualPos.y, this);
+				imagesPos = playerInTurn.getPlayer().getLocation();
+				g2d.drawImage(playerInTurn.getPlayer().getSprite(), imagesPos.x, imagesPos.y, this);
 			}
 
 		} else if (twoPaths1) {// if flag is set
 			for (int i = 0; i < players.getSize(); i++) {// paints all players
 				playerInTurn = playerInTurn.getPrev();
-				Point actualPos = playerInTurn.getPlayer().getLocation();
-				g2d.drawImage(playerInTurn.getPlayer().getSprite(), actualPos.x, actualPos.y, this);
+				imagesPos = playerInTurn.getPlayer().getLocation();
+				g2d.drawImage(playerInTurn.getPlayer().getSprite(), imagesPos.x, imagesPos.y, this);
 			}
 			paintRLArrows(g2d);// paint arrows to chose path (left or right)
 		} else if (twoPaths2) {// if flag is set
 			for (int i = 0; i < players.getSize(); i++) {// paints all players
 				playerInTurn = playerInTurn.getPrev();
-				Point actualPos = playerInTurn.getPlayer().getLocation();
-				g2d.drawImage(playerInTurn.getPlayer().getSprite(), actualPos.x, actualPos.y, this);
+				imagesPos = playerInTurn.getPlayer().getLocation();
+				g2d.drawImage(playerInTurn.getPlayer().getSprite(), imagesPos.x, imagesPos.y, this);
 			}
 			paintUDArrows(g2d);// paint arrows to chose path (up or down)
 		} else if (disappears) {
 			for (int i = 0; i < players.getSize(); i++) {// paints all players
 				playerInTurn = playerInTurn.getPrev();
 				if (playerInTurn.getPlayer().getPointer().equals(phaseD.getNode(13))) {
-					Point actualPos = new Point(mainLinkedList.getNode(16).getIndex()); // change for 16
-					actualPos.x = (actualPos.x * 80) + 20;
-					actualPos.y = (actualPos.y * 83) + 25;
-					spriteDisappears(g2d, actualPos);
+					imagesPos = mainLinkedList.getNode(16).getIndex(); // change for 16
+					imagesPos.x = (imagesPos.x * 80) + 20;
+					imagesPos.y = (imagesPos.y * 83) + 25;
+					spriteDisappears(g2d, imagesPos);
 				} else if (playerInTurn.getPlayer().getPointer().equals(mainLinkedList.getNode(16))) {// change for 16
 					Point actualPos = phaseD.getNode(13).getIndex();
 					actualPos.x = (actualPos.x * 80) + 20;
@@ -562,8 +666,8 @@ public class GameBoard extends JPanel implements ActionListener {
 					spriteDisappears(g2d, actualPos);
 
 				} else {
-					Point actualPos = playerInTurn.getPlayer().getLocation();
-					g2d.drawImage(playerInTurn.getPlayer().getSprite(), actualPos.x, actualPos.y, this);
+					imagesPos = playerInTurn.getPlayer().getLocation();
+					g2d.drawImage(playerInTurn.getPlayer().getSprite(), imagesPos.x, imagesPos.y, this);
 				}
 			}
 
@@ -571,24 +675,33 @@ public class GameBoard extends JPanel implements ActionListener {
 			for (int i = 0; i < players.getSize(); i++) {// paints all players
 				playerInTurn = playerInTurn.getPrev();
 				if (playerInTurn.getPlayer().getPointer().equals(phaseD.getNode(13))) {
-					Point actualPos = phaseD.getNode(13).getIndex();
-					actualPos.x = (actualPos.x * 80) + 20;
-					actualPos.y = (actualPos.y * 83) + 25;
-					spriteAppears(g2d, actualPos);
+					imagesPos = phaseD.getNode(13).getIndex();
+					imagesPos.x = (imagesPos.x * 80) + 20;
+					imagesPos.y = (imagesPos.y * 83) + 25;
+					spriteAppears(g2d, imagesPos);
 				} else if (playerInTurn.getPlayer().getPointer().equals(mainLinkedList.getNode(16))) {// change for 16
-					Point actualPos = mainLinkedList.getNode(16).getIndex();// change for 16
-					actualPos.x = (actualPos.x * 80) + 20;
-					actualPos.y = (actualPos.y * 83) + 25;
-					spriteAppears(g2d, actualPos);
+					imagesPos = mainLinkedList.getNode(16).getIndex();// change for 16
+					imagesPos.x = (imagesPos.x * 80) + 20;
+					imagesPos.y = (imagesPos.y * 83) + 25;
+					spriteAppears(g2d, imagesPos);
 
 				} else {
-					Point actualPos = playerInTurn.getPlayer().getLocation();
-					g2d.drawImage(playerInTurn.getPlayer().getSprite(), actualPos.x, actualPos.y, this);
+					imagesPos = playerInTurn.getPlayer().getLocation();
+					g2d.drawImage(playerInTurn.getPlayer().getSprite(), imagesPos.x, imagesPos.y, this);
 				}
 			}
 		} else {
-			setPlayers(g2d);
 
+			setPlayers(g2d);
+		}
+
+		if (drawCoins) {
+			try {
+				drawCoins(g2d);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 
 		try {
@@ -680,7 +793,11 @@ public class GameBoard extends JPanel implements ActionListener {
 			g2d.drawImage(playerInTurn.getPlayer().getSprite(), pt.x, pt.y, this);// draws player's sprite in canvas
 			playerInTurn.getPlayer().setLocation(pt);// sets actual location of the sprite
 			// playerInTurn = playerInTurn.getNext();// pointer to the next player in turn
+
 		}
+		// Message: hey, you, throw the dices
+		g2d.drawImage(heyYou, Window.width * 5 / 9 + 45, 30, this);
+		g2d.drawImage(playerInTurn.getPlayer().getSprite(), Window.width * 6 / 9 + 90, 23, this);
 
 	}
 
@@ -703,6 +820,7 @@ public class GameBoard extends JPanel implements ActionListener {
 
 			if (actualPos.x == newPos.x && actualPos.y == newPos.y) {// when the sprite reaches the position of the next
 																		// node:
+				buyStar();
 				movingCont++;// Increments counter that indicates through how many nodes the sprite has moved
 				System.out.println(movingCont + " " + (dice1.number + dice2.number));
 
@@ -748,7 +866,23 @@ public class GameBoard extends JPanel implements ActionListener {
 					} else {
 						movingCont = 0;// resets counter
 						moving = false;// stops moving routine
+
+						checksNewBox(playerInTurn);// activates event depending on new position
+						
+
 						playerInTurn = playerInTurn.getNext();// pointer to the next player in turn
+						sorry = false;
+						if (playerInTurn.equals(players.getStart())) { // increments counter when round finishes
+							roundsCont++;
+							if (roundsCont == 1) {
+								newStar();
+							}
+						}
+						if (newStarFlag) {
+							newStar();
+							newStarFlag = false;
+						}
+						
 					}
 
 				}
@@ -859,17 +993,17 @@ public class GameBoard extends JPanel implements ActionListener {
 	 */
 	public void spriteDisappears(Graphics2D g, Point actualPos) {
 
-		float alpha = (float) ((transparency) * 0.1f);
-		AlphaComposite alcom = AlphaComposite.getInstance(AlphaComposite.SRC_OVER, alpha);
-		g.setComposite(alcom);
+		alphaP = (float) ((transparencyPlayers) * 0.1f);
+		alcomP = AlphaComposite.getInstance(AlphaComposite.SRC_OVER, alphaP);
+		g.setComposite(alcomP);
 		g.drawImage(playerInTurn.getPlayer().getSprite(), actualPos.x, actualPos.y, null);
 		try {
 			Thread.sleep(100);
 		} catch (Exception e) {
 			// TODO: handle exception
 		}
-		transparency--;
-		if (transparency == 0) {
+		transparencyPlayers--;
+		if (transparencyPlayers == 0) {
 			disappears = false;
 			appears = true;
 		}
@@ -883,18 +1017,18 @@ public class GameBoard extends JPanel implements ActionListener {
 	 */
 	public void spriteAppears(Graphics2D g, Point actualPos) {
 
-		float alpha = (float) ((transparency) * 0.1f);
-		AlphaComposite alcom = AlphaComposite.getInstance(AlphaComposite.SRC_OVER, alpha);
-		g.setComposite(alcom);
+		alphaP = (float) ((transparencyPlayers) * 0.1f);
+		alcomP = AlphaComposite.getInstance(AlphaComposite.SRC_OVER, alphaP);
+		g.setComposite(alcomP);
 		g.drawImage(playerInTurn.getPlayer().getSprite(), actualPos.x, actualPos.y, this);
 		try {
 			Thread.sleep(100);
 		} catch (Exception e) {
 			// TODO: handle exception
 		}
-		transparency++;
-		if (transparency == 11) {
-			transparency = 10;
+		transparencyPlayers++;
+		if (transparencyPlayers == 11) {
+			transparencyPlayers = 10;
 			appears = false;
 			throwAgain = true;
 		}
@@ -916,13 +1050,213 @@ public class GameBoard extends JPanel implements ActionListener {
 		return sprite;
 	}
 
-	public void setPlayersInitialNode(){
-		Node pointer = players.getStarNode();
+	/**
+	 * Sets pointer of all the players to the first node of the main path
+	 */
+	public void setPlayersInitialNode() {
+		Node pointer = players.getStart();
 
-		for(int i = 0; i < players.getSize(); i++){
+		for (int i = 0; i < players.getSize(); i++) {
 
 			pointer.getPlayer().setPointer(mainLinkedList.start);
 			pointer = pointer.getNext();
 		}
+	}
+
+	/**
+	 * Public method. Activates events depending on the box where the player falls
+	 * 
+	 * @param pointer : Node
+	 */
+	public void checksNewBox(Node pointer) {
+		/**
+		 * Node ptr = players.getStart(); for (int i = 0; i < players.getSize(); i++) {
+		 * ptr = ptr.getNext();
+		 * 
+		 * }
+		 */
+
+		Box box = pointer.getPlayer().getPointer().getBox();
+
+		if (box.getClass().equals(green.getClass())) {
+			pointer.getPlayer().incrementCoins(7);
+			xCoins = 1150;
+			yCoins = 300;
+			dxCoins = 75;
+			dyCoins = 45;
+			drawCoins = true;
+
+		} else if (box.getClass().equals(red.getClass())) {
+			pointer.getPlayer().decrementsCoins(7);
+			xCoins = 1150;
+			yCoins = 250;
+			dxCoins = 150;
+			dyCoins = 120;
+			drawCoins = true;
+
+		} else if (box.getClass().equals(yellow.getClass())) {
+			System.out.println("yellow");
+		} else {
+			System.out.println("blue");
+
+		}
+	}
+
+	/**
+	 * Draws coins and moves them while changing the image size
+	 * 
+	 * @param g
+	 * @throws InterruptedException
+	 */
+	public void drawCoins(Graphics2D g) throws InterruptedException {
+		Box box = playerInTurn.getPrev().getPlayer().getPointer().getBox();
+
+		if (box.getClass().equals(green.getClass())) {
+			if (staticCoins) {
+				g.drawImage(plus7, xCoins, yCoins, dxCoins, dyCoins, this);// static image
+				Thread.sleep(1000);
+				staticCoins = false;
+				drawCoins = false;
+			} else {
+				g.drawImage(plus7, xCoins, yCoins, dxCoins, dyCoins, this);
+				yCoins--;
+				dxCoins++;
+				dyCoins++;
+				Thread.sleep(7);
+				if (dxCoins >= 140) {
+					staticCoins = true;
+				}
+			}
+
+		} else if (box.getClass().equals(red.getClass())) {
+			if (staticCoins) {
+				g.drawImage(minus7, xCoins, yCoins, dxCoins, dyCoins, this);// static image
+				Thread.sleep(1000);
+				staticCoins = false;
+				drawCoins = false;
+			} else {
+				g.drawImage(minus7, xCoins, yCoins, dxCoins, dyCoins, this);
+				yCoins++;
+				dxCoins--;
+				dyCoins--;
+				Thread.sleep(7);
+				if (dxCoins <= 80) {
+					staticCoins = true;
+				}
+			}
+		}
+
+	}
+
+	/**
+	 * Sets new random position of the star
+	 */
+	public void newStar() {
+		int newNodeId;
+		Node lastStar = pointerToStar;
+		timerStar = 0;
+		boolean correctPosition = false;
+		while (!correctPosition) {
+			correctPosition = true;
+			newNodeId = random.nextInt(75);
+			System.out.println(newNodeId);
+			Node playerPtr = playerInTurn;
+
+			if (newNodeId < 44) {
+				switch (newNodeId) { // not allowed positions for star
+				case 0:
+					correctPosition = false;
+					break;
+				case 11:
+					correctPosition = false;
+					break;
+				case 16:
+					correctPosition = false;
+					break;
+				case 18:
+					correctPosition = false;
+					break;
+				case 30:
+					correctPosition = false;
+					break;
+				case 40:
+					correctPosition = false;
+					break;
+				default:
+					break;
+				}
+				pointerToStar = mainLinkedList.getNode(newNodeId);
+			} else if (newNodeId < 51) {
+				newNodeId -= 44;
+				pointerToStar = phaseA.getNode(newNodeId);
+			} else if (newNodeId < 58) {
+				newNodeId -= 51;
+				pointerToStar = phaseB.getNode(newNodeId);
+			} else if (newNodeId < 61) {
+				newNodeId -= 58;
+				pointerToStar = phaseC.getNode(newNodeId);
+			} else {
+				newNodeId -= 61;
+				if (newNodeId == 13) {//not allowed position for star
+					correctPosition = false;
+				}
+				pointerToStar = phaseD.getNode(newNodeId);
+			}
+			System.out.println(newNodeId);
+			for (int i = 0; i < players.getSize(); i++) {//checks if the position isn't occupied by a player
+				if (playerPtr.getPlayer().getPointer().equals(pointerToStar)) {
+					correctPosition = false;
+				}
+				playerPtr = playerPtr.getNext();
+			}
+			
+			if (pointerToStar.equals(lastStar)) { // must be a different node than the last one
+				correctPosition = false;
+			}
+		}
+	}
+	
+
+	/**
+	 * Public void, if player passes through a star and has enough money, then buys it.
+	 */
+	public void buyStar() {
+		Player player = playerInTurn.getPlayer();
+		int coins = player.getCoins();
+		if (player.getPointer().equals(pointerToStar) && coins>=25) {
+			player.incremenentStar(1);
+			player.decrementsCoins(25);
+			System.out.println(player.getCoins());
+			newStarFlag = true;
+			congrats = true;
+			
+		}else if (player.getPointer().equals(pointerToStar) && coins<25) {
+			sorry = true;
+		}
+	}
+	
+	/**
+	 * Draws statistics: amount of stars and coins
+	 * @param g : Graphics2D 
+	 */
+	public void stats(Graphics2D g) {
+		Node playerNode = players.getStart();
+		Player player;
+		imagesPos.x = 90;
+		imagesPos.y = 30;
+		for (int i = 0; i < players.getSize(); i++) {// paints all players
+			player = playerNode.getPlayer();
+			imagesPos.y+=65;
+			g.setFont(new Font("Arial", 1, 18));
+			drawString(g,": "+player.getCoins()+" coins, "+player.getStar()+" stars", imagesPos.x+40, imagesPos.y+5);
+			g.drawImage(player.getSprite(), imagesPos.x, imagesPos.y, this);
+			playerNode = playerNode.getNext();
+		}
+		
+	}
+	
+	public void drawString(Graphics g, String text, int x, int y) {
+		for (String line : text.split("\n"))
+			g.drawString(line, x, y += g.getFontMetrics().getHeight());
 	}
 }

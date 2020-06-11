@@ -32,6 +32,8 @@ public class Dice extends Component {
 	public boolean thrown;
 	private int transparency = 10;
 	private Random random;
+	private float alpha;
+	private AlphaComposite alcom;
 
 	public Dice() {
 		setPath(number);
@@ -43,8 +45,8 @@ public class Dice extends Component {
 	@Override
 	public void paint(Graphics g) {
 		Graphics2D g2d = (Graphics2D) g.create();
-		float alpha = (float) ((transparency) * 0.1f);
-		AlphaComposite alcom = AlphaComposite.getInstance(AlphaComposite.SRC_OVER, alpha);
+		alpha = (float) ((transparency) * 0.1f);
+		alcom = AlphaComposite.getInstance(AlphaComposite.SRC_OVER, alpha);
 		g2d.setComposite(alcom);
 		g2d.drawImage(getSprite(), 0, 0, null);
 		g2d.dispose();
@@ -78,8 +80,7 @@ public class Dice extends Component {
 
 	/**
 	 * Public method. Sets mouse adapter on the component. Changes transparency of
-	 * the component when the mouse enters or exits it.
-	 *  {@link MouseAdapter}
+	 * the component when the mouse enters or exits it. {@link MouseAdapter}
 	 */
 	public void setTransparency() {
 		this.addMouseListener(new MouseAdapter() {
@@ -96,13 +97,14 @@ public class Dice extends Component {
 
 	/**
 	 * Public method. Sets mouse adapter on the dice object. Every click simulates
-	 * the dice throwing. 
-	 * {@link MouseAdapter}
+	 * the dice throwing. {@link MouseAdapter}
 	 */
 	public void clickOnDice() {
 		this.addMouseListener(new MouseAdapter() {
 			public void mouseClicked(MouseEvent e) {
-				GameBoard.throwAgain=false;
+				GameBoard.throwAgain = false;
+				GameBoard.staticCoins = false;
+				GameBoard.drawCoins = false;
 				DiceThread thread = new DiceThread(Window.canvas);
 				thread.start();
 			}
@@ -160,9 +162,9 @@ public class Dice extends Component {
 			int randomInt;
 			for (int i = 0; i < 10; i++) {
 				transparency = 5;
-				randomInt =random.nextInt(6) + 1;
+				randomInt = random.nextInt(6) + 1;
 				number = randomInt;
-				
+
 				setPath(number);
 				try {
 					Thread.sleep(200);
