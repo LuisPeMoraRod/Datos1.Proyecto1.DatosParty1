@@ -43,10 +43,15 @@ public class GameBoard extends JPanel implements ActionListener {
 
 	private Node pointerToStar;
 	private float alpha;
+	private boolean newStarFlag; //flag that tells when to create a new star
+	
 	private AlphaComposite alcom;
 	private float alphaP;
 	private AlphaComposite alcomP;
 	private int timerStar;
+	private boolean congrats;//draw congratulations message
+	private int contCongrats; //counter that helps to display the congratulations message
+	private boolean sorry;//draw sorry message
 
 	public static boolean drawCoins;
 	public static boolean staticCoins;
@@ -106,7 +111,7 @@ public class GameBoard extends JPanel implements ActionListener {
 		yellow = new YellowBox();
 		blue = new BlueBox();
 
-		pointerToStar = mainLinkedList.getNode(3);
+		
 		transparencyStar = 10;
 		timerStar = 6;
 
@@ -396,8 +401,9 @@ public class GameBoard extends JPanel implements ActionListener {
 	 * Paints static images such as the black holes or arrows in the canvas
 	 * 
 	 * @param g : Graphics2D
+	 * @throws InterruptedException 
 	 */
-	public void setImages(Graphics2D g, Graphics2D g2) {
+	public void setImages(Graphics2D g, Graphics2D g2) throws InterruptedException {
 		imagesPos = mainLinkedList.getNode(16).getIndex();
 		imagesPos.x = (imagesPos.x * 80) + 2;
 		imagesPos.y = (imagesPos.y * 83) + 2;
@@ -456,13 +462,32 @@ public class GameBoard extends JPanel implements ActionListener {
 					e.printStackTrace();
 				}
 
-			} else {
+			} else if (!newStarFlag){
 				alpha = (float) ((transparencyStar) * 0.1f);
 				alcom = AlphaComposite.getInstance(AlphaComposite.SRC_OVER, alpha);
 				g2.setComposite(alcom);
 				g2.drawImage(getSprite("images/star.png"), imagesPos.x, imagesPos.y, this);
 			}
 
+		}
+		
+		if (congrats) {
+			imagesPos.x = Window.width * 9 / 12;
+			imagesPos.y = Window.height / 4;
+			g.drawImage(getSprite("images/congrats.png"), imagesPos.x-20, imagesPos.y -10, this);
+			if (contCongrats>=1) {
+				Thread.sleep(2500);
+				congrats = false;
+				contCongrats=0;
+			}else {
+				contCongrats++;
+			}
+			
+			
+		}else if (sorry) {
+			imagesPos.x = Window.width * 5 / 12;
+			imagesPos.y = Window.height / 4;
+			g.drawImage(getSprite("images/sorry.png"), imagesPos.x, imagesPos.y + 50, this);
 		}
 
 	}
@@ -589,7 +614,11 @@ public class GameBoard extends JPanel implements ActionListener {
 		Graphics2D g2d = (Graphics2D) g.create();
 		Graphics2D g2d2 = (Graphics2D) g.create();
 
-		setImages(g2d, g2d2); // sets images like black hole and throw again message
+		try {
+			setImages(g2d, g2d2);// sets images like black hole, star messages or throw again message
+		} catch (InterruptedException e1) {
+			e1.printStackTrace();
+		} 
 
 		if (dice1.thrown && dice2.thrown) {
 			startMovement();
@@ -788,6 +817,7 @@ public class GameBoard extends JPanel implements ActionListener {
 
 			if (actualPos.x == newPos.x && actualPos.y == newPos.y) {// when the sprite reaches the position of the next
 																		// node:
+				buyStar();
 				movingCont++;// Increments counter that indicates through how many nodes the sprite has moved
 				System.out.println(movingCont + " " + (dice1.number + dice2.number));
 
@@ -835,18 +865,21 @@ public class GameBoard extends JPanel implements ActionListener {
 						moving = false;// stops moving routine
 
 						checksNewBox(playerInTurn);// activates event depending on new position
+						
 
 						playerInTurn = playerInTurn.getNext();// pointer to the next player in turn
-						/*
+						sorry = false;
 						if (playerInTurn.equals(players.getStart())) { // increments counter when round finishes
 							roundsCont++;
 							if (roundsCont == 1) {
 								newStar();
 							}
+						}
+						if (newStarFlag) {
 							newStar();
-						}*/
-						newStar();
-						roundsCont++;
+							newStarFlag = false;
+						}
+						
 					}
 
 				}
@@ -1043,7 +1076,7 @@ public class GameBoard extends JPanel implements ActionListener {
 		Box box = pointer.getPlayer().getPointer().getBox();
 
 		if (box.getClass().equals(green.getClass())) {
-			pointer.getPlayer().incrementCoins(5);
+			pointer.getPlayer().incrementCoins(7);
 			xCoins = 1150;
 			yCoins = 300;
 			dxCoins = 75;
@@ -1051,7 +1084,7 @@ public class GameBoard extends JPanel implements ActionListener {
 			drawCoins = true;
 
 		} else if (box.getClass().equals(red.getClass())) {
-			pointer.getPlayer().decrementsCoins(5);
+			pointer.getPlayer().decrementsCoins(7);
 			xCoins = 1150;
 			yCoins = 250;
 			dxCoins = 150;
@@ -1128,6 +1161,12 @@ public class GameBoard extends JPanel implements ActionListener {
 
 			if (newNodeId < 44) {
 				switch (newNodeId) { // not allowed positions for star
+				case 0:
+					correctPosition = false;
+					break;
+				case 11:
+					correctPosition = false;
+					break;
 				case 16:
 					correctPosition = false;
 					break;
@@ -1173,5 +1212,23 @@ public class GameBoard extends JPanel implements ActionListener {
 			}
 		}
 	}
+	
 
+	/**
+	 * Public void, if player passes through a star and has enough money, then buys it.
+	 */
+	public void buyStar() {
+		Player player = playerInTurn.getPlayer();
+		int coins = player.getCoins();
+		if (player.getPointer().equals(pointerToStar) && coins>=25) {
+			player.incremenentStar(1);
+			player.decrementsCoins(25);
+			System.out.println(player.getCoins());
+			newStarFlag = true;
+			congrats = true;
+			
+		}else if (player.getPointer().equals(pointerToStar) && coins<25) {
+			sorry = true;
+		}
+	}
 }

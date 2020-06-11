@@ -39,6 +39,18 @@ public class Player extends Component {
 		pointer = GameBoard.mainLinkedList.start;
 		clockWise = true;
 	}
+	
+	public int getStar() {
+		return this.stars;
+	}
+	
+	public void incremenentStar(int star) {
+		this.stars+=star;
+	}
+	
+	public void decrementStar(int star) {
+		this.stars-=star;
+	}
 
 	public int getId() {
 		return this.id;
