@@ -42,9 +42,10 @@ public class GameBoard extends JPanel implements ActionListener {
 	private Point imagesPos;
 
 	private Node pointerToStar;
-	private int starTransparency;
 	private float alpha;
 	private AlphaComposite alcom;
+	private float alphaP;
+	private AlphaComposite alcomP;
 	private int timerStar;
 
 	public static boolean drawCoins;
@@ -69,8 +70,8 @@ public class GameBoard extends JPanel implements ActionListener {
 	public UpDownArrow upArrow, downArrow;
 
 	Timer timer;
-	private int transparency = 10;// sprites transparency (10 is completely solid)
-
+	private int transparencyPlayers;// sprites transparency (10 is completely solid)
+	private int transparencyStar;
 	public GameBoard(CircularDoublyLinkedList players) {
 		random = new Random();
 
@@ -92,6 +93,8 @@ public class GameBoard extends JPanel implements ActionListener {
 		minus7 = getSprite("images/minus7.png");
 
 		GameBoard.players = players;
+		
+		transparencyPlayers = 10;
 
 		setPlayersInitialNode();
 
@@ -104,7 +107,7 @@ public class GameBoard extends JPanel implements ActionListener {
 		blue = new BlueBox();
 
 		pointerToStar = mainLinkedList.getNode(3);
-		starTransparency = 10;
+		transparencyStar = 10;
 		timerStar = 6;
 
 		imagesPos = new Point();
@@ -430,18 +433,18 @@ public class GameBoard extends JPanel implements ActionListener {
 		}
 
 		// paints Star
-		if (roundsCont >= 1 ) {
+		if (roundsCont >= 1) {
 			imagesPos = pointerToStar.getIndex();
 			imagesPos.x = (imagesPos.x * 80) + 12;
 			imagesPos.y = (imagesPos.y * 83) + 10;
 
 			if (timerStar < 6 && !drawCoins) {// blinking star
-				if (transparency == 10) {
-					transparency = 0;
+				if (transparencyStar == 10) {
+					transparencyStar = 0;
 				} else {
-					transparency = 10;
+					transparencyStar = 10;
 				}
-				alpha = (float) ((transparency) * 0.1f);
+				alpha = (float) ((transparencyStar) * 0.1f);
 				alcom = AlphaComposite.getInstance(AlphaComposite.SRC_OVER, alpha);
 				g2.setComposite(alcom);
 				g2.drawImage(getSprite("images/star.png"), imagesPos.x, imagesPos.y, this);
@@ -454,7 +457,7 @@ public class GameBoard extends JPanel implements ActionListener {
 				}
 
 			} else {
-				alpha = (float) ((transparency) * 0.1f);
+				alpha = (float) ((transparencyStar) * 0.1f);
 				alcom = AlphaComposite.getInstance(AlphaComposite.SRC_OVER, alpha);
 				g2.setComposite(alcom);
 				g2.drawImage(getSprite("images/star.png"), imagesPos.x, imagesPos.y, this);
@@ -834,13 +837,16 @@ public class GameBoard extends JPanel implements ActionListener {
 						checksNewBox(playerInTurn);// activates event depending on new position
 
 						playerInTurn = playerInTurn.getNext();// pointer to the next player in turn
+						/*
 						if (playerInTurn.equals(players.getStart())) { // increments counter when round finishes
 							roundsCont++;
 							if (roundsCont == 1) {
 								newStar();
 							}
 							newStar();
-						}
+						}*/
+						newStar();
+						roundsCont++;
 					}
 
 				}
@@ -951,17 +957,17 @@ public class GameBoard extends JPanel implements ActionListener {
 	 */
 	public void spriteDisappears(Graphics2D g, Point actualPos) {
 
-		float alpha = (float) ((transparency) * 0.1f);
-		AlphaComposite alcom = AlphaComposite.getInstance(AlphaComposite.SRC_OVER, alpha);
-		g.setComposite(alcom);
+		alphaP = (float) ((transparencyPlayers) * 0.1f);
+		alcomP = AlphaComposite.getInstance(AlphaComposite.SRC_OVER, alphaP);
+		g.setComposite(alcomP);
 		g.drawImage(playerInTurn.getPlayer().getSprite(), actualPos.x, actualPos.y, null);
 		try {
 			Thread.sleep(100);
 		} catch (Exception e) {
 			// TODO: handle exception
 		}
-		transparency--;
-		if (transparency == 0) {
+		transparencyPlayers--;
+		if (transparencyPlayers == 0) {
 			disappears = false;
 			appears = true;
 		}
@@ -975,18 +981,18 @@ public class GameBoard extends JPanel implements ActionListener {
 	 */
 	public void spriteAppears(Graphics2D g, Point actualPos) {
 
-		float alpha = (float) ((transparency) * 0.1f);
-		AlphaComposite alcom = AlphaComposite.getInstance(AlphaComposite.SRC_OVER, alpha);
-		g.setComposite(alcom);
+		alphaP = (float) ((transparencyPlayers) * 0.1f);
+		alcomP = AlphaComposite.getInstance(AlphaComposite.SRC_OVER, alphaP);
+		g.setComposite(alcomP);
 		g.drawImage(playerInTurn.getPlayer().getSprite(), actualPos.x, actualPos.y, this);
 		try {
 			Thread.sleep(100);
 		} catch (Exception e) {
 			// TODO: handle exception
 		}
-		transparency++;
-		if (transparency == 11) {
-			transparency = 10;
+		transparencyPlayers++;
+		if (transparencyPlayers == 11) {
+			transparencyPlayers = 10;
 			appears = false;
 			throwAgain = true;
 		}
@@ -1073,8 +1079,8 @@ public class GameBoard extends JPanel implements ActionListener {
 			if (staticCoins) {
 				g.drawImage(plus7, xCoins, yCoins, dxCoins, dyCoins, this);// static image
 				Thread.sleep(1000);
-				staticCoins=false;
-				drawCoins=false;
+				staticCoins = false;
+				drawCoins = false;
 			} else {
 				g.drawImage(plus7, xCoins, yCoins, dxCoins, dyCoins, this);
 				yCoins--;
@@ -1090,8 +1096,8 @@ public class GameBoard extends JPanel implements ActionListener {
 			if (staticCoins) {
 				g.drawImage(minus7, xCoins, yCoins, dxCoins, dyCoins, this);// static image
 				Thread.sleep(1000);
-				staticCoins=false;
-				drawCoins=false;
+				staticCoins = false;
+				drawCoins = false;
 			} else {
 				g.drawImage(minus7, xCoins, yCoins, dxCoins, dyCoins, this);
 				yCoins++;
@@ -1110,26 +1116,62 @@ public class GameBoard extends JPanel implements ActionListener {
 	 * Sets new random position of the star
 	 */
 	public void newStar() {
-		int newNodeId = random.nextInt(75);
-		System.out.println(newNodeId);
-		Node playerPtr = playerInTurn;
+		int newNodeId;
+		Node lastStar = pointerToStar;
 		timerStar = 0;
+		boolean correctPosition = false;
+		while (!correctPosition) {
+			correctPosition = true;
+			newNodeId = random.nextInt(75);
+			System.out.println(newNodeId);
+			Node playerPtr = playerInTurn;
 
-		if (newNodeId < 44) {
-			pointerToStar = mainLinkedList.getNode(newNodeId);
-		} else if (newNodeId < 51) {
-			newNodeId -= 44;
-			pointerToStar = phaseA.getNode(newNodeId);
-		} else if (newNodeId < 59) {
-			newNodeId -= 51;
-			pointerToStar = phaseB.getNode(newNodeId);
-		} else if (newNodeId < 62) {
-			newNodeId -= 59;
-			pointerToStar = phaseC.getNode(newNodeId);
-		} else {
-			newNodeId -= 62;
-			pointerToStar = phaseD.getNode(newNodeId);
+			if (newNodeId < 44) {
+				switch (newNodeId) { // not allowed positions for star
+				case 16:
+					correctPosition = false;
+					break;
+				case 18:
+					correctPosition = false;
+					break;
+				case 30:
+					correctPosition = false;
+					break;
+				case 40:
+					correctPosition = false;
+					break;
+				default:
+					break;
+				}
+				pointerToStar = mainLinkedList.getNode(newNodeId);
+			} else if (newNodeId < 51) {
+				newNodeId -= 44;
+				pointerToStar = phaseA.getNode(newNodeId);
+			} else if (newNodeId < 58) {
+				newNodeId -= 51;
+				pointerToStar = phaseB.getNode(newNodeId);
+			} else if (newNodeId < 61) {
+				newNodeId -= 58;
+				pointerToStar = phaseC.getNode(newNodeId);
+			} else {
+				newNodeId -= 61;
+				if (newNodeId == 13) {//not allowed position for star
+					correctPosition = false;
+				}
+				pointerToStar = phaseD.getNode(newNodeId);
+			}
+			System.out.println(newNodeId);
+			for (int i = 0; i < players.getSize(); i++) {//checks if the position isn't occupied by a player
+				if (playerPtr.getPlayer().getPointer().equals(pointerToStar)) {
+					correctPosition = false;
+				}
+				playerPtr = playerPtr.getNext();
+			}
+			
+			if (pointerToStar.equals(lastStar)) { // must be a different node than the last one
+				correctPosition = false;
+			}
 		}
-		System.out.println(newNodeId);
 	}
+
 }
