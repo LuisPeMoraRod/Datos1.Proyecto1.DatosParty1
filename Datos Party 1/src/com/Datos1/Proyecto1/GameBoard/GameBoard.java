@@ -81,7 +81,7 @@ public class GameBoard extends JPanel implements ActionListener{
 	private int transparencyPlayers;// sprites transparency (10 is completely solid)
 	private int transparencyStar;
 	
-	private miniGameButton minigame;
+	private MiniGameButton minigame;
 	public static boolean newMiniGame;// flag to handle the appearance of new minigames
 	private boolean newEvent; //flag to handle the appearance of events
 	
@@ -127,7 +127,7 @@ public class GameBoard extends JPanel implements ActionListener{
 
 		imagesPos = new Point();
 		
-		minigame = new miniGameButton(this);
+		minigame = new MiniGameButton(this);
 
 		timer = new Timer(10, this);
 		timer.start();

@@ -19,24 +19,24 @@ import javax.swing.JPanel;
 import com.Datos1.Proyecto1.Start.Main;
 
 
-public class miniGameButton extends Component {
+public class MiniGameButton extends Component {
 
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
 
-	private Point location;
+	protected Point location;
 	protected int transparency;
 	protected BufferedImage sprite;
-	private String path;
-	private JPanel canvas;
-	private int width, height;
-	private int miniGameId; //0=Flappy Bird, 1=Tic Tac Toe, 2= Four in Line
-	private Random random;
+	protected String path;
+	protected JPanel canvas;
+	protected int width, height;
+	protected int miniGameId; //0=Flappy Bird, 1=Tic Tac Toe, 2= Four in Line
+	protected Random random;
+	protected Node player1, player2;
 	
-
-	public miniGameButton(JPanel canvas) {
+	public MiniGameButton(JPanel canvas) {
 		transparency = 10;
 		path = "images/letsGo.png";
 		this.canvas = canvas;
@@ -44,7 +44,17 @@ public class miniGameButton extends Component {
 		clickOnDice();
 		random = new Random();
 		
-		
+	}
+	
+	//constructor for duel 
+	public MiniGameButton(JPanel canvas, Node player1, Node player2) {
+		transparency = 10;
+		this.canvas = canvas;
+		setTransparency();
+		clickOnDice();
+		random = new Random();
+		this.player1 = player1;
+		this.player2 = player2;
 	}
 	public void setLocation(Point location) {
 		this.location = location;
@@ -120,6 +130,9 @@ public class miniGameButton extends Component {
 		});
 	}
 	
+	/**
+	 * Sets observable's flags 
+	 */
 	public void startMiniGame() {
 		GameBoardLauncher.window.setVisible(false);
 		GameBoard.newMiniGame = false;
