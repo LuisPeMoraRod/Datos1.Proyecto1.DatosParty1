@@ -11,6 +11,7 @@ public class Node{
 
 	protected Box box;
 	protected Player player;
+	protected Events event;
 	private Node next;
 	private Node prev;
 	private int i; //indexes of the element in the "matrix" generated in the canvas with the group layout
@@ -29,6 +30,7 @@ public class Node{
 	public Node(Builder builder) {
 		this.box = builder.box;
 		this.player = builder.player;
+		this.event = builder.event;
 		this.next = builder.next;
 		this.prev = builder.prev;
 		this.i = builder.i;
@@ -73,6 +75,10 @@ public class Node{
 	 */
 	public Player getPlayer() {
 		return this.player;
+	}
+
+	public Events getEvent(){
+		return this.event;
 	}
 	
 	public void setPlayer(Player player) {
@@ -145,6 +151,7 @@ public class Node{
 	
 	
 	public static class Builder {
+		public Events event;
 		/**
 		 * Builder class for node's parameters Box, next, prev and id
 		 */
@@ -172,6 +179,10 @@ public class Node{
 		}
 		public Builder withPlayer(Player player) {
 			this.player=player;
+			return this;
+		}
+		public Builder withEvent(Events event){
+			 this.event = event;
 			return this;
 		}
 		public Builder withNext(Node next) {

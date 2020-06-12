@@ -70,12 +70,14 @@ public class GameBoard extends JPanel implements ActionListener{
 	public static boolean twoPaths2;// tells if up/down message should appear
 	private boolean disappears;// sprite disappears
 	private boolean appears;// sprite appears
-	public static boolean throwAgain;// player must throwo dices again (after blackhole)
+	public static boolean throwAgain;// player must throw dices again (after blackhole)
 	public static int movingCont;// indicates through how many nodes the sprite has moved
 	private int roundsCont;// tells how many rounds have been played
 	public static Dice dice1, dice2;
 	public LeftRightArrow leftArrow, rightArrow;
 	public UpDownArrow upArrow, downArrow;
+
+	private LinkedList eventList = new LinkedList();
 
 	Timer timer;
 	private int transparencyPlayers;// sprites transparency (10 is completely solid)
@@ -130,6 +132,7 @@ public class GameBoard extends JPanel implements ActionListener{
 
 		timer = new Timer(10, this);
 		timer.start();
+
 	}
 
 	/**

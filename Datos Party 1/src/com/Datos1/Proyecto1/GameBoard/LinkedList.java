@@ -40,6 +40,13 @@ public class LinkedList {
 		size++;
 	}
 
+	public void insertHead(Events events){
+		Node newNode = Node.builder().withEvent(events).build();
+		newNode.setNext(head);
+		head = newNode;
+		size++;
+	}
+
 	/**
 	 * Public method. Inserts a node at the very end of the linked list.
 	 * 
@@ -56,6 +63,7 @@ public class LinkedList {
 		pointer.setNext(newNode);
 		size++;
 	}
+
 	
 	
 /**
@@ -64,6 +72,17 @@ public class LinkedList {
  */
 	public void insertEnd(Player player) {
 		Node newNode = Node.builder().withPlayer(player).build();
+		Node pointer = head;
+		while (pointer.getNext() != null) {
+			pointer = pointer.getNext();
+		}
+
+		pointer.setNext(newNode);
+		size++;
+	}
+
+	public void insertEnd(Events events) {
+		Node newNode = Node.builder().withEvent(events).build();
 		Node pointer = head;
 		while (pointer.getNext() != null) {
 			pointer = pointer.getNext();
@@ -144,6 +163,39 @@ public class LinkedList {
 		} else {
 			return null;
 		}
+	}
+
+	public void deleteElement(int i){
+		if (i >= 0 && i < size) {
+			Node current = head;
+			Node currentNext = head.getNext();
+
+			if (i == 0) {
+				this.head = currentNext;
+				size--;
+			}
+			else{
+				int cont = 1;
+				while (cont < i) {
+					if(cont+1==i){
+						current.setNext(currentNext.getNext());
+						size--;
+						break;
+					}
+					else{
+						cont++;
+					}
+				}
+			}
+
+
+		}
+
+	}
+
+	public  void deleteFirst(){
+		Node second = head.getNext();
+		this.head = second;
 	}
 
 }
