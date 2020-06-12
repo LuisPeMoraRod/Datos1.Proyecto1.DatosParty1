@@ -1,6 +1,7 @@
 package com.Datos1.Proyecto1.pong;
 
 import com.Datos1.Proyecto1.GameBoard.CircularDoublyLinkedList;
+import com.Datos1.Proyecto1.GameBoard.GameBoardLauncher;
 import com.Datos1.Proyecto1.snake.SnakeWindow;
 
 import javax.imageio.ImageIO;
@@ -174,6 +175,8 @@ public class PongBoard extends JPanel {
     }
 
     public void closeGame(){
+
+        GameBoardLauncher.window.setVisible(true);
         PongLauncher.pongWindow.dispose();
     }
     
@@ -299,6 +302,7 @@ public class PongBoard extends JPanel {
             }
         	else {
         		closeGame();
+
         	}
             
         }

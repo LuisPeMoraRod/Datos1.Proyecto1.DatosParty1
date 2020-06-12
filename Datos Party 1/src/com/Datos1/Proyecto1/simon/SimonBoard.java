@@ -4,6 +4,7 @@ import javax.imageio.ImageIO;
 import javax.swing.*;
 
 import com.Datos1.Proyecto1.GameBoard.CircularDoublyLinkedList;
+import com.Datos1.Proyecto1.GameBoard.GameBoardLauncher;
 import com.Datos1.Proyecto1.GameBoard.LinkedList;
 
 import java.awt.*;
@@ -432,6 +433,7 @@ public class SimonBoard extends JPanel implements ActionListener, MouseListener 
     public void endgame(){
         timer.stop();
         SimonLauncher.simonWindow.dispose();
+        GameBoardLauncher.window.setVisible(true);
 
     }
     

@@ -60,7 +60,7 @@ public class Events extends Component {
 
     }
 
-    public LinkedList eventList(){
+    public LinkedList createEventList(){
 
         eventList.insertHead(new Events(1));
 
