@@ -34,7 +34,6 @@ public class MiniGameButton extends Component {
 	protected int width, height;
 	protected int miniGameId; //0=Flappy Bird, 1=Tic Tac Toe, 2= Four in Line
 	protected Random random;
-	protected Node player1, player2;
 	
 	public MiniGameButton(JPanel canvas) {
 		transparency = 10;
@@ -46,16 +45,8 @@ public class MiniGameButton extends Component {
 		
 	}
 	
-	//constructor for duel 
-	public MiniGameButton(JPanel canvas, Node player1, Node player2) {
-		transparency = 10;
-		this.canvas = canvas;
-		setTransparency();
-		clickOnDice();
-		random = new Random();
-		this.player1 = player1;
-		this.player2 = player2;
-	}
+	
+	
 	public void setLocation(Point location) {
 		this.location = location;
 	}
@@ -125,6 +116,7 @@ public class MiniGameButton extends Component {
 		this.addMouseListener(new MouseAdapter() {
 			public void mouseClicked(MouseEvent e) {
 				transparency = 10;
+				
 				startMiniGame();
 			}
 		});
@@ -134,8 +126,9 @@ public class MiniGameButton extends Component {
 	 * Sets observable's flags 
 	 */
 	public void startMiniGame() {
-		GameBoardLauncher.window.setVisible(false);
 		GameBoard.newMiniGame = false;
+		GameBoardLauncher.window.setVisible(false);
+		System.out.println(GameBoard.newMiniGame);
 		canvas.remove(this);
 		miniGameId = random.nextInt(3);
 		switch (miniGameId) {

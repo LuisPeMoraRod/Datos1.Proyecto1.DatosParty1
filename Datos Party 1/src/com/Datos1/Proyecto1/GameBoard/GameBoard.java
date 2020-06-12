@@ -20,7 +20,9 @@ import javax.swing.GroupLayout;
 import javax.swing.JPanel;
 import javax.swing.Timer;
 
-public class GameBoard extends JPanel implements ActionListener{
+import com.Datos1.Proyecto1.Start.Main;
+
+public class GameBoard extends JPanel implements ActionListener {
 	/**
 	 * Public class. Represents the structure of the game's GUI
 	 * 
@@ -29,11 +31,11 @@ public class GameBoard extends JPanel implements ActionListener{
 	 */
 
 	private static final long serialVersionUID = 1L;
-	static CircularLinkedList mainLinkedList = new CircularLinkedList();
-	static LinkedList phaseA = new LinkedList();
-	static LinkedList phaseB = new LinkedList();
-	static DoublyLinkedList phaseC = new DoublyLinkedList();
-	static CircularDoublyLinkedList phaseD = new CircularDoublyLinkedList();
+	public static CircularLinkedList mainLinkedList = new CircularLinkedList();
+	public static LinkedList phaseA = new LinkedList();
+	public static LinkedList phaseB = new LinkedList();
+	public static DoublyLinkedList phaseC = new DoublyLinkedList();
+	public static CircularDoublyLinkedList phaseD = new CircularDoublyLinkedList();
 	public static CircularDoublyLinkedList players = new CircularDoublyLinkedList();
 	public static Node playerInTurn;
 	private BufferedImage heyYou, plus7, minus7;
@@ -46,15 +48,15 @@ public class GameBoard extends JPanel implements ActionListener{
 
 	private Node pointerToStar;
 	private float alpha;
-	private boolean newStarFlag; //flag that tells when to create a new star
-	
+	private boolean newStarFlag; // flag that tells when to create a new star
+
 	private AlphaComposite alcom;
 	private float alphaP;
 	private AlphaComposite alcomP;
 	private int timerStar;
-	private boolean congrats;//draw congratulations message
-	private int contCongrats; //counter that helps to display the congratulations message
-	private boolean sorry;//draw sorry message
+	private boolean congrats;// draw congratulations message
+	private int contCongrats; // counter that helps to display the congratulations message
+	private boolean sorry;// draw sorry message
 
 	public static boolean drawCoins;
 	public static boolean staticCoins;
@@ -80,11 +82,15 @@ public class GameBoard extends JPanel implements ActionListener{
 	Timer timer;
 	private int transparencyPlayers;// sprites transparency (10 is completely solid)
 	private int transparencyStar;
-	
-	private MiniGameButton minigame;
+
+	private MiniGameButton minigameButton;
 	public static boolean newMiniGame;// flag to handle the appearance of new minigames
-	private boolean newEvent; //flag to handle the appearance of events
-	
+	private boolean newEvent; // flag to handle the appearance of events
+	public static boolean duel;
+
+	private DuelButton duelButton; // button to go to minigames when thers a duel
+	private Player duelPlayer1, duelPlayer2; //players that fight the duel
+
 	public GameBoard(CircularDoublyLinkedList players) {
 		random = new Random();
 
@@ -106,7 +112,7 @@ public class GameBoard extends JPanel implements ActionListener{
 		minus7 = getSprite("images/minus7.png");
 
 		GameBoard.players = players;
-		
+
 		transparencyPlayers = 10;
 
 		setPlayersInitialNode();
@@ -119,15 +125,13 @@ public class GameBoard extends JPanel implements ActionListener{
 		yellow = new YellowBox();
 		blue = new BlueBox();
 
-		
-		
-		
 		transparencyStar = 10;
 		timerStar = 6;
 
 		imagesPos = new Point();
-		
-		minigame = new MiniGameButton(this);
+
+		minigameButton = new MiniGameButton(this);
+		duelButton = new DuelButton(this);
 
 		timer = new Timer(10, this);
 		timer.start();
@@ -413,7 +417,7 @@ public class GameBoard extends JPanel implements ActionListener{
 	 * Paints static images such as the black holes or arrows in the canvas
 	 * 
 	 * @param g : Graphics2D
-	 * @throws InterruptedException 
+	 * @throws InterruptedException
 	 */
 	public void setImages(Graphics2D g, Graphics2D g2) throws InterruptedException {
 		imagesPos = mainLinkedList.getNode(16).getIndex();
@@ -474,7 +478,7 @@ public class GameBoard extends JPanel implements ActionListener{
 					e.printStackTrace();
 				}
 
-			} else if (!newStarFlag){
+			} else if (!newStarFlag) {
 				alpha = (float) ((transparencyStar) * 0.1f);
 				alcom = AlphaComposite.getInstance(AlphaComposite.SRC_OVER, alpha);
 				g2.setComposite(alcom);
@@ -482,22 +486,22 @@ public class GameBoard extends JPanel implements ActionListener{
 			}
 
 		}
-		
-		//Congratulations for gaining a star message
+
+		// Congratulations for gaining a star message
 		if (congrats) {
 			imagesPos.x = Window.width * 9 / 12;
 			imagesPos.y = Window.height / 4;
-			g.drawImage(getSprite("images/congrats.png"), imagesPos.x-20, imagesPos.y -10, this);
-			if (contCongrats>=1) {
+			g.drawImage(getSprite("images/congrats.png"), imagesPos.x - 20, imagesPos.y - 10, this);
+			if (contCongrats >= 1) {
 				Thread.sleep(2500);
 				congrats = false;
-				contCongrats=0;
-			}else {
+				contCongrats = 0;
+			} else {
 				contCongrats++;
 			}
-			
-		//not enough coins message
-		}else if (sorry) {
+
+			// not enough coins message
+		} else if (sorry) {
 			imagesPos.x = Window.width * 5 / 12;
 			imagesPos.y = Window.height / 4;
 			g.drawImage(getSprite("images/sorry.png"), imagesPos.x, imagesPos.y + 50, this);
@@ -632,7 +636,7 @@ public class GameBoard extends JPanel implements ActionListener{
 			setImages(g2d, g2d2);// sets images like black hole, star messages or throw again message
 		} catch (InterruptedException e1) {
 			e1.printStackTrace();
-		} 
+		}
 
 		if (dice1.thrown && dice2.thrown) {
 			startMovement();
@@ -714,8 +718,12 @@ public class GameBoard extends JPanel implements ActionListener{
 				e.printStackTrace();
 			}
 		}
-		
-		if (newMiniGame && !newEvent && !congrats && !drawCoins) {
+
+		if (duel && !newEvent && !congrats && !drawCoins) {
+			paintDuelButton(g2d);
+		}
+
+		if (newMiniGame && !newEvent && !congrats && !drawCoins && !duel) {
 			paintMiniGameButton(g2d);
 		}
 
@@ -727,6 +735,9 @@ public class GameBoard extends JPanel implements ActionListener{
 		}
 	}
 
+	/**
+	 * Sets the first movement ot each player in every turn
+	 */
 	public void startMovement() {
 		if (playerInTurn.getPlayer().getPointer().equals(mainLinkedList.getNode(11))) {// sets flag twoPaths when player
 																						// starts to move and
@@ -883,11 +894,12 @@ public class GameBoard extends JPanel implements ActionListener{
 						moving = false;// stops moving routine
 
 						checksNewBox(playerInTurn);// activates event depending on new position
-						
+
+						checksDuel(playerInTurn); // checks if theres a duel: two players in the same node
 
 						playerInTurn = playerInTurn.getNext();// pointer to the next player in turn
 						sorry = false;
-						if (playerInTurn.equals(players.getStart())) { // increments counter when round finishes
+						if (playerInTurn.equals(players.getStart() )) { // increments counter when round finishes
 							roundsCont++;
 							if (roundsCont == 1) {
 								newStar();
@@ -899,6 +911,8 @@ public class GameBoard extends JPanel implements ActionListener{
 							newStarFlag = false;
 						}
 						
+						
+
 					}
 
 				}
@@ -1001,18 +1015,29 @@ public class GameBoard extends JPanel implements ActionListener{
 		upArrow.paintsArrow(g);
 		downArrow.paintsArrow(g);
 	}
-	
+
 	/**
 	 * Button that instantiates new minigame
+	 * 
 	 * @param g
 	 */
 	public void paintMiniGameButton(Graphics2D g) {
 		this.setLayout(null);
-		minigame.setLocation(new Point(Window.width * 9 / 12+40, Window.height / 4));
-		minigame.setBounds(minigame.getsLocation().x,minigame.getsLocation().y,171,143);
-		this.add(minigame);
-		minigame.paintsButton(g);
-		}
+		minigameButton.setLocation(new Point(Window.width * 9 / 12 + 40, Window.height / 4));
+		minigameButton.setBounds(minigameButton.getsLocation().x, minigameButton.getsLocation().y, 171, 143);
+		this.add(minigameButton);
+		minigameButton.paintsButton(g);
+	}
+	
+	public void paintDuelButton(Graphics2D g) {
+		this.setLayout(null);
+		duelButton.setPlayers(duelPlayer1, duelPlayer2);
+		duelButton.setLocation(new Point(Window.width * 9 / 12 + 40, Window.height / 4));
+		duelButton.setBounds(duelButton.getsLocation().x, duelButton.getsLocation().y, 171, 143);
+		this.add(duelButton);
+		duelButton.paintsButton(g);
+		
+	}
 
 	/**
 	 * Sprite disappears slowly when it reaches the black hole
@@ -1131,6 +1156,28 @@ public class GameBoard extends JPanel implements ActionListener{
 	}
 
 	/**
+	 * Checks if there's a duel and sets flag if necessary
+	 * @param playerNode : Node
+	 */
+	public void checksDuel(Node playerNode) {
+		Player player = playerNode.getPlayer();
+		Node pointer = playerNode;
+		for (int i = 0; i < players.getSize()-1; i++) {
+			pointer = pointer.getNext();
+			if (pointer.getPlayer().getPointer().equals(player.getPointer())) { // if two players are in the same node
+				duelPlayer1 = player;
+				duelPlayer2 = pointer.getPlayer();
+				Main.minigamesObservable.setPlayers(duelPlayer1, duelPlayer2); //add players to duels circular doubly linked list that will be used to launch the minigame
+				duel = true;
+				System.out.println(duelPlayer1.getName()+" "+duelPlayer2.getName());
+				System.out.println("duel");
+			}
+			
+		}
+
+	}
+
+	/**
 	 * Draws coins and moves them while changing the image size
 	 * 
 	 * @param g
@@ -1225,47 +1272,48 @@ public class GameBoard extends JPanel implements ActionListener{
 				pointerToStar = phaseC.getNode(newNodeId);
 			} else {
 				newNodeId -= 61;
-				if (newNodeId == 13) {//not allowed position for star
+				if (newNodeId == 13) {// not allowed position for star
 					correctPosition = false;
 				}
 				pointerToStar = phaseD.getNode(newNodeId);
 			}
 			System.out.println(newNodeId);
-			for (int i = 0; i < players.getSize(); i++) {//checks if the position isn't occupied by a player
+			for (int i = 0; i < players.getSize(); i++) {// checks if the position isn't occupied by a player
 				if (playerPtr.getPlayer().getPointer().equals(pointerToStar)) {
 					correctPosition = false;
 				}
 				playerPtr = playerPtr.getNext();
 			}
-			
+
 			if (pointerToStar.equals(lastStar)) { // must be a different node than the last one
 				correctPosition = false;
 			}
 		}
 	}
-	
 
 	/**
-	 * Public void, if player passes through a star and has enough money, then buys it.
+	 * Public void, if player passes through a star and has enough money, then buys
+	 * it.
 	 */
 	public void buyStar() {
 		Player player = playerInTurn.getPlayer();
 		int coins = player.getCoins();
-		if (player.getPointer().equals(pointerToStar) && coins>=25) {
+		if (player.getPointer().equals(pointerToStar) && coins >= 25) {
 			player.incremenentStar(1);
 			player.decrementsCoins(25);
 			System.out.println(player.getCoins());
 			newStarFlag = true;
 			congrats = true;
-			
-		}else if (player.getPointer().equals(pointerToStar) && coins<25) {
+
+		} else if (player.getPointer().equals(pointerToStar) && coins < 25) {
 			sorry = true;
 		}
 	}
-	
+
 	/**
 	 * Draws statistics: amount of stars and coins
-	 * @param g : Graphics2D 
+	 * 
+	 * @param g : Graphics2D
 	 */
 	public void stats(Graphics2D g) {
 		Node playerNode = players.getStart();
@@ -1274,20 +1322,17 @@ public class GameBoard extends JPanel implements ActionListener{
 		imagesPos.y = 30;
 		for (int i = 0; i < players.getSize(); i++) {// paints all players
 			player = playerNode.getPlayer();
-			imagesPos.y+=65;
+			imagesPos.y += 65;
 			g.setFont(new Font("Arial", 1, 18));
-			g.drawString(": "+player.getCoins()+" coins, "+player.getStar()+" stars", imagesPos.x+40, imagesPos.y+25);
+			g.drawString(": " + player.getCoins() + " coins, " + player.getStar() + " stars", imagesPos.x + 40,
+					imagesPos.y + 25);
 			g.drawImage(player.getSprite(), imagesPos.x, imagesPos.y, this);
 			playerNode = playerNode.getNext();
 		}
-		
-	}
-	
-	
-	public void newMiniGame() {
-		
+
 	}
 
 	
 	
+
 }

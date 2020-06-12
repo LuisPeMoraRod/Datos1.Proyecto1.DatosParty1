@@ -18,9 +18,8 @@ public class Main implements Observer {
 	public static Main main;
 	public static MinigamesObservable minigamesObservable;
 	//flags to initialize the mini games
-	public static boolean flappybird;
-	public static boolean ticTacToe;
-	public static boolean fourInLine;
+	public static boolean flappybird, ticTacToe, fourInLine;
+	public static boolean duelFlappybird, duelTicTacToe, duelFourInLine;
 	
 	public Main() {
 		minigamesObservable = new MinigamesObservable();
@@ -28,6 +27,9 @@ public class Main implements Observer {
 		flappybird = false;
 		ticTacToe = false;
 		fourInLine = false;
+		duelFlappybird = false;
+		duelTicTacToe = false;
+		duelFourInLine = false;
 		}
 	
 
@@ -37,14 +39,28 @@ public class Main implements Observer {
 		while(true) {
 			System.out.println(".");
 			if (flappybird) {
-				main.executeFB();
+				main.executeFB(players);
 				flappybird=false;
 			}else if (ticTacToe) {
-				main.executeTTT();
+				main.executeTTT(players);
 				ticTacToe = false;
 			}else if (fourInLine) {
-				main.execute4IL();
+				main.execute4IL(players);
 				fourInLine = false;
+			}
+			//if required, execute duel minigames
+			else if (duelFlappybird) {
+				
+				main.executeFB(minigamesObservable.getPlayers());
+				duelFlappybird = false;
+			}else if (duelTicTacToe) {
+				
+				main.executeTTT(minigamesObservable.getPlayers());
+				duelTicTacToe = false;
+			}else if (duelFourInLine) {
+				
+				main.execute4IL(minigamesObservable.getPlayers());
+				duelFourInLine = false;
 			}
 		}
 		
@@ -108,7 +124,7 @@ public class Main implements Observer {
 	/**
 	 * Runs flappy bird minigame
 	 */
-	public void executeFB() {
+	public void executeFB(CircularDoublyLinkedList players) {
 		FlappyBirdLauncher fb = new FlappyBirdLauncher(players);
 
 		try {
@@ -121,7 +137,7 @@ public class Main implements Observer {
 	/**
 	 * Runs tic tac toe minigame
 	 */
-	public void executeTTT() {
+	public void executeTTT(CircularDoublyLinkedList players) {
 		TicTacToeLauncher ttt = new TicTacToeLauncher(players);
 		try {
 			ttt.launch();
@@ -134,7 +150,7 @@ public class Main implements Observer {
 	/**
 	 * Runs four in line minigame
 	 */
-	public void execute4IL() {
+	public void execute4IL(CircularDoublyLinkedList players) {
 		FourInLineLauncher ttt = new FourInLineLauncher(players);
 		try {
 			ttt.launch();
@@ -156,6 +172,15 @@ public class Main implements Observer {
 		}else if (minigamesObservable.get4IL()) {
 			fourInLine = true;
 			minigamesObservable.set4IL(false);
+		}
+		
+		//activate duels in while true
+		else if (minigamesObservable.getDuelFB()) {
+			duelFlappybird = true;
+		}else if (minigamesObservable.getDuelTTT()) {
+			duelTicTacToe = true;
+		}else if (minigamesObservable.getDuel4IL()) {
+			duelFourInLine = true;
 		}
 	}
 }

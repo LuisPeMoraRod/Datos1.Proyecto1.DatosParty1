@@ -2,10 +2,12 @@ package com.Datos1.Proyecto1.FourInLine;
 
 import com.Datos1.Proyecto1.GameBoard.BubbleSort;
 import com.Datos1.Proyecto1.GameBoard.CircularDoublyLinkedList;
+import com.Datos1.Proyecto1.GameBoard.GameBoard;
 import com.Datos1.Proyecto1.GameBoard.LinkedList;
 import com.Datos1.Proyecto1.GameBoard.Node;
 import com.Datos1.Proyecto1.GameBoard.Player;
 import com.Datos1.Proyecto1.Results.Results4IL;
+import com.Datos1.Proyecto1.Start.Main;
 import com.Datos1.Proyecto1.cover.Cover;
 import com.Datos1.Proyecto1.cover.CoverEvent;
 
@@ -103,6 +105,8 @@ public class FourInLineLauncher implements Observer {
 				observable.setEnd(false);
 				//sorts by mini game points
 				players= new BubbleSort(players).execute();
+				
+				
 				try {
 					Results4IL resultBoard = new Results4IL(players); //displays results window
 				} catch (IOException e) {

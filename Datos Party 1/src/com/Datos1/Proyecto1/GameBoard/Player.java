@@ -26,7 +26,7 @@ public class Player extends Component {
 	private BufferedImage sprite;
 	private int spriteWidth;
 	private int spriteHeight;
-	private Node pointer;
+	private Node pointer; //pointer to the node of the list where it is located
 	private boolean inTurn;
 	private boolean clockWise;
 

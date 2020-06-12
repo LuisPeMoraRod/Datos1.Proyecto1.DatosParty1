@@ -13,8 +13,8 @@ import javax.imageio.ImageIO;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
-
 import com.Datos1.Proyecto1.GameBoard.*;
+import com.Datos1.Proyecto1.Start.Main;
 
 abstract class Results extends JFrame {
 	/**
@@ -65,7 +65,7 @@ abstract class Results extends JFrame {
 			g.setColor(Color.white);
 			g.setFont(new Font("Arial", 1, 25));
 			drawString(g, resultsString, 30, 30);
-			g.drawImage(enter, this.getWidth() * 2 / 4+10, 10, this);
+			g.drawImage(enter, this.getWidth() * 2 / 4 + 10, 10, this);
 
 		}
 
@@ -102,8 +102,8 @@ abstract class Results extends JFrame {
 			Node pointer = results.getHead();
 			for (int i = 1; i <= results.getSize(); i++) {
 
-				resultsString +="\n"+ i + ". " + pointer.getPlayer().getName() + " +" + pointer.getPlayer().getPoints()
-						+ " coins";
+				resultsString += "\n" + i + ". " + pointer.getPlayer().getName() + " +"
+						+ pointer.getPlayer().getPoints() + " coins";
 				pointer = pointer.getNext();
 			}
 			return resultsString;
@@ -113,6 +113,30 @@ abstract class Results extends JFrame {
 	public void ciao() {
 		this.dispose();
 		GameBoardLauncher.window.setVisible(true);
+		Node pointer = results.getNode(0);
+		Player winner = pointer.getPlayer(); //winner moves to the next position
+		Node position = winner.getPointer();
+		if (position.equals(GameBoard.phaseA.getNode(6))) {
+			position = GameBoard.mainLinkedList.getNode(23);
+		}else if (position.equals(GameBoard.phaseB.getNode(6))) {
+			position = GameBoard.mainLinkedList.getNode(38);
+		}else if (position.equals(GameBoard.phaseC.getNode(0))) {
+			position = GameBoard.mainLinkedList.getNode(18);
+		}
+		else{
+			position = position.getNext();
+		}
+		winner.setPointer(position);
+
+		if (Main.minigamesObservable.getDuelFB()) { // if it is a duel of flappy bird
+			Main.minigamesObservable.setDuelFB(false);// stop the minigame
+			
+		} else if (Main.minigamesObservable.getDuelTTT()) { // if it is a duel of tic tac toe
+			Main.minigamesObservable.setDuelTTT(false);// stop the minigame
+			
+		} else if (Main.minigamesObservable.getDuel4IL()) { // if it is a duel of four in line
+			Main.minigamesObservable.setDuel4IL(false);// stop the minigame
+		}
 	}
 
 }

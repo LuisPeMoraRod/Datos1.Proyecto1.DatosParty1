@@ -2,8 +2,12 @@ package com.Datos1.Proyecto1.FlappyBird;
 
 import com.Datos1.Proyecto1.GameBoard.BubbleSort;
 import com.Datos1.Proyecto1.GameBoard.CircularDoublyLinkedList;
+import com.Datos1.Proyecto1.GameBoard.GameBoard;
 import com.Datos1.Proyecto1.GameBoard.LinkedList;
+import com.Datos1.Proyecto1.GameBoard.Node;
+import com.Datos1.Proyecto1.GameBoard.Player;
 import com.Datos1.Proyecto1.Results.*;
+import com.Datos1.Proyecto1.Start.Main;
 import com.Datos1.Proyecto1.cover.Cover;
 import com.Datos1.Proyecto1.cover.CoverEvent;
 
@@ -94,6 +98,7 @@ public class FlappyBirdLauncher {
 	
 		results= new BubbleSort(results).execute();
 		
+
 		ResultsFB resultBoard = new ResultsFB(results);
 		for (int i = 0; i< results.getSize();i++) {
 			results.getNode(i).getPlayer().setPoints(0);

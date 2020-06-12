@@ -120,6 +120,8 @@ public class LinkedList {
 		return null;
 
 	}
+	
+	
 
 	/**
 	 * Public method. Returns the component of the list's square requested by its
