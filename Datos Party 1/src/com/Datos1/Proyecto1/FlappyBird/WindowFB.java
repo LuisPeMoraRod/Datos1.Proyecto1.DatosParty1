@@ -12,7 +12,7 @@ import javax.swing.JRootPane;
 
 import com.Datos1.Proyecto1.GameBoard.CircularDoublyLinkedList;
 
-public class Window extends JFrame {
+public class WindowFB extends JFrame {
 	/**
 	 * Public class that creates the window where the game develops
 	 * 
@@ -23,7 +23,7 @@ public class Window extends JFrame {
 
 	private int width, height;
 	public static int frameWidth = 490, frameHeight = 375;// 615 503
-	public static GameBoard canvas1, canvas2, canvas3, canvas4;
+	public static GameBoardFB canvas1, canvas2, canvas3, canvas4;
 
 	JDesktopPane desk;
 	public static JInternalFrame frame1, frame2, frame3, frame4;
@@ -34,10 +34,10 @@ public class Window extends JFrame {
 	 * Constructor method. Creates an amount of internal frames depending on the
 	 * number of players
 	 * 
-	 * @param players {@link Window#setWindowSize(int)}
-	 *                {@link Window#createWindow(int)}
+	 * @param players {@link WindowFB#setWindowSize(int)}
+	 *                {@link WindowFB#createWindow(int)}
 	 */
-	public Window(CircularDoublyLinkedList players) {
+	public WindowFB(CircularDoublyLinkedList players) {
 		this.playersSize = players.getSize();
 		desk = new JDesktopPane();
 		setTitle("Flappy Bird");
@@ -99,7 +99,7 @@ public class Window extends JFrame {
 			int y = frame1.getY();
 			internalFrameProps(frame1, x, y);
 			desk.add(frame1);
-			canvas1 = new GameBoard(players.getNode(player-1).getPlayer());
+			canvas1 = new GameBoardFB(players.getNode(player-1).getPlayer());
 
 			// canvas.setFocusable(true);
 			// canvas.requestFocusInWindow();
@@ -114,7 +114,7 @@ public class Window extends JFrame {
 			int y = frame2.getY();
 			internalFrameProps(frame2, x, y);
 			desk.add(frame2);
-			canvas2 = new GameBoard(players.getNode(player-1).getPlayer());
+			canvas2 = new GameBoardFB(players.getNode(player-1).getPlayer());
 
 			frame2.add(canvas2);
 		}
@@ -132,7 +132,7 @@ public class Window extends JFrame {
 			int y = frame3.getY();
 			internalFrameProps(frame3, x, y);
 			desk.add(frame3);
-			canvas3 = new GameBoard(players.getNode(player-1).getPlayer());
+			canvas3 = new GameBoardFB(players.getNode(player-1).getPlayer());
 
 			frame3.add(canvas3);
 		}
@@ -146,7 +146,7 @@ public class Window extends JFrame {
 			// frame4.setMaximizable(false);
 			internalFrameProps(frame4, x, y);
 			desk.add(frame4);
-			canvas4 = new GameBoard(players.getNode(player-1).getPlayer());
+			canvas4 = new GameBoardFB(players.getNode(player-1).getPlayer());
 			frame4.add(canvas4);
 		}
 		add(desk);

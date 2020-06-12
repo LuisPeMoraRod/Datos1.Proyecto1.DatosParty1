@@ -3,6 +3,7 @@ package com.Datos1.Proyecto1.GameBoard;
 public class GameBoardLauncher {
 
 	CircularDoublyLinkedList players;
+	public static Window window;
 
 	public GameBoardLauncher(CircularDoublyLinkedList players){
 		this.players = players;
@@ -11,7 +12,7 @@ public class GameBoardLauncher {
 	public void launchGame() {
 
 
-		Window window= new Window(players);
+		window= new Window(players);
 		window.setVisible(true);
 	}
 }

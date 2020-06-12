@@ -21,7 +21,7 @@ import javax.swing.Timer;
 
 import com.Datos1.Proyecto1.GameBoard.Player;
 
-public class GameBoard extends JPanel implements ActionListener {
+public class GameBoardFB extends JPanel implements ActionListener {
 	/**
 	 * Public class that creates the canvas where the game develops
 	 * @author Luis Pedro Morales Rodriguez
@@ -54,15 +54,15 @@ public class GameBoard extends JPanel implements ActionListener {
 	public int contTimer;
 	Timer timer;
 
-	public GameBoard(Player player) {
+	public GameBoardFB(Player player) {
 		this.player = player;
 
 		sprite = new Bird(player.getId());
 		image = sprite.getBird();
 		wallpaper = getWallpaper();
 
-		frameWidth = Window.frameWidth;
-		frameHeight = Window.frameHeight;
+		frameWidth = WindowFB.frameWidth;
+		frameHeight = WindowFB.frameHeight;
 
 		birdWidth = sprite.birdWidth;
 		birdHeight = sprite.birdHeight;
@@ -87,8 +87,8 @@ public class GameBoard extends JPanel implements ActionListener {
 	 * Public method that creates two columns with the shape of pipelines and adds them to the columnsArray
 	 */
 	public void createColumn() {
-		int space = (int) (Window.frameHeight/2.8);
-		int width = (int)(Window.frameWidth*0.15)/10;
+		int space = (int) (WindowFB.frameHeight/2.8);
+		int width = (int)(WindowFB.frameWidth*0.15)/10;
 		width*=10;
 		int height = columnHeights[columnIndex];
 		Rectangle tube1 = new Rectangle(frameWidth, 0, width, height);

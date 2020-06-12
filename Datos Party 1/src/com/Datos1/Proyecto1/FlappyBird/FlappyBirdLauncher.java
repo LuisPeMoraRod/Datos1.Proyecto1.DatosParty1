@@ -3,7 +3,6 @@ package com.Datos1.Proyecto1.FlappyBird;
 import com.Datos1.Proyecto1.GameBoard.BubbleSort;
 import com.Datos1.Proyecto1.GameBoard.CircularDoublyLinkedList;
 import com.Datos1.Proyecto1.GameBoard.LinkedList;
-import com.Datos1.Proyecto1.GameBoard.Player;
 import com.Datos1.Proyecto1.Results.*;
 import com.Datos1.Proyecto1.cover.Cover;
 import com.Datos1.Proyecto1.cover.CoverEvent;
@@ -37,7 +36,7 @@ public class FlappyBirdLauncher {
 		
 		Cover fbCover = new Cover(pathLogo, pathBackground, pathEnterPress, pathSpacePress, pathInstructions);
 		fbCover.createWindow();
-		Window window = new Window(players);
+		WindowFB window = new WindowFB(players);
 
 		do {
 
@@ -62,26 +61,26 @@ public class FlappyBirdLauncher {
 			
 				switch (players.getSize()) {
 				case 1:
-					System.out.println(Window.canvas1.gameOver);
-					if (Window.canvas1.gameOver) {
+					System.out.println(WindowFB.canvas1.gameOver);
+					if (WindowFB.canvas1.gameOver) {
 						gameOver = true;
 					}
 					break;
 				case 2:
-					System.out.println(Window.canvas1.gameOver+" "+Window.canvas2.gameOver);
-					if (Window.canvas1.gameOver && Window.canvas2.gameOver) {
+					System.out.println(WindowFB.canvas1.gameOver+" "+WindowFB.canvas2.gameOver);
+					if (WindowFB.canvas1.gameOver && WindowFB.canvas2.gameOver) {
 						gameOver = true;
 					}
 					break;
 				case 3:
-					System.out.println(Window.canvas1.gameOver+" "+Window.canvas2.gameOver+" "+Window.canvas3.gameOver);
-					if (Window.canvas1.gameOver && Window.canvas2.gameOver && Window.canvas3.gameOver) {
+					System.out.println(WindowFB.canvas1.gameOver+" "+WindowFB.canvas2.gameOver+" "+WindowFB.canvas3.gameOver);
+					if (WindowFB.canvas1.gameOver && WindowFB.canvas2.gameOver && WindowFB.canvas3.gameOver) {
 						gameOver = true;
 					}
 					break;
 				case 4:
-					System.out.println(Window.canvas1.gameOver+" "+Window.canvas2.gameOver+" "+Window.canvas3.gameOver+" "+Window.canvas4.gameOver);
-					if (Window.canvas1.gameOver && Window.canvas2.gameOver && Window.canvas3.gameOver && Window.canvas4.gameOver) {
+					System.out.println(WindowFB.canvas1.gameOver+" "+WindowFB.canvas2.gameOver+" "+WindowFB.canvas3.gameOver+" "+WindowFB.canvas4.gameOver);
+					if (WindowFB.canvas1.gameOver && WindowFB.canvas2.gameOver && WindowFB.canvas3.gameOver && WindowFB.canvas4.gameOver) {
 						gameOver = true;
 					}
 					break;

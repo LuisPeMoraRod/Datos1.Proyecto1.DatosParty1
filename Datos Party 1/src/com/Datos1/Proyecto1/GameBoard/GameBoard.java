@@ -11,15 +11,16 @@ import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.Observable;
+import java.util.Observer;
 import java.util.Random;
-import com.Datos1.Proyecto1.Results.*;
 
 import javax.imageio.ImageIO;
 import javax.swing.GroupLayout;
 import javax.swing.JPanel;
 import javax.swing.Timer;
 
-public class GameBoard extends JPanel implements ActionListener {
+public class GameBoard extends JPanel implements ActionListener{
 	/**
 	 * Public class. Represents the structure of the game's GUI
 	 * 
@@ -79,6 +80,11 @@ public class GameBoard extends JPanel implements ActionListener {
 	Timer timer;
 	private int transparencyPlayers;// sprites transparency (10 is completely solid)
 	private int transparencyStar;
+	
+	private miniGameButton minigame;
+	public static boolean newMiniGame;// flag to handle the appearance of new minigames
+	private boolean newEvent; //flag to handle the appearance of events
+	
 	public GameBoard(CircularDoublyLinkedList players) {
 		random = new Random();
 
@@ -114,10 +120,14 @@ public class GameBoard extends JPanel implements ActionListener {
 		blue = new BlueBox();
 
 		
+		
+		
 		transparencyStar = 10;
 		timerStar = 6;
 
 		imagesPos = new Point();
+		
+		minigame = new miniGameButton(this);
 
 		timer = new Timer(10, this);
 		timer.start();
@@ -703,6 +713,10 @@ public class GameBoard extends JPanel implements ActionListener {
 				e.printStackTrace();
 			}
 		}
+		
+		if (newMiniGame && !newEvent && !congrats && !drawCoins) {
+			paintMiniGameButton(g2d);
+		}
 
 		try {
 			setBoxes();
@@ -877,6 +891,7 @@ public class GameBoard extends JPanel implements ActionListener {
 							if (roundsCont == 1) {
 								newStar();
 							}
+							newMiniGame = true;
 						}
 						if (newStarFlag) {
 							newStar();
@@ -985,6 +1000,18 @@ public class GameBoard extends JPanel implements ActionListener {
 		upArrow.paintsArrow(g);
 		downArrow.paintsArrow(g);
 	}
+	
+	/**
+	 * Button that instantiates new minigame
+	 * @param g
+	 */
+	public void paintMiniGameButton(Graphics2D g) {
+		this.setLayout(null);
+		minigame.setLocation(new Point(Window.width * 9 / 12, Window.height / 4));
+		minigame.setBounds(minigame.getsLocation().x,minigame.getsLocation().y,171,143);
+		this.add(minigame);
+		minigame.paintsButton(g);
+		}
 
 	/**
 	 * Sprite disappears slowly when it reaches the black hole
@@ -1248,15 +1275,18 @@ public class GameBoard extends JPanel implements ActionListener {
 			player = playerNode.getPlayer();
 			imagesPos.y+=65;
 			g.setFont(new Font("Arial", 1, 18));
-			drawString(g,": "+player.getCoins()+" coins, "+player.getStar()+" stars", imagesPos.x+40, imagesPos.y+5);
+			g.drawString(": "+player.getCoins()+" coins, "+player.getStar()+" stars", imagesPos.x+40, imagesPos.y+25);
 			g.drawImage(player.getSprite(), imagesPos.x, imagesPos.y, this);
 			playerNode = playerNode.getNext();
 		}
 		
 	}
 	
-	public void drawString(Graphics g, String text, int x, int y) {
-		for (String line : text.split("\n"))
-			g.drawString(line, x, y += g.getFontMetrics().getHeight());
+	
+	public void newMiniGame() {
+		
 	}
+
+	
+	
 }
