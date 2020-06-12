@@ -17,14 +17,14 @@ public class TicTacToeLauncher implements Observer {
 	 * Main method that creates the window object
 	 * 
 	 * @author Luis Pedro Morales Rodriguez
-	 * @version 25/3/2020 {@link Window}
+	 * @version 25/3/2020 {@link WindowTTT}
 	 * @param args
 	 */
 
 	static boolean startPlaying = false;
 	private LinkedList players;
-	private EndObservable observable;
-	private Window tictactoe;
+	private EndObservableTTT observable;
+	private WindowTTT tictactoe;
 	private int gamesCont = 0;
 	private int games;
 	private Player[] newGame;
@@ -40,7 +40,7 @@ public class TicTacToeLauncher implements Observer {
 		this.players = circularToSimple(players);// BubbleSort logic requires a simple linked list
 		this.players = new BubbleSort(this.players).execute2(); // bubble sorts the list considering the amount of
 																// coins
-		observable = new EndObservable(false);
+		observable = new EndObservableTTT(false);
 		observable.addObserver(this);
 		setGamesAmount(this.players);
 
@@ -188,7 +188,7 @@ public class TicTacToeLauncher implements Observer {
 	 * @throws IOException
 	 */
 	public void game(Player[] game) throws IOException {
-		tictactoe = new Window(game[0], game[1], observable);
+		tictactoe = new WindowTTT(game[0], game[1], observable);
 		tictactoe.setVisible(true);
 		tictactoe.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 

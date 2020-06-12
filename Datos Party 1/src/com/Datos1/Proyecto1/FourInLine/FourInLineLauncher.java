@@ -26,7 +26,7 @@ public class FourInLineLauncher implements Observer {
 
 	static boolean startPlaying = false;
 	private LinkedList players;
-	private EndObservable observable;
+	private EndObservable4IL observable;
 	private Window4IL fourInLine;
 	private int gamesCont = 0;
 	private int games;
@@ -43,7 +43,7 @@ public class FourInLineLauncher implements Observer {
 		this.players = circularToSimple(players);// BubbleSort logic requires a simple linked list
 		this.players = new BubbleSort(this.players).execute2(); // bubble sorts the list considering the amount of
 																// coins
-		observable = new EndObservable(false);
+		observable = new EndObservable4IL(false);
 		observable.addObserver(this);
 		setGamesAmount(this.players);
 

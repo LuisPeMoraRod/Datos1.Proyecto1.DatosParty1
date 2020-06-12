@@ -8,7 +8,7 @@ import java.io.File;
 import java.io.IOException;
 import javax.imageio.ImageIO;
 
-public class Squares extends Component {
+public class SquaresTTT extends Component {
 	/**
 	 * Public class that creates the components that form the squares of the tic tac
 	 * toe game
@@ -31,13 +31,13 @@ public class Squares extends Component {
 	/**
 	 * Constructor method. Sets the image of the square. Adds mouse listener to the
 	 * object. It increases the index of the matrix where the new square will be
-	 * located {@link MouseClickedEvent} {@link Squares#changeImage()}
+	 * located {@link MouseClickedEventTTT} {@link SquaresTTT#changeImage()}
 	 */
-	public Squares() {
+	public SquaresTTT() {
 		hasChanged = false; isChanging = false;
 		row1 = row;
 		column1 = column;
-		this.addMouseListener(new MouseClickedEvent());
+		this.addMouseListener(new MouseClickedEventTTT());
 		changeTranparency();
 		path = "images/Bs.jpg";
 		changeImage();
@@ -61,13 +61,13 @@ public class Squares extends Component {
 		
 		this.addMouseListener(new MouseAdapter() {
 			public void mouseEntered(MouseEvent me) {
-				if (!GameBoard.gameEnded) {transparency=9;}
+				if (!GameBoardTTT.gameEnded) {transparency=9;}
 			}
 		});
 		
 		 this.addMouseListener(new MouseAdapter() { 
 	          public void mouseExited(MouseEvent me) { 
-	        	  if (!GameBoard.gameEnded) {transparency=7;}
+	        	  if (!GameBoardTTT.gameEnded) {transparency=7;}
 	          } 
 	        }); 
 		
@@ -118,8 +118,8 @@ public class Squares extends Component {
 	}
 
 	public void setTypeSquare() {
-		if (!GameBoard.gameEnded) {
-			boolean isPlayerTwo = MouseClickedEvent.isFirstPlayer;
+		if (!GameBoardTTT.gameEnded) {
+			boolean isPlayerTwo = MouseClickedEventTTT.isFirstPlayer;
 			if (!isPlayerTwo && !hasChanged && isChanging) {
 				hasChanged = true;
 				whichPlayer = 1;

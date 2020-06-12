@@ -3,7 +3,7 @@ package com.Datos1.Proyecto1.TicTacToe;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
-public class MouseClickedEvent extends MouseAdapter{
+public class MouseClickedEventTTT extends MouseAdapter{
 	/**
 	 * Public class that handles the events that happen when an object is clicked
 	 * @author Luis Pedro Morales Rodriguez
@@ -11,14 +11,14 @@ public class MouseClickedEvent extends MouseAdapter{
 	 * {@link MouseAdapter}
 	 */
 	static boolean isFirstPlayer;
-	public  MouseClickedEvent() {
+	public  MouseClickedEventTTT() {
 		isFirstPlayer = true;
 	}
 
 	@Override
 	public void mouseClicked(MouseEvent e) {
-		if (!GameBoard.gameEnded) {
-			GameBoard.cont++;
+		if (!GameBoardTTT.gameEnded) {
+			GameBoardTTT.cont++;
 			isFirstPlayer=!isFirstPlayer;
 			if (isFirstPlayer) {
 				System.out.println("Player one's turn");

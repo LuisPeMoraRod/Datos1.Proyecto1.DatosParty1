@@ -1,13 +1,13 @@
 package com.Datos1.Proyecto1.FourInLine;
 
-public class hideShow extends Thread {
+public class HideShow4IL extends Thread {
 	private int[][] line;
-	private EndObservable observable;
+	private EndObservable4IL observable;
 	private int cont;
 	private GameBoard4IL canvas;
-	private Circles [][] circlesArray;
+	private Circles4IL [][] circlesArray;
 
-	public hideShow(GameBoard4IL canvas, int[][] line, EndObservable observable, Circles[][] circlesArray) {
+	public HideShow4IL(GameBoard4IL canvas, int[][] line, EndObservable4IL observable, Circles4IL[][] circlesArray) {
 		this.line = line;
 		this.observable = observable;
 		this.canvas = canvas;

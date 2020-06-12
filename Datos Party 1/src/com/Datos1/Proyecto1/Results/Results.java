@@ -13,9 +13,8 @@ import javax.imageio.ImageIO;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
-import com.Datos1.Proyecto1.GameBoard.LinkedList;
-import com.Datos1.Proyecto1.GameBoard.Node;
-import com.Datos1.Proyecto1.GameBoard.Player;
+
+import com.Datos1.Proyecto1.GameBoard.*;
 
 abstract class Results extends JFrame {
 	/**
@@ -37,7 +36,6 @@ abstract class Results extends JFrame {
 			public void keyPressed(KeyEvent e) {
 				int id = e.getKeyCode();
 				if (id == KeyEvent.VK_SPACE) {
-					System.out.println("leave");
 					ciao();
 				}
 
@@ -114,6 +112,7 @@ abstract class Results extends JFrame {
 
 	public void ciao() {
 		this.dispose();
+		GameBoardLauncher.window.setVisible(true);
 	}
 
 }
