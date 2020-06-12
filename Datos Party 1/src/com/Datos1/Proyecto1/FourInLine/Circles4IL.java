@@ -14,9 +14,9 @@ import java.awt.geom.PathIterator;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 
-import com.Datos1.Proyecto1.TicTacToe.GameBoard;
+import com.Datos1.Proyecto1.TicTacToe.GameBoardTTT;
 
-public class Circles extends Component {
+public class Circles4IL extends Component {
 	/**
 	 * 
 	 */
@@ -28,7 +28,7 @@ public class Circles extends Component {
 	
 	public int player;
 	
-	public Circles(int i, int j) {
+	public Circles4IL(int i, int j) {
 		this.i = i;
 		this.j = j;
 		prepareColumn();

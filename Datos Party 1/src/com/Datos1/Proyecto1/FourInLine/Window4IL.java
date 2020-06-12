@@ -23,7 +23,7 @@ public class Window4IL extends JFrame {
 	 * @param player1 : String
 	 * @param player2 : String
 	 */
-	public Window4IL(Player player1, Player player2, EndObservable observable) {
+	public Window4IL(Player player1, Player player2, EndObservable4IL observable) {
 		createWindow();
 		canvas = new GameBoard4IL(player1, player2,observable);
 		add(canvas);

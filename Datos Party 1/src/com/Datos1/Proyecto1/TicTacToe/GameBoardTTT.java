@@ -22,7 +22,7 @@ import javax.swing.JPanel;
 import com.Datos1.Proyecto1.GameBoard.Player;
 
 
-public class GameBoard extends JPanel {
+public class GameBoardTTT extends JPanel {
 
 	/**
 	 * Public class that displays the canvas with all its needed components on the
@@ -34,15 +34,15 @@ public class GameBoard extends JPanel {
 	public static boolean gameEnded;
 	private JLabel infoLabel = new JLabel();
 	private JLabel turnLabel=new JLabel();
-	static Squares S1;
-	static Squares S2;
-	static Squares S3;
-	static Squares S4;
-	static Squares S5;
-	static Squares S6;
-	static Squares S7;
-	static Squares S8;
-	static Squares S9;
+	static SquaresTTT S1;
+	static SquaresTTT S2;
+	static SquaresTTT S3;
+	static SquaresTTT S4;
+	static SquaresTTT S5;
+	static SquaresTTT S6;
+	static SquaresTTT S7;
+	static SquaresTTT S8;
+	static SquaresTTT S9;
 
 	static int gameStatus[][]; // Array that controls the status of the game and is used to determine if
 	// a player has won or of the game ended in a draw
@@ -61,21 +61,21 @@ public class GameBoard extends JPanel {
 	 * @param player1 : String
 	 * @param player2 : String
 	 */
-	public GameBoard(Player player1, Player player2) {
+	public GameBoardTTT(Player player1, Player player2) {
 		this.player1 = player1;
 		this.player2 = player2;
 		this.name1 = player1.getName();
 		this.name2 = player2.getName();
 		gameEnded = false;
-		S1 = new Squares();
-		S2 = new Squares();
-		S3 = new Squares();
-		S4 = new Squares();
-		S5 = new Squares();
-		S6 = new Squares();
-		S7 = new Squares();
-		S8 = new Squares();
-		S9 = new Squares();
+		S1 = new SquaresTTT();
+		S2 = new SquaresTTT();
+		S3 = new SquaresTTT();
+		S4 = new SquaresTTT();
+		S5 = new SquaresTTT();
+		S6 = new SquaresTTT();
+		S7 = new SquaresTTT();
+		S8 = new SquaresTTT();
+		S9 = new SquaresTTT();
 		gameStatus = new int [3][3];
 		cont=0;
 		setPanel(S1, S2, S3, S4, S5, S6, S7, S8, S9);
@@ -95,8 +95,8 @@ public class GameBoard extends JPanel {
 	 * @param S8 : Squares
 	 * @param S9 : Squares
 	 */
-	public void setPanel(Squares S1, Squares S2, Squares S3, Squares S4, Squares S5, Squares S6, Squares S7, Squares S8,
-						 Squares S9) {
+	public void setPanel(SquaresTTT S1, SquaresTTT S2, SquaresTTT S3, SquaresTTT S4, SquaresTTT S5, SquaresTTT S6, SquaresTTT S7, SquaresTTT S8,
+						 SquaresTTT S9) {
 
 		GroupLayout layout = new GroupLayout(this);
 		setLayout(layout);
@@ -137,9 +137,9 @@ public class GameBoard extends JPanel {
 	/**
 	 * Overrided method that's in charge of painting components on the canvas
 	 *
-	 * @see GameBoard#update()
-	 * @see GameBoard#setPanel(Squares, Squares, Squares, Squares, Squares, Squares,
-	 *      Squares, Squares, Squares)
+	 * @see GameBoardTTT#update()
+	 * @see GameBoardTTT#setPanel(SquaresTTT, SquaresTTT, SquaresTTT, SquaresTTT, SquaresTTT, SquaresTTT,
+	 *      SquaresTTT, SquaresTTT, SquaresTTT)
 	 */
 	@Override
 	public void paintComponent(Graphics g) {
@@ -175,8 +175,8 @@ public class GameBoard extends JPanel {
 	/**
 	 * Public method that constantly updates the canvas of the game board
 	 *
-	 * @return void {@link Squares#setTypeSquare()}
-	 *         {@link GameBoard#setMatrix(Squares)}
+	 * @return void {@link SquaresTTT#setTypeSquare()}
+	 *         {@link GameBoardTTT#setMatrix(SquaresTTT)}
 	 */
 	public void update() {
 		S1.setTypeSquare();
@@ -209,7 +209,7 @@ public class GameBoard extends JPanel {
 	 *
 	 * @param square: Square type object
 	 */
-	public void setMatrix(Squares square) {
+	public void setMatrix(SquaresTTT square) {
 		int row, column;
 		row = square.row1;
 		column = square.column1;
@@ -325,7 +325,7 @@ public class GameBoard extends JPanel {
 		String text;
 		if (winnerName != null) {
 			setsWinnerCoins();// increments coins for the winner
-			GameBoard.gameEnded = true;// Game ended with a winner
+			GameBoardTTT.gameEnded = true;// Game ended with a winner
 			text="<html><body><font size=6><br>Winner: "+winnerName+"</font> </body></html>";
 			turnLabel.setText(text);
 		}
@@ -333,14 +333,14 @@ public class GameBoard extends JPanel {
 			//2 points for every player in case of draw
 			player1.incrementCoins(2); player1.incrementPoints(2);
 			player2.incrementCoins(2); player2.incrementPoints(2);
-			GameBoard.gameEnded = true;
+			GameBoardTTT.gameEnded = true;
 			winnerName = "draw";
 			text="<html><body><font size=6><br>Game ended: "+winnerName+"</font> </body></html>";
 			turnLabel.setText(text);
 		}
 
-		if (!GameBoard.gameEnded) {
-			if (MouseClickedEvent.isFirstPlayer) {
+		if (!GameBoardTTT.gameEnded) {
+			if (MouseClickedEventTTT.isFirstPlayer) {
 				text="<html><body><font size=6><br>It's "+name1+"'s turn</font> </body></html>";
 				turnLabel.setText(text);
 			}else {

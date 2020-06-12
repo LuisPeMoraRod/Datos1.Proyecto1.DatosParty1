@@ -1,12 +1,11 @@
-package com.Datos1.Proyecto1.FourInLine;
+package com.Datos1.Proyecto1.TicTacToe;
 
 import java.util.Observable;
 
 @SuppressWarnings("deprecation")
-public class EndObservable extends Observable{
-	
+public class EndObservableTTT extends Observable{
 	private boolean end;
-	public EndObservable (boolean end) {
+	public EndObservableTTT (boolean end) {
 		this.end = end;
 	}
 	
@@ -19,5 +18,4 @@ public class EndObservable extends Observable{
 		setChanged();
 		notifyObservers();
 	}
-
 }

@@ -215,16 +215,16 @@ public class GameBoardFB extends JPanel implements ActionListener {
 		g.setFont(new Font("Arial", 1, 25));
 		if (!gameOn) {
 			if (player.getId() == 1) {
-				g.drawString("Tap w to start", 160, 50);
+				g.drawString("Tap w to jump", 160, 50);
 			}
 			if (player.getId() == 2) {
-				g.drawString("Tap space bar to start", 100, 50);
+				g.drawString("Tap space bar to jump", 100, 50);
 			}
 			if (player.getId() == 3) {
-				g.drawString("Tap p to start", 160, 50);
+				g.drawString("Tap p to jump", 160, 50);
 			}
 			if (player.getId() == 4) {
-				g.drawString("Tap up key to start", 120, 50);
+				g.drawString("Tap up key to jump", 120, 50);
 			}
 
 		} else {

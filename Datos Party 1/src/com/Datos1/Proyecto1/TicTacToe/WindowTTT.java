@@ -6,7 +6,7 @@ import com.Datos1.Proyecto1.GameBoard.Player;
 
 import java.io.IOException;
 
-public class Window extends JFrame{
+public class WindowTTT extends JFrame{
 	/**
 	 * @author Luis Pedro Morales Rodriguez
 	 * @version 25/3/2020
@@ -16,15 +16,15 @@ public class Window extends JFrame{
 	
 	public Player player1,player2;
 	private final int width=850, length=570;
-	GameBoard board;
-	GameThread thread;
+	GameBoardTTT board;
+	GameThreadTTT thread;
 	
 	
-	public Window (Player player1, Player player2, EndObservable observable) throws IOException {
+	public WindowTTT (Player player1, Player player2, EndObservableTTT observable) throws IOException {
 		this.player1=player1;
 		this.player2=player2;
 		createWindow(player1,player2);
-		thread = new GameThread(board,observable);
+		thread = new GameThreadTTT(board,observable);
 		thread.start();
 		
 	}
@@ -34,7 +34,7 @@ public class Window extends JFrame{
 		setSize(width,length);
 		setLocationRelativeTo(null);
 		setResizable(false);
-		board=new GameBoard(player1, player2);
+		board=new GameBoardTTT(player1, player2);
 		add(board);
 		
 	}

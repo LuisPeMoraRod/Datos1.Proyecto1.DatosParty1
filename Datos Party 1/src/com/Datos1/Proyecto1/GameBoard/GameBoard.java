@@ -483,6 +483,7 @@ public class GameBoard extends JPanel implements ActionListener{
 
 		}
 		
+		//Congratulations for gaining a star message
 		if (congrats) {
 			imagesPos.x = Window.width * 9 / 12;
 			imagesPos.y = Window.height / 4;
@@ -495,7 +496,7 @@ public class GameBoard extends JPanel implements ActionListener{
 				contCongrats++;
 			}
 			
-			
+		//not enough coins message
 		}else if (sorry) {
 			imagesPos.x = Window.width * 5 / 12;
 			imagesPos.y = Window.height / 4;
@@ -1007,7 +1008,7 @@ public class GameBoard extends JPanel implements ActionListener{
 	 */
 	public void paintMiniGameButton(Graphics2D g) {
 		this.setLayout(null);
-		minigame.setLocation(new Point(Window.width * 9 / 12, Window.height / 4));
+		minigame.setLocation(new Point(Window.width * 9 / 12+40, Window.height / 4));
 		minigame.setBounds(minigame.getsLocation().x,minigame.getsLocation().y,171,143);
 		this.add(minigame);
 		minigame.paintsButton(g);

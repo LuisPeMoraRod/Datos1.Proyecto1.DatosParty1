@@ -11,6 +11,7 @@ import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.Random;
 
 import javax.imageio.ImageIO;
 import javax.swing.JPanel;
@@ -31,6 +32,8 @@ public class miniGameButton extends Component {
 	private String path;
 	private JPanel canvas;
 	private int width, height;
+	private int miniGameId; //0=Flappy Bird, 1=Tic Tac Toe, 2= Four in Line
+	private Random random;
 	
 
 	public miniGameButton(JPanel canvas) {
@@ -39,6 +42,9 @@ public class miniGameButton extends Component {
 		this.canvas = canvas;
 		setTransparency();
 		clickOnDice();
+		random = new Random();
+		
+		
 	}
 	public void setLocation(Point location) {
 		this.location = location;
@@ -118,8 +124,24 @@ public class miniGameButton extends Component {
 		GameBoardLauncher.window.setVisible(false);
 		GameBoard.newMiniGame = false;
 		canvas.remove(this);
-		Main.minigamesObservable.setFB(true);
+		miniGameId = random.nextInt(3);
+		switch (miniGameId) {
+		case 0:
+			Main.minigamesObservable.set4IL(true);//sets observable flag to start four in line
+			break;
+		case 1:
+			Main.minigamesObservable.setTTT(true);//sets observable flag to start tic tac toe
+			break;
+		case 2:
+			Main.minigamesObservable.setFB(true);//sets observable flag to star flappy bird
+			break;
+		default:
+			break;
+		}
+		
 		
 	}
+	
+	
 
 }

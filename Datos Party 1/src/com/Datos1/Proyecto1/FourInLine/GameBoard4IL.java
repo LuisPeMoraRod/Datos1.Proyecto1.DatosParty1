@@ -20,7 +20,7 @@ public class GameBoard4IL extends JPanel implements ActionListener {
 	private static final long serialVersionUID = 1L;
 	public String name1, name2, currentPlayer;
 	private Player player1, player2;
-	public static Circles[][] circlesArray;
+	public static Circles4IL[][] circlesArray;
 	private JLabel playersLabel = new JLabel();
 
 	private JLabel turnLabel = new JLabel();
@@ -36,12 +36,12 @@ public class GameBoard4IL extends JPanel implements ActionListener {
 	public Thread thread;
 	public Timer timer;
 
-	private EndObservable observable;
+	private EndObservable4IL observable;
 
-	public GameBoard4IL(Player player1, Player player2, EndObservable observable) {
+	public GameBoard4IL(Player player1, Player player2, EndObservable4IL observable) {
 		gameEnded = false;
 		playerOne = true;
-		circlesArray = new Circles[7][7];
+		circlesArray = new Circles4IL[7][7];
 		line4 = new int[4][2];
 		this.player1 = player1;
 		this.player2 = player2;
@@ -52,7 +52,7 @@ public class GameBoard4IL extends JPanel implements ActionListener {
 		instantiateCircles(circlesArray);
 		timer = new Timer(300, this);
 		this.observable = observable;
-		thread = new hideShow(this,line4, observable,circlesArray);
+		thread = new HideShow4IL(this,line4, observable,circlesArray);
 		thread.start();
 	}
 
@@ -61,7 +61,7 @@ public class GameBoard4IL extends JPanel implements ActionListener {
 		super.paintComponent(g);
 		Graphics2D g2d = (Graphics2D) g;
 		// drawCircles(circlesArray,g2d,Color.white);
-		if (Circles.fallingToken) {
+		if (Circles4IL.fallingToken) {
 			timer.start();
 		} else {
 			setCircles(circlesArray);
@@ -69,16 +69,16 @@ public class GameBoard4IL extends JPanel implements ActionListener {
 
 	}
 
-	private void instantiateCircles(Circles[][] circles) {
+	private void instantiateCircles(Circles4IL[][] circles) {
 		for (int i = 0; i < circles.length; i++) {
 			for (int j = 0; j < circles[i].length; j++) {
-				circles[i][j] = new Circles(i, j);
+				circles[i][j] = new Circles4IL(i, j);
 			}
 		}
 
 	}
 
-	private void printArray(Circles[][] c) {
+	private void printArray(Circles4IL[][] c) {
 		System.out.println("  ");
 		for (int i = 0; i < c.length; i++) {
 			int element = c[i][0].player;
@@ -96,7 +96,7 @@ public class GameBoard4IL extends JPanel implements ActionListener {
 
 	}
 
-	public void setCircles(Circles[][] c) {
+	public void setCircles(Circles4IL[][] c) {
 		GroupLayout layout = new GroupLayout(this);
 		setLayout(layout);
 		if (playerOne) {
@@ -181,7 +181,7 @@ public class GameBoard4IL extends JPanel implements ActionListener {
 	 * 
 	 * @param c : Circles
 	 */
-	public void setToken(Circles c) {
+	public void setToken(Circles4IL c) {
 		if (playerOne) {
 			c.player = 1;
 		} else {
@@ -197,7 +197,7 @@ public class GameBoard4IL extends JPanel implements ActionListener {
 	 * @param c : Circles
 	 * @return boolean
 	 */
-	public boolean isToken(Circles c) {
+	public boolean isToken(Circles4IL c) {
 		if (c.player > 0 && c.i == 1) {
 			return true;
 		} else if (c.player > 0 && c.i > 1) {
@@ -213,7 +213,7 @@ public class GameBoard4IL extends JPanel implements ActionListener {
 		}
 	}
 
-	public boolean checksWin(Circles[][] c) {
+	public boolean checksWin(Circles4IL[][] c) {
 		int cont = 0;
 		int player = 0;
 		for (int i = 0; i < c.length; i++) {
@@ -272,7 +272,7 @@ public class GameBoard4IL extends JPanel implements ActionListener {
 		return false;
 	}
 
-	public boolean checksDiagUp1(int i0, int j0, int i, int j, int cont, int player, Circles[][] c) {
+	public boolean checksDiagUp1(int i0, int j0, int i, int j, int cont, int player, Circles4IL[][] c) {
 		if (i0 > 6) {
 			return false;
 		} else if (i < 1) {
@@ -304,7 +304,7 @@ public class GameBoard4IL extends JPanel implements ActionListener {
 
 	}
 
-	public boolean checksDiagUp2(int i0, int j0, int i, int j, int cont, int player, Circles[][] c) {
+	public boolean checksDiagUp2(int i0, int j0, int i, int j, int cont, int player, Circles4IL[][] c) {
 		if (j0 > 3) {
 			return false;
 		} else if (j > 6) {
@@ -336,7 +336,7 @@ public class GameBoard4IL extends JPanel implements ActionListener {
 
 	}
 
-	public boolean checksDiagDown1(int i0, int j0, int i, int j, int cont, int player, Circles[][] c) {
+	public boolean checksDiagDown1(int i0, int j0, int i, int j, int cont, int player, Circles4IL[][] c) {
 		if (i0 > 6) {
 			return false;
 		} else if (i < 1) {
@@ -368,7 +368,7 @@ public class GameBoard4IL extends JPanel implements ActionListener {
 
 	}
 
-	public boolean checksDiagDown2(int i0, int j0, int i, int j, int cont, int player, Circles[][] c) {
+	public boolean checksDiagDown2(int i0, int j0, int i, int j, int cont, int player, Circles4IL[][] c) {
 		if (j0 < 3) {
 			return false;
 		} else if (j < 0) {
@@ -400,7 +400,7 @@ public class GameBoard4IL extends JPanel implements ActionListener {
 
 	}
 
-	public boolean isDraw(Circles[][] c) {
+	public boolean isDraw(Circles4IL[][] c) {
 		for (int i = 1; i < c.length; i++) {
 			for (int j = 0; j < c.length; j++) {
 				if (c[i][j].player == 0) {
@@ -420,7 +420,7 @@ public class GameBoard4IL extends JPanel implements ActionListener {
 		// System.out.println(circlesArray[rowToken][columnInPlay].player);
 		if (stops) {
 			rowToken = 0;
-			Circles.fallingToken = false;
+			Circles4IL.fallingToken = false;
 			timer.stop();
 			printArray(circlesArray);
 			gameEnded = checksWin(circlesArray);
