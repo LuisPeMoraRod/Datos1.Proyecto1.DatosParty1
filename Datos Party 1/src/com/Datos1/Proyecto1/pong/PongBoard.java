@@ -1,5 +1,6 @@
 package com.Datos1.Proyecto1.pong;
 
+import com.Datos1.Proyecto1.GameBoard.CircularDoublyLinkedList;
 import com.Datos1.Proyecto1.snake.SnakeWindow;
 
 import javax.imageio.ImageIO;
@@ -12,7 +13,11 @@ import java.io.IOException;
 
 public class PongBoard extends JPanel {
 
-    Ball ball = new Ball(490,290);
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	Ball ball = new Ball(490,290);
     PongPallets pallet1 = new PongPallets(20,275);
     PongPallets pallet2 = new PongPallets(960,275);
 
@@ -35,15 +40,17 @@ public class PongBoard extends JPanel {
     protected int round;
 
     protected boolean endRound;
+    
+    protected int winner1, winner2;
+    
+    CircularDoublyLinkedList players;
 
-    public PongBoard() throws IOException {
+    public PongBoard(CircularDoublyLinkedList players) throws IOException {
 
         pongScore = new PongScore();
         scoreP1 = 0;
         scoreP2 = 0;
-
-        numPlayers = 4;
-
+        
         initialTimer = 0;
 
         endTimer = 0;
@@ -51,6 +58,10 @@ public class PongBoard extends JPanel {
         endRound = false;
 
         round = 1;
+        
+        this.players = players;
+        
+        this.numPlayers = players.getSize();
 
     }
 
@@ -80,23 +91,16 @@ public class PongBoard extends JPanel {
         else{
 
             if(numPlayers==2){
-                setRound(g2);
-
-                if(endRound){
-                    if(endTimer<=1000){
-                        endTimer++;
-                    }
-                    else{
-                        closeGame();
-                    }
-
-                }
-
+                twoPlayersLogic(g2);
+                
             }
 
-            else if(numPlayers==3 || numPlayers ==4){
-                threeRoundLogic(g2);
+            else if(numPlayers==3){
+                threePlayersLogic(g2);
 
+            }
+            else {
+            	fourPlayersLogic(g2);
             }
 
 
@@ -172,24 +176,259 @@ public class PongBoard extends JPanel {
     public void closeGame(){
         PongLauncher.pongWindow.dispose();
     }
+    
+    public void twoPlayersLogic(Graphics2D g2) {
+    	if(!endRound)
+    		{
+    		setRound(g2);
+    		g2.setFont(new Font("Lao Sangam LM", Font.BOLD,20));
+        	g2.drawString(players.getNode(0).getPlayer().getName(), 10,50);
+        	g2.drawString(players.getNode(1).getPlayer().getName(), 510,50);
+        	
+    		}
+    	else{
+        	players.getNode(0).getPlayer().setPoints(scoreP1);
+        	players.getNode(1).getPlayer().setPoints(scoreP2);
+        	ball = new Ball(490,290);
+            pallet1 = new PongPallets(20,275);
+            pallet2 = new PongPallets(960,275);
+            pongScore.resetScore();
+        	
+        	if(endTimer<=1000){
+                endTimer++;
+                giveFinalResults(g2);
+            }
+        	else {
+        		
+        		closeGame();
+        	}
 
-    public void threeRoundLogic(Graphics2D g2){
+        }
+    }
+    
+
+    public void threePlayersLogic(Graphics2D g2){
         if(round<=3){
             setRound(g2);
-
+            
+            g2.setFont(new Font("Lao Sangam LM", Font.BOLD,20));
+            
+            switch(round) {
+            case 1:
+            	g2.drawString(players.getNode(0).getPlayer().getName(), 10,50);
+            	g2.drawString(players.getNode(1).getPlayer().getName(), 510,50);
+            	break;
+            case 2:
+            	g2.drawString(players.getNode(0).getPlayer().getName(), 10,50);
+            	g2.drawString(players.getNode(2).getPlayer().getName(), 510,50);
+            	break;
+            case 3:
+            	g2.drawString(players.getNode(1).getPlayer().getName(), 10,50);
+            	g2.drawString(players.getNode(2).getPlayer().getName(), 510,50);
+            	break;
+            }
             if(endRound){
                 if(endTimer<=1000){
                     endTimer++;
                 }
-                else{
+                else {
+                	roundScores3P();
                     reset();
                 }
             }
         }
         else{
-            closeGame();
+        	if(endTimer<=1000){
+                endTimer++;
+                giveFinalResults(g2);
+            }
+        	else {
+        		closeGame();
+        	}
+            
         }
     }
-
+    
+    public void fourPlayersLogic(Graphics2D g2){
+        if(round<=3){
+            setRound(g2);
+            
+            g2.setFont(new Font("Lao Sangam LM", Font.BOLD,20));
+            
+            switch(round) {
+            case 1:
+            	g2.drawString(players.getNode(0).getPlayer().getName(), 10,50);
+            	g2.drawString(players.getNode(1).getPlayer().getName(), 510,50);
+            	break;
+            case 2:
+            	g2.drawString(players.getNode(2).getPlayer().getName(), 10,50);
+            	g2.drawString(players.getNode(3).getPlayer().getName(), 510,50);
+            	break;
+            case 3:
+            	if(winner1==1) {
+            		g2.drawString(players.getNode(0).getPlayer().getName(), 10,50);
+            	}
+            	else {
+            		g2.drawString(players.getNode(1).getPlayer().getName(), 10,50);
+            	}
+            	
+            	if(winner2==3) {
+            		g2.drawString(players.getNode(2).getPlayer().getName(), 510,50);
+            	}
+            	else {
+            		g2.drawString(players.getNode(3).getPlayer().getName(), 510,50);
+            	}
+            	
+            	break;
+            }
+            if(endRound){
+                if(endTimer<=1000){
+                    endTimer++;
+                }
+                else {
+                	roundScores4P();
+                	setWinners();
+                    reset();
+                }
+            }
+        }
+        else{
+        	if(endTimer<=1000){
+                endTimer++;
+                giveFinalResults(g2);
+            }
+        	else {
+        		closeGame();
+        	}
+            
+        }
+    }
+    
+    public void setScoreP1(int score) {
+    	int actualPoints = players.getNode(0).getPlayer().getPoints();
+    	players.getNode(0).getPlayer().setPoints(actualPoints+score);
+    }
+    
+    public void setScoreP2(int score) {
+    	int actualPoints = players.getNode(1).getPlayer().getPoints();
+    	players.getNode(1).getPlayer().setPoints(actualPoints+score);
+    }
+    
+    public void setScoreP3(int score) {
+    	int actualPoints = players.getNode(2).getPlayer().getPoints();
+    	players.getNode(2).getPlayer().setPoints(actualPoints+score);
+    }
+    
+    public void setScoreP4(int score) {
+    	int actualPoints = players.getNode(3).getPlayer().getPoints();
+    	players.getNode(3).getPlayer().setPoints(actualPoints+score);
+    }
+    
+    public void giveFinalResults(Graphics2D g2) {
+    	g2.setColor(new Color(173, 20, 87));
+    	g2.setFont(new Font("Lao Sangam LM", Font.BOLD,50));
+        g2.drawString("Final score", SnakeWindow.width/2-150, 200);
+        
+        g2.setColor(Color.WHITE);
+        g2.setFont(new Font("Lao Sangam LM", Font.BOLD,25));
+        
+        switch(numPlayers) {
+        
+        case 2:
+        	 g2.drawString(players.getNode(0).getPlayer().getName() +": " + players.getNode(0).getPlayer().getPoints(), SnakeWindow.width/2-75, 300);
+        	 g2.drawString(players.getNode(1).getPlayer().getName() +": " + players.getNode(1).getPlayer().getPoints(), SnakeWindow.width/2-75, 350);
+        	break;
+        case 3:
+        	g2.drawString(players.getNode(0).getPlayer().getName() +": " + players.getNode(0).getPlayer().getPoints(), SnakeWindow.width/2-75, 300);
+        	g2.drawString(players.getNode(1).getPlayer().getName() +": " + players.getNode(1).getPlayer().getPoints(), SnakeWindow.width/2-75, 350);
+        	g2.drawString(players.getNode(2).getPlayer().getName() +": " + players.getNode(2).getPlayer().getPoints(), SnakeWindow.width/2-75, 400);
+    
+        	break;
+        case 4:
+        	g2.drawString(players.getNode(0).getPlayer().getName() +": " + players.getNode(0).getPlayer().getPoints(), SnakeWindow.width/2-75, 300);
+       	    g2.drawString(players.getNode(1).getPlayer().getName() +": " + players.getNode(1).getPlayer().getPoints(), SnakeWindow.width/2-75, 350);
+       	    g2.drawString(players.getNode(2).getPlayer().getName() +": " + players.getNode(2).getPlayer().getPoints(), SnakeWindow.width/2-75, 400);
+   	        g2.drawString(players.getNode(3).getPlayer().getName() +": " + players.getNode(3).getPlayer().getPoints(), SnakeWindow.width/2-75, 450);
+        	break;
+        	
+        }  
+    }
+    
+    public void roundScores3P() {
+    	
+    	switch(round) {
+    	
+    	case 1:
+    		setScoreP1(scoreP1);
+    		setScoreP2(scoreP2);
+    		break;
+    	
+    	case 2:
+    		setScoreP1(scoreP1);
+    		setScoreP3(scoreP2);
+    		break;
+    		
+    	case 3:
+    		setScoreP2(scoreP1);
+    		setScoreP3(scoreP2);
+    		break;
+    	}
+    
+    }
+    
+    public void roundScores4P() {
+    	
+    	switch(round) {
+    	
+    	case 1:
+    		setScoreP1(scoreP1);
+    		setScoreP2(scoreP2);
+    		break;
+    	
+    	case 2:
+    		setScoreP3(scoreP1);
+    		setScoreP4(scoreP2);
+    		break;
+    		
+    	case 3:
+    		
+    		if(winner1==1) {
+    			setScoreP1(scoreP1);
+    		}
+    		else {
+    			setScoreP2(scoreP1);
+    		}
+    		if(winner2==3) {
+    			setScoreP3(scoreP2);
+    		}
+    		else {
+    			setScoreP4(scoreP2);
+    		}
+    		
+    		break;
+    	}
+    
+    }
+    
+    public void setWinners() {
+    	switch(round) {
+    	case 1:
+    		if(scoreP1>scoreP2) {
+    			winner1 = 1;
+    		}
+    		else {
+    			winner1 = 2;
+    		}
+    		break;
+    	case 2:
+    		if(scoreP1>scoreP2) {
+    			winner2 = 3;
+    		}
+    		else {
+    			winner2 = 3;
+    		}
+    		break;
+    	}
+    }
 
 }
