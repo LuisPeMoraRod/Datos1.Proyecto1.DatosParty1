@@ -47,7 +47,7 @@ public class SimonBoard extends JPanel implements ActionListener, MouseListener 
 
     public Random random;
 
-    protected int numPlayers, playingPlayer;
+    protected int numPlayers, playingPlayer=1;
 
     protected int coolDown = 0;
     
@@ -430,6 +430,7 @@ public class SimonBoard extends JPanel implements ActionListener, MouseListener 
     }
 
     public void endgame(){
+        timer.stop();
         SimonLauncher.simonWindow.dispose();
 
     }

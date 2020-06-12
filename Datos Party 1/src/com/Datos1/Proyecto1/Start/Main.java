@@ -5,6 +5,9 @@ import com.Datos1.Proyecto1.GameBoard.*;
 import com.Datos1.Proyecto1.FlappyBird.*;
 import com.Datos1.Proyecto1.FourInLine.*;
 import com.Datos1.Proyecto1.TicTacToe.*;
+import com.Datos1.Proyecto1.pong.PongLauncher;
+import com.Datos1.Proyecto1.simon.SimonLauncher;
+import com.Datos1.Proyecto1.snake.SnakeLauncher;
 
 import java.io.IOException;
 import java.util.Observable;
@@ -21,6 +24,9 @@ public class Main implements Observer {
 	public static boolean flappybird;
 	public static boolean ticTacToe;
 	public static boolean fourInLine;
+	public static boolean simon;
+	public static boolean snake;
+	public static boolean pong;
 	
 	public Main() {
 		minigamesObservable = new MinigamesObservable();
@@ -28,6 +34,10 @@ public class Main implements Observer {
 		flappybird = false;
 		ticTacToe = false;
 		fourInLine = false;
+		simon = false;
+		snake = false;
+		pong = false;
+
 		}
 	
 
@@ -45,6 +55,15 @@ public class Main implements Observer {
 			}else if (fourInLine) {
 				main.execute4IL();
 				fourInLine = false;
+			}else if(simon){
+				main.excecuteSimon();
+				simon = false;
+			}else if(pong){
+				main.excecutePong();
+				pong = false;
+			}else if(snake){
+				main.excecuteSnake();
+				snake = false;
 			}
 		}
 		
@@ -144,6 +163,21 @@ public class Main implements Observer {
 		}
 	}
 
+	public void excecuteSimon() throws IOException {
+		SimonLauncher simonLauncher = new SimonLauncher(players);
+		simonLauncher.launch();
+	}
+
+	public void excecuteSnake() throws IOException {
+		SnakeLauncher snakeLauncher = new SnakeLauncher(players);
+		snakeLauncher.launch();
+	}
+
+	public void excecutePong() throws IOException {
+		PongLauncher pongLauncher = new PongLauncher(players);
+		pongLauncher.launch();
+	}
+
 	@Override
 	public void update(Observable o, Object arg) {
 		// TODO Auto-generated method stub
@@ -156,6 +190,15 @@ public class Main implements Observer {
 		}else if (minigamesObservable.get4IL()) {
 			fourInLine = true;
 			minigamesObservable.set4IL(false);
+		}else if(minigamesObservable.getSimon()){
+			simon = true;
+			minigamesObservable.setSimon(false);
+		}else if(minigamesObservable.getSnake()){
+			snake = true;
+			minigamesObservable.setSnake(false);
+		}else if(minigamesObservable.getPong()){
+			pong = true;
+			minigamesObservable.setPong(false);
 		}
 	}
 }

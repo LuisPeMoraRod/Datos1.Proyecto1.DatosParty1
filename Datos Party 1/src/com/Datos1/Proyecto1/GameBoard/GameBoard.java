@@ -83,6 +83,7 @@ public class GameBoard extends JPanel implements ActionListener{
 	
 	private miniGameButton minigame;
 	public static boolean newMiniGame;// flag to handle the appearance of new minigames
+
 	private boolean newEvent; //flag to handle the appearance of events
 	
 	public GameBoard(CircularDoublyLinkedList players) {
@@ -118,8 +119,6 @@ public class GameBoard extends JPanel implements ActionListener{
 		red = new RedBox();
 		yellow = new YellowBox();
 		blue = new BlueBox();
-
-		
 		
 		
 		transparencyStar = 10;
@@ -1282,12 +1281,5 @@ public class GameBoard extends JPanel implements ActionListener{
 		}
 		
 	}
-	
-	
-	public void newMiniGame() {
-		
-	}
-
-	
 	
 }

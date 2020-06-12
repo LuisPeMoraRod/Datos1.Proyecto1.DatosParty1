@@ -4,31 +4,39 @@ import com.Datos1.Proyecto1.cover.Cover;
 import com.Datos1.Proyecto1.cover.CoverEvent;
 
 import java.io.IOException;
+import java.util.Observable;
+import java.util.Observer;
 
 import com.Datos1.Proyecto1.GameBoard.*;
 
-public class SimonLauncher {
+public class SimonLauncher implements Observer {
 
-    public static SimonWindow simonWindow;
+    protected static SimonWindow simonWindow;
     static boolean startPlaying = false;
+    protected static Cover simonCover;
+    protected String pathLogo;
+    protected String pathEnterPress;
+    protected String pathSpacePress;
+    protected String pathInstructions;
+    protected String pathBackground;
+    CircularDoublyLinkedList players;
 
-    public static void main(String[] args) throws IOException {
+    public SimonLauncher(CircularDoublyLinkedList players) throws IOException {
 
-        String pathLogo = "images/simonLogo.png";
-        String pathEnterPress = "images/enterPress.png";
-        String pathSpacePress = "images/spacePress.png";
-        String pathInstructions = "images/simonInstructions.png";
-        String pathBackground = "images/SimonBackground.png";
+        this.pathLogo = "images/simonLogo.png";
+        this.pathEnterPress = "images/enterPress.png";
+        this.pathSpacePress = "images/spacePress.png";
+        this.pathInstructions = "images/simonInstructions.png";
+        this.pathBackground = "images/SimonBackground.png";
 
-        Cover simonCover = new Cover(pathLogo,pathBackground,pathEnterPress,pathSpacePress,pathInstructions);
+        this.simonCover = new Cover(pathLogo,pathBackground,pathEnterPress,pathSpacePress,pathInstructions);
         simonCover.createWindow();
         
-        CircularDoublyLinkedList players = new CircularDoublyLinkedList();
-        players.insertHead(new Player("Moni",1));
-        players.insertEnd(new Player("Luis",2));
-       // players.insertEnd(new Player("Mariana",3));
-      //  players.insertEnd(new Player("Selena",4));
-        
+        this.players = players;
+
+    }
+
+    public void launch() throws IOException {
 
         while(!startPlaying){
 
@@ -47,5 +55,10 @@ public class SimonLauncher {
             simonWindow.setVisible(true);
 
         }
+    }
+
+    @Override
+    public void update(Observable o, Object arg) {
+
     }
 }

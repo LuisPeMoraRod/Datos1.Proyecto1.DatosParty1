@@ -1,25 +1,30 @@
 package com.Datos1.Proyecto1.pong;
 
 import java.io.IOException;
+import java.util.Observable;
+import java.util.Observer;
 
 import com.Datos1.Proyecto1.GameBoard.CircularDoublyLinkedList;
 import com.Datos1.Proyecto1.GameBoard.Player;
 
-public class PongLauncher {
+public class PongLauncher implements Observer {
 
     protected static PongWindow pongWindow;
+    protected CircularDoublyLinkedList players;
 
-    public static void main(String[] args) throws IOException, InterruptedException {
-    	
-    	CircularDoublyLinkedList players = new CircularDoublyLinkedList();
-    	players.insertHead(new Player("Luis", 1));
-    	players.insertEnd(new Player("Moni", 2));
-    	players.insertEnd(new Player("Gabo", 3));
-    	players.insertEnd(new Player("Mariana", 4));
+    public PongLauncher(CircularDoublyLinkedList players){
+        this.players = players;
+    }
+
+    public void launch() throws IOException{
     	
         pongWindow = new PongWindow(players);
         pongWindow.setVisible(true);
 
     }
 
+    @Override
+    public void update(Observable o, Object arg) {
+
+    }
 }

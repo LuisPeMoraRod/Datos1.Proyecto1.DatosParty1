@@ -8,6 +8,9 @@ public class MinigamesObservable extends Observable{
 	private boolean flappyBird = false;
 	private boolean ticTacToe = false;
 	private boolean fourInLine = false;
+	private boolean simon = false;
+	private boolean snake = false;
+	private boolean pong = false;
 	
 	public boolean getFB() {
 		return this.flappyBird;
@@ -35,6 +38,36 @@ public class MinigamesObservable extends Observable{
 	
 	public void set4IL(boolean fourInLine) {
 		this.fourInLine = fourInLine;
+		setChanged();
+		notifyObservers();
+	}
+
+	public boolean getSimon(){
+		return this.simon;
+	}
+
+	public void setSimon(boolean simon){
+		this.simon = simon;
+		setChanged();
+		notifyObservers();
+	}
+
+	public boolean getSnake(){
+		return this.snake;
+	}
+
+	public void setSnake(boolean snake){
+		this.snake = snake;
+		setChanged();
+		notifyObservers();
+	}
+
+	public boolean getPong(){
+		return this.pong;
+	}
+
+	public void setPong(boolean pong){
+		this.pong = pong;
 		setChanged();
 		notifyObservers();
 	}

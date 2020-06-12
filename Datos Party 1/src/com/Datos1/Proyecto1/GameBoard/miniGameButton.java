@@ -124,24 +124,35 @@ public class miniGameButton extends Component {
 		GameBoardLauncher.window.setVisible(false);
 		GameBoard.newMiniGame = false;
 		canvas.remove(this);
-		miniGameId = random.nextInt(3);
+		miniGameId = random.nextInt(6);
 		switch (miniGameId) {
-		case 0:
-			Main.minigamesObservable.set4IL(true);//sets observable flag to start four in line
-			break;
-		case 1:
-			Main.minigamesObservable.setTTT(true);//sets observable flag to start tic tac toe
-			break;
-		case 2:
-			Main.minigamesObservable.setFB(true);//sets observable flag to star flappy bird
-			break;
-		default:
-			break;
+
+			case 0:
+				Main.minigamesObservable.set4IL(true);//sets observable flag to start four in line
+				break;
+
+			case 1:
+				Main.minigamesObservable.setTTT(true);//sets observable flag to start tic tac toe
+				break;
+
+			case 2:
+				Main.minigamesObservable.setFB(true);//sets observable flag to star flappy bird
+				break;
+
+			case 3:
+				Main.minigamesObservable.setSimon(true);//sets observable flag to start simon
+				break;
+			case 4:
+				Main.minigamesObservable.setPong(true);//sets observable flag to start pong
+				break;
+			case 5:
+				Main.minigamesObservable.setSnake(true);//sets observable flag to start snake
+				break;
+			default:
+				break;
+
 		}
-		
-		
+
 	}
-	
-	
 
 }
