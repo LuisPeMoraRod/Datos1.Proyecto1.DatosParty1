@@ -5,6 +5,8 @@ import com.Datos1.Proyecto1.cover.CoverEvent;
 
 import java.io.IOException;
 
+import com.Datos1.Proyecto1.GameBoard.*;
+
 public class SimonLauncher {
 
     public static SimonWindow simonWindow;
@@ -20,6 +22,13 @@ public class SimonLauncher {
 
         Cover simonCover = new Cover(pathLogo,pathBackground,pathEnterPress,pathSpacePress,pathInstructions);
         simonCover.createWindow();
+        
+        CircularDoublyLinkedList players = new CircularDoublyLinkedList();
+        players.insertHead(new Player("Moni",1));
+        players.insertEnd(new Player("Luis",2));
+       // players.insertEnd(new Player("Mariana",3));
+      //  players.insertEnd(new Player("Selena",4));
+        
 
         while(!startPlaying){
 
@@ -34,7 +43,7 @@ public class SimonLauncher {
 
             simonCover.getWindow().setVisible(false);
             simonCover.getWindow().dispose();
-            simonWindow = new SimonWindow(3);
+            simonWindow = new SimonWindow(players);
             simonWindow.setVisible(true);
 
         }
