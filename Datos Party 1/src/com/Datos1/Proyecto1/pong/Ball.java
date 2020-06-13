@@ -3,6 +3,14 @@ package com.Datos1.Proyecto1.pong;
 import java.awt.*;
 import java.awt.geom.Rectangle2D;
 
+/**
+ * Ball creates the ball and controls its movement along the game board
+ *
+ * @author moniwaterhouse
+ * @version 1.0
+ *
+ */
+
 public class Ball{
 
     public double x, y;
@@ -75,12 +83,20 @@ public class Ball{
 
     }
 
+    /**
+     * Is invoked when the round is over so it stays at the middle of the game board
+     */
+
     public void stopBall(){
 
         x = 490;
         y=290;
 
     }
+
+    /**
+     * Increase the speed of the ball movement each time the ball collides 5 times with the pallets
+     */
 
     public void increaseSpeed(){
         accelerator = 1.1*accelerator;

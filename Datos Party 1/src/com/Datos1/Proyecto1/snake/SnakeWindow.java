@@ -6,11 +6,16 @@ import com.Datos1.Proyecto1.GameBoard.CircularDoublyLinkedList;
 
 import java.io.IOException;
 
+/**
+ *
+ * SimonWindow extend from JFrame to create the frame in which the SnakeBoard componentes will be displayed
+ * @author Monica Waterhouse
+ * @version 1.0
+ *
+ */
 public class SnakeWindow extends JFrame {
 
-    /**
-	 * 
-	 */
+
 	private static final long serialVersionUID = 1L;
 	public static final int width = 1000;
     public static final int height = 600;

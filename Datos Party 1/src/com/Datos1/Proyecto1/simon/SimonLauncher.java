@@ -7,9 +7,21 @@ import java.io.IOException;
 import java.util.Observable;
 import java.util.Observer;
 
+
+
 import com.Datos1.Proyecto1.GameBoard.*;
 
+/**
+ * SimonLauncher launches the mini game Simon
+ *
+ * @author Monica Wterhouse
+ * @version 1.0
+ *
+ */
+
 public class SimonLauncher implements Observer {
+
+
 
     protected static SimonWindow simonWindow;
     static boolean startPlaying = false;
@@ -37,6 +49,11 @@ public class SimonLauncher implements Observer {
     }
 
     public void launch() throws IOException {
+
+        /**
+         *
+         * This method is use to create the simon game window and set it visible for the user
+         */
 
         while(!startPlaying){
 

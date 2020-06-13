@@ -1,5 +1,10 @@
 package com.Datos1.Proyecto1.pong;
 
+/**
+ * @author moniwaterhouse
+ * @version 1.0
+ *
+ */
 
 public class PongThread extends Thread {
 

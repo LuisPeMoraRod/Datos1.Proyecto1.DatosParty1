@@ -3,6 +3,15 @@ package com.Datos1.Proyecto1.snake;
 import java.awt.*;
 import java.awt.geom.Rectangle2D;
 
+/**
+ *
+ * SnakeTail is a type of object that represents each one of the tiles that conform the body of the snake and controlls
+ * its position and movement
+ *
+ * @author moniwaterhouse
+ * @version 1.0
+ */
+
 public class SnakeTail {
 
     private int x,y;
@@ -29,15 +38,31 @@ public class SnakeTail {
         this.y = y;
     }
 
+    /**
+     * Moves the position of the tail by adding dx and dy parameters to the actual position
+     * @param dx
+     * @param dy
+     */
     public void moveTail(int dx, int dy){
 
         x += dx;
         y += dy;
     }
 
+    /**
+     *
+     * @return Rectangle2D object that will represent one of the tiles of the snake body
+     */
+
     public Rectangle2D getTail() {
         return new Rectangle2D.Double(x, y, width, height);
     }
+
+    /**
+     *  Checks if one of the tail tiles collides collides with an object of type SnakeTail
+     * @param o
+     * @return
+     */
 
     public boolean isCollision(SnakeTail o){
         if(o == this){

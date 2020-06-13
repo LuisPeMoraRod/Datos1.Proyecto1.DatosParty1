@@ -2,6 +2,12 @@ package com.Datos1.Proyecto1.pong;
 
 import java.util.Observable;
 
+/**
+ * @author moniwaterhouse
+ * @version 1.0
+ *
+ */
+
 public class EndObservablePong extends Observable {
 
     private boolean end;
