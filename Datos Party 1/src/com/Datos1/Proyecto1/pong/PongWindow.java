@@ -6,11 +6,18 @@ import com.Datos1.Proyecto1.GameBoard.CircularDoublyLinkedList;
 
 import java.io.IOException;
 
+/**
+ *
+ * PongWindow sets the frame in which the Pong game board will added and displayed
+ *
+ * @author moniwaterhouse
+ * @version 1.0
+ *
+ */
+
 public class PongWindow extends JFrame {
 
-    /**
-	 * 
-	 */
+
 	private static final long serialVersionUID = 1L;
 
 	public static final int width =1000,height=600;

@@ -2,6 +2,14 @@ package com.Datos1.Proyecto1.snake;
 
 import java.io.IOException;
 
+/**
+ * SnakeHead represents one the initial the head of the snake
+ *
+ * @author moniwaterhouse
+ * @version 1.0
+ *
+ */
+
 public class SnakeHead {
     private int headX, headY;
     protected final int width, height;
@@ -23,6 +31,11 @@ public class SnakeHead {
     public int getHeadY(){
         return headY;
     }
+
+    /**
+     * Moves the snake the equivalent of the snake size to the right, left, up or down depending on the
+     * the flags obtained from the SnakeEvent class
+     */
 
     public void moveSnakeHead(){
 

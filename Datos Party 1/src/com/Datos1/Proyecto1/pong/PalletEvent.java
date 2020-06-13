@@ -3,9 +3,23 @@ package com.Datos1.Proyecto1.pong;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 
+/**
+ * PalletEvent extends from KeyAdapter to get specific key entrances that will activate certain flags
+ * that will set the direction of the pallets
+ *
+ * @author moniwaterhouse
+ * @version 1.0
+ *
+ */
+
 public class PalletEvent extends KeyAdapter {
 
     static boolean w, s, up, down, cover=true, instructions;
+
+    /**
+     * Each time a specific key is pressed the pallet will move up or down
+     * @param e
+     */
 
     @Override
     public void keyPressed(KeyEvent e) {
@@ -36,6 +50,11 @@ public class PalletEvent extends KeyAdapter {
             instructions = false;
         }
     }
+
+    /**
+     * When the specific keys are released the flag that it controls will become false and the pallet wont move
+     * @param e
+     */
 
     @Override
     public void keyReleased(KeyEvent e) {

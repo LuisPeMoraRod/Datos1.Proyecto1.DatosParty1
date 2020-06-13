@@ -14,11 +14,17 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Random;
 
+/**
+ * SnakeBoard is the container that draws all the elements that controls the game and it also sets the round logic and
+ * collision logic
+ *
+ * @author moniwaterhouse
+ * @version 1.0
+ *
+ */
+
 public class SnakeBoard extends JPanel {
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
 	private BufferedImage imgBackground = ImageIO.read(new File("images/SnakeBackground.jpg"));
 	private BufferedImage snakeLogo = ImageIO.read(new File("images/snakeLogo.png"));
@@ -99,12 +105,20 @@ public class SnakeBoard extends JPanel {
 
 		g2.drawImage(imgBackground, 0, 0, 1000, 600, this);
 
+		/*
+		Draws the elements that are part of the snake cover
+		 */
+
 		if (SnakeEvent.startCover) {
 
 			g2.drawImage(snakeLogo, SnakeWindow.width / 2 - 200, SnakeWindow.height / 2 - 100, 400, 200, this);
 			g2.drawImage(enterPress, SnakeWindow.width / 2 - 132, SnakeWindow.height / 2 + 250, 264, 46, this);
 
 		}
+
+		/*
+		Draws the elements that are part of the snake instructions screen
+		 */
 
 		else if (SnakeEvent.instructions) {
 
@@ -119,6 +133,10 @@ public class SnakeBoard extends JPanel {
 			g2.drawString("Right player controls", SnakeWindow.width - 185, 450);
 
 		}
+
+		/*
+		Draws the food and the snake and also contains the conditions of the beginning and end of a round
+		 */
 
 		else {
 
@@ -157,6 +175,11 @@ public class SnakeBoard extends JPanel {
 		}
 
 	}
+
+	/**
+	 * Checks is there is a change of the direction flags of the SnakeWent class and sets the parameter that are
+	 * necessary for the snake to move and updates the state of the snake
+	 */
 
 	public void updateSnake() {
 
@@ -211,6 +234,10 @@ public class SnakeBoard extends JPanel {
 
 	}
 
+	/**
+	 * Detects when the head of the snake collides with a Food object
+	 */
+
 	public void detectFoodGrab() {
 		if (snakeTail.get(0).getTail().intersects(food1)) {
 			fx1 = f1.setCoordX();
@@ -229,6 +256,11 @@ public class SnakeBoard extends JPanel {
 
 	}
 
+	/**
+	 * Detects if the snake head collides with one of tje bounds of the window and
+	 * sets the flag that ends the round
+	 */
+
 	public void detectColliion() {
 		for (SnakeTail t : snakeTail) {
 			if (t.isCollision(collisionDetector) || collisionDetector.getTailX() == 0
@@ -239,6 +271,7 @@ public class SnakeBoard extends JPanel {
 			}
 		}
 	}
+
 
 	public void stageRound(Graphics2D g) {
 		g.setColor(new Color(205, 220, 57));
@@ -276,6 +309,10 @@ public class SnakeBoard extends JPanel {
 		}
 
 	}
+
+	/**
+	 * Resets the game to its initial values to start a new round
+	 */
 
 	public void resetGame() {
 		snakeHead.setHeadPosition(80, 80);

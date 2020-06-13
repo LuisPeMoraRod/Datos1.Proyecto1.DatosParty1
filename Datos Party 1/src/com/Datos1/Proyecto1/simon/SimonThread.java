@@ -1,5 +1,11 @@
 package com.Datos1.Proyecto1.simon;
 
+/**
+ * @author Monica Waterhouse
+ * @version 1.0
+ * @since 01/05/2020
+ *
+ */
 public class SimonThread extends Thread {
 
     SimonBoard simonBoard;

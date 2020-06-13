@@ -19,9 +19,9 @@ import java.util.ArrayList;
 import java.util.Random;
 
 /**
- * Simon class
- *
- * this class contains the logic that controlls the Simon game
+ * Simon sets the logic that controls the pattern making and mouse events of the game
+ * It implements an arraylist to create color patterns that the user must replicate
+ *by using MouseListening in order to have a high score if the pattern is replicated correctly
  *
  * @author Monica Waterhouse Montoya
  *
@@ -32,7 +32,7 @@ public class SimonBoard extends JPanel implements ActionListener, MouseListener 
 
 	private static final long serialVersionUID = 1L;
 
-	public int flashed = 0;
+	public int flashed = 0; // Helps to give the appearance of a flashing animation
 
     public int ticks, dark, clickCounts;
 
@@ -66,6 +66,13 @@ public class SimonBoard extends JPanel implements ActionListener, MouseListener 
     BufferedImage imgP3 = ImageIO.read(new File("images/P3.png"));
     BufferedImage imgP4 = ImageIO.read(new File("images/P4.png"));
 
+    /**
+     *
+     * @param players represent the name of the players that are involved in the game
+     *                and the rounds will depend on it size
+     * @throws IOException
+     */
+
     public SimonBoard(CircularDoublyLinkedList players ) throws IOException {
 
 
@@ -83,6 +90,10 @@ public class SimonBoard extends JPanel implements ActionListener, MouseListener 
 
 
     }
+
+    /**
+     * Creates an empty pattern list and starts the timer that will control the event thread
+     */
 
     public void start(){
 
@@ -178,6 +189,11 @@ public class SimonBoard extends JPanel implements ActionListener, MouseListener 
 
 
     }
+
+    /**
+     * Paints the components that will contain the SimonBoard
+     * @param g
+     */
 
     @Override
     protected void paintComponent(Graphics g) {
@@ -430,6 +446,10 @@ public class SimonBoard extends JPanel implements ActionListener, MouseListener 
 
     }
 
+    /**
+     * Invoked when all the players have already played and set the points and coins that each player earned
+     */
+
     public void endgame(){
     	int finalScore;
     	for (int i = 0; i< players.getSize();i++) {
@@ -444,7 +464,11 @@ public class SimonBoard extends JPanel implements ActionListener, MouseListener 
         GameBoardLauncher.window.setVisible(true);
 
     }
-    
+
+    /**
+     * After each player round the game will be reset with the initial values to begin a ew player round
+     */
+
     public void resetGame() {
     	coolDown=0;
         ticks = 0;
@@ -458,6 +482,11 @@ public class SimonBoard extends JPanel implements ActionListener, MouseListener 
         creatingPattern = true;
         prepare = true;
     }
+
+    /**
+     * Highlights the players that is currently playing
+     * @param g
+     */
     
     public void highlightPlayer(Graphics g) {
     	switch(playingPlayer) {

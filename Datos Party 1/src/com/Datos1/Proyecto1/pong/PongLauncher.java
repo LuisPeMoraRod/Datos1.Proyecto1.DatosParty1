@@ -7,6 +7,15 @@ import java.util.Observer;
 import com.Datos1.Proyecto1.GameBoard.CircularDoublyLinkedList;
 import com.Datos1.Proyecto1.GameBoard.Player;
 
+/**
+ *
+ * PongLauncher launches the Pong min game when it is accessed
+ *
+ * @author moniwaterhouse
+ * @version 1.0
+ *
+ */
+
 public class PongLauncher implements Observer {
 
     protected static PongWindow pongWindow;

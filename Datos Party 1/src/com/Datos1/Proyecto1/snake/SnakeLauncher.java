@@ -7,6 +7,13 @@ import java.util.Observer;
 import com.Datos1.Proyecto1.GameBoard.CircularDoublyLinkedList;
 import com.Datos1.Proyecto1.GameBoard.Player;
 
+/**
+ * SimonLauncher is the main class that launches the snake game
+ * @author Monica Waterhouse
+ * @version 1.0
+ * @
+ */
+
 public class SnakeLauncher implements Observer {
 
     protected static SnakeWindow snakeWindow;

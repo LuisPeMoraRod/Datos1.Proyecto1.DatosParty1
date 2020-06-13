@@ -1,6 +1,11 @@
 package com.Datos1.Proyecto1.snake;
 
-import com.Datos1.Proyecto1.pong.PongThread;
+
+/**
+ * @author Monica Waterhouse
+ * @version 1.0
+ *
+ */
 
 public class SnakeThread extends Thread {
 
