@@ -5,9 +5,9 @@ import com.Datos1.Proyecto1.GameBoard.*;
 import com.Datos1.Proyecto1.FlappyBird.*;
 import com.Datos1.Proyecto1.FourInLine.*;
 import com.Datos1.Proyecto1.TicTacToe.*;
-import com.Datos1.Proyecto1.pong.PongLauncher;
-import com.Datos1.Proyecto1.simon.SimonLauncher;
-import com.Datos1.Proyecto1.snake.SnakeLauncher;
+import com.Datos1.Proyecto1.pong.*;
+import com.Datos1.Proyecto1.simon.*;
+import com.Datos1.Proyecto1.snake.*;
 
 import java.io.IOException;
 import java.util.Observable;
@@ -37,16 +37,19 @@ public class Main implements Observer {
 		snake = false;
 		pong = false;
 
-
+		
 		duelFlappybird = false;
 		duelTicTacToe = false;
 		duelFourInLine = false;
-
+		
 		}
 	
 
 	public static void main(String[] args) throws IOException {
 		main = new Main();
+		
+		
+		
 		main.startGame();
 		while(true) {
 			System.out.println(".");

@@ -86,6 +86,8 @@ public class MinigamesObservable extends Observable{
 
 	public void setPong(boolean pong){
 		this.pong = pong;
+		setChanged();
+		notifyObservers();
 	}
 	
 	//Duels

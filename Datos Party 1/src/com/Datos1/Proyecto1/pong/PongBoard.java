@@ -2,6 +2,7 @@ package com.Datos1.Proyecto1.pong;
 
 import com.Datos1.Proyecto1.GameBoard.CircularDoublyLinkedList;
 import com.Datos1.Proyecto1.GameBoard.GameBoardLauncher;
+import com.Datos1.Proyecto1.GameBoard.Node;
 import com.Datos1.Proyecto1.snake.SnakeWindow;
 
 import javax.imageio.ImageIO;
@@ -299,33 +300,47 @@ public class PongBoard extends JPanel {
         	if(endTimer<=1000){
                 endTimer++;
                 giveFinalResults(g2);
+                
             }
         	else {
+        		setPointstoCero(players);
         		closeGame();
 
         	}
             
         }
     }
+    public void setPointstoCero(CircularDoublyLinkedList players) {
+    	Node pointer = players.getStart();
+    	for (int i = 0 ; i< players.getSize();i++) {
+    		pointer.getPlayer().setPoints(0);
+    		pointer = pointer.getNext();
+    		}
+    }
     
     public void setScoreP1(int score) {
     	int actualPoints = players.getNode(0).getPlayer().getPoints();
     	players.getNode(0).getPlayer().setPoints(actualPoints+score);
+    	players.getNode(0).getPlayer().incrementCoins(actualPoints+score);
+    	
     }
     
     public void setScoreP2(int score) {
     	int actualPoints = players.getNode(1).getPlayer().getPoints();
     	players.getNode(1).getPlayer().setPoints(actualPoints+score);
+    	players.getNode(1).getPlayer().incrementCoins(actualPoints+score);
     }
     
     public void setScoreP3(int score) {
     	int actualPoints = players.getNode(2).getPlayer().getPoints();
     	players.getNode(2).getPlayer().setPoints(actualPoints+score);
+    	players.getNode(2).getPlayer().incrementCoins(actualPoints+score);
     }
     
     public void setScoreP4(int score) {
     	int actualPoints = players.getNode(3).getPlayer().getPoints();
     	players.getNode(3).getPlayer().setPoints(actualPoints+score);
+    	players.getNode(3).getPlayer().incrementCoins(actualPoints+score);
     }
     
     public void giveFinalResults(Graphics2D g2) {

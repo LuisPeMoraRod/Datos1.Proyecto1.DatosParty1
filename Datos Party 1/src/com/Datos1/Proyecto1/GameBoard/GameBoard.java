@@ -89,7 +89,7 @@ public class GameBoard extends JPanel implements ActionListener {
 	private boolean newEvent; // flag to handle the appearance of events
 	public static boolean duel;
 
-	//private DuelButton duelButton; // button to go to minigames when thers a duel
+	private DuelButton duelButton; // button to go to minigames when thers a duel
 	private Player duelPlayer1, duelPlayer2; //players that fight the duel
 
 	public GameBoard(CircularDoublyLinkedList players) {
@@ -132,7 +132,7 @@ public class GameBoard extends JPanel implements ActionListener {
 		imagesPos = new Point();
 
 		minigameButton = new MiniGameButton(this);
-		//duelButton = new DuelButton(this);
+		duelButton = new DuelButton(this);
 
 		timer = new Timer(10, this);
 		timer.start();
@@ -1033,11 +1033,11 @@ public class GameBoard extends JPanel implements ActionListener {
 	
 	public void paintDuelButton(Graphics2D g) {
 		this.setLayout(null);
-		//duelButton.setPlayers(duelPlayer1, duelPlayer2);
-		//duelButton.setLocation(new Point(Window.width * 9 / 12 + 40, Window.height / 4));
-		//duelButton.setBounds(duelButton.getsLocation().x, duelButton.getsLocation().y, 171, 143);
-		//this.add(duelButton);
-		//duelButton.paintsButton(g);
+		duelButton.setPlayers(duelPlayer1, duelPlayer2);
+		duelButton.setLocation(new Point(Window.width * 9 / 12 + 40, Window.height / 4));
+		duelButton.setBounds(duelButton.getsLocation().x, duelButton.getsLocation().y, 171, 143);
+		this.add(duelButton);
+		duelButton.paintsButton(g);
 		
 	}
 

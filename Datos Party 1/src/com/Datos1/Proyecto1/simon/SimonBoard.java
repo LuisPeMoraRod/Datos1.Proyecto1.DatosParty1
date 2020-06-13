@@ -431,6 +431,14 @@ public class SimonBoard extends JPanel implements ActionListener, MouseListener 
     }
 
     public void endgame(){
+    	int finalScore;
+    	for (int i = 0; i< players.getSize();i++) {
+			finalScore = players.getNode(i).getPlayer().getPoints();
+			players.getNode(i).getPlayer().incrementCoins(finalScore); //increment coins after minigame
+			players.getNode(i).getPlayer().setPoints(0);
+		}
+    	
+    	
         timer.stop();
         SimonLauncher.simonWindow.dispose();
         GameBoardLauncher.window.setVisible(true);
