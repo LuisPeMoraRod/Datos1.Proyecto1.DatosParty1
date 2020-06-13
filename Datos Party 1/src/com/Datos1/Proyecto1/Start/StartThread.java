@@ -1,5 +1,11 @@
 package com.Datos1.Proyecto1.Start;
 
+/**
+ *
+ * @author moniwaterhouse
+ * @version 1.0
+ *
+ */
 public class StartThread extends Thread {
 
     private StartBoard startBoard;

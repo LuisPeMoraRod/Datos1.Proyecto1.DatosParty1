@@ -3,6 +3,11 @@ package com.Datos1.Proyecto1.Start;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
+/**
+ * PlayersEvent set the logic that will indicate the amount of players that will play the game using the mouse X and Y
+ * positions and depending on them a specific flag will be set true.
+ */
+
 public class PlayersEvent implements MouseListener {
 
     public boolean twoFlash = false, threeFlash = false, fourFlash = false,submitPlayers = false;
@@ -53,6 +58,11 @@ public class PlayersEvent implements MouseListener {
     public void mouseExited(MouseEvent e) {
 
     }
+
+    /**
+     *
+     * @return the amount of players requested
+     */
 
     public int getNumberPlayers(){
         return this.players;

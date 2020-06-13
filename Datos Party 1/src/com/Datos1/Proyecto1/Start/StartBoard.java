@@ -1,15 +1,22 @@
 package com.Datos1.Proyecto1.Start;
 
-import com.Datos1.Proyecto1.GameBoard.CircularDoublyLinkedList;
-import com.Datos1.Proyecto1.simon.SimonWindow;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+
+/**
+ * StartBoard extends from JPanel to set a canvas to draw and add the components of the start screen where the user
+ * can choose the amount of players that will be involved on the game
+ *
+ * @author moniwaterhouse
+ * @version 1.0
+ *
+ */
+
 
 public class StartBoard extends JPanel {
 
@@ -46,10 +53,10 @@ public class StartBoard extends JPanel {
         setPlayers = false;
         addMouseListener(playersEvent);
 
-        namePlayer1 = "Player 1";
-        namePlayer2 = "Player 2";
-        namePlayer3 = "Player 3";
-        namePlayer4 = "Player 4";
+        namePlayer1 = "Moni";
+        namePlayer2 = "Luis";
+        namePlayer3 = "Gabo";
+        namePlayer4 = "Isaac";
 
 
     }
@@ -181,6 +188,10 @@ public class StartBoard extends JPanel {
             }
         }
     }
+
+    /*
+    The next set of methods are invoked when creating the player list to add the names of each of the players
+     */
 
     public String getNamePlayer1(){
         return this.namePlayer1;
