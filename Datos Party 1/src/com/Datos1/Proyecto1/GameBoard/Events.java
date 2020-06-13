@@ -60,38 +60,6 @@ public class Events extends Component {
 
 	}
 
-	public LinkedList createEventList() {
-
-		eventList.insertHead(new Events(1));
-
-		for (int i = 0; i < 3; i++) {
-			eventList.insertEnd(new Events(2));
-		}
-		for (int i = 0; i < 3; i++) {
-			eventList.insertEnd(new Events(3));
-		}
-		for (int i = 0; i < 10; i++) {
-			eventList.insertEnd(new Events(4));
-		}
-		for (int i = 0; i < 10; i++) {
-			eventList.insertEnd(new Events(4));
-		}
-		for (int i = 0; i < 10; i++) {
-			eventList.insertEnd(new Events(5));
-		}
-
-		eventList.insertEnd(new Events(6));
-		eventList.insertEnd(new Events(7));
-
-		for (int i = 0; i < 10; i++) {
-			eventList.insertEnd(new Events(8));
-		}
-
-		for (int i = 0; i < 10; i++) {
-			eventList.insertEnd(new Events(9));
-		}
-
-		return this.eventList;
-	}
+	
 
 }

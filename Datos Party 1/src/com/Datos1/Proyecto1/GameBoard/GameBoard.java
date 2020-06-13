@@ -90,7 +90,11 @@ public class GameBoard extends JPanel implements ActionListener {
 	private Player duelPlayer1, duelPlayer2; // players that fight the duel
 
 	private Events newEvent;
-	private EventQueue eventsQueue;
+	private boolean eventFlag;
+	private EventQueue queue;
+	private LinkedList eventsQueue;
+	private boolean eventImages;
+	private String pathEvents;
 
 	public GameBoard(CircularDoublyLinkedList players) {
 		random = new Random();
@@ -134,7 +138,9 @@ public class GameBoard extends JPanel implements ActionListener {
 		duelButton = new DuelButton(this);
 
 		// Events
-		eventsQueue = new EventQueue(null);
+		queue = new EventQueue();
+		queue.createEventList();
+		queue.shuffleEvents();
 
 		timer = new Timer(10, this);
 		timer.start();
@@ -511,6 +517,19 @@ public class GameBoard extends JPanel implements ActionListener {
 			g.drawImage(getSprite("images/sorry.png"), imagesPos.x, imagesPos.y + 50, this);
 		}
 
+		if (eventImages) {
+			imagesPos.x = Window.width * 9 / 12;
+			imagesPos.y = Window.height / 4;
+			g.drawImage(getSprite(pathEvents), imagesPos.x + 40, imagesPos.y + 20, this);
+			if (contCongrats >= 1) {
+				Thread.sleep(2500);
+				eventImages = false;
+				contCongrats = 0;
+			} else {
+				contCongrats++;
+			}
+		}
+
 	}
 
 	public void setDices(JPanel canvas) {
@@ -738,11 +757,21 @@ public class GameBoard extends JPanel implements ActionListener {
 			}
 		}
 
-		if (duel && !congrats && !drawCoins) {
+		if (eventFlag) {
+			newEvent = queue.dequeue();
+			try {
+				launchEvent(newEvent, g2d);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+
+		if (duel && !eventFlag && !congrats && !drawCoins) {
 			paintDuelButton(g2d);
 		}
 
-		if (newMiniGame && !congrats && !drawCoins && !duel) {
+		if (newMiniGame && !eventFlag && !congrats && !drawCoins && !duel) {
 			paintMiniGameButton(g2d);
 		}
 
@@ -912,9 +941,9 @@ public class GameBoard extends JPanel implements ActionListener {
 						movingCont = 0;// resets counter
 						moving = false;// stops moving routine
 
-						checksNewBox(playerInTurn);// activates event depending on new position
-
 						checksDuel(playerInTurn); // checks if theres a duel: two players in the same node
+
+						checksNewBox(playerInTurn);// activates event depending on new position
 
 						playerInTurn = playerInTurn.getNext();// pointer to the next player in turn
 						sorry = false;
@@ -1053,6 +1082,10 @@ public class GameBoard extends JPanel implements ActionListener {
 		duelButton.setBounds(duelButton.getsLocation().x, duelButton.getsLocation().y, 171, 143);
 		this.add(duelButton);
 		duelButton.paintsButton(g);
+		g.drawImage(duelPlayer1.getSprite(), duelButton.getLocation().x + 50, duelButton.getsLocation().y + 60, 40, 40,
+				this);
+		g.drawImage(duelPlayer2.getSprite(), duelButton.getLocation().x + 130, duelButton.getsLocation().y + 60, 40, 40,
+				this);
 
 	}
 
@@ -1149,6 +1182,7 @@ public class GameBoard extends JPanel implements ActionListener {
 		Box box = pointer.getPlayer().getPointer().getBox();
 
 		if (box.getClass().equals(green.getClass())) {
+
 			pointer.getPlayer().incrementCoins(7);
 			xCoins = 1150;
 			yCoins = 300;
@@ -1157,6 +1191,7 @@ public class GameBoard extends JPanel implements ActionListener {
 			drawCoins = true;
 
 		} else if (box.getClass().equals(red.getClass())) {
+
 			pointer.getPlayer().decrementsCoins(7);
 			xCoins = 1150;
 			yCoins = 250;
@@ -1164,40 +1199,108 @@ public class GameBoard extends JPanel implements ActionListener {
 			dyCoins = 120;
 			drawCoins = true;
 
-		} else if (box.getClass().equals(yellow.getClass())) {
-			newEvent = eventsQueue.dequeue();
-			launchEvent(newEvent);
 			
+		} else if (box.getClass().equals(yellow.getClass())) {
+			if (!duel) {
+				eventFlag = true;
+			}
+
 		} else {
 			System.out.println("blue");
-
+			
 		}
 	}
-	
+
 	/**
-	 * Handles the events 
+	 * Handles the events
+	 * 
 	 * @param event
+	 * @throws InterruptedException
 	 */
-	public void launchEvent(Events event) {
-		if (event.duel) {
-			
-		}else if (event.stealCoins) {
-			
-		}else if (event.giveCoins) {
-			
-		} else if (event.looseStar) {
-			
-		}else if (event.winTwoStars) {
-		
-		}else if (event.winFiveStars) {
-			
-		}else if (event.stealStar) {
-			
-		}else if (event.teleport) {
-			
-		}else if (event.switchPlaces) {
-			
+	public void launchEvent(Events event, Graphics2D g) throws InterruptedException {
+		Player player = playerInTurn.getPrev().getPlayer();
+		int randomPlayer = random.nextInt(players.getSize()); // random player
+		while (randomPlayer == player.getId() - 1) { // must be different than itself
+			randomPlayer = random.nextInt(players.getSize());
 		}
+		System.out.println("launch event");
+		if (event.duel) {
+			duelPlayer1 = player;
+			duelPlayer2 = players.getNode(randomPlayer).getPlayer();
+			Main.minigamesObservable.setPlayers(duelPlayer1, duelPlayer2); // add players to duels circular doubly
+																			// linked list that will be used to
+																			// launch the minigame
+			duel = true;
+			System.out.println(duelPlayer1.getName() + " " + duelPlayer2.getName());
+			System.out.println("duel");
+
+		} else if (event.stealCoins) {
+			System.out.println("stealCoins");
+			pathEvents = "images/stealCoins.png";
+			eventImages = true;
+
+		} else if (event.giveCoins) {
+			System.out.println("give coins");
+			int coins = random.nextInt(player.getCoins() + players.getSize());
+			while (!(coins % players.getSize() == 0)) { // numbers of coins should be able to divide into the amount of
+														// players
+				coins = random.nextInt(player.getCoins() + players.getSize());
+			}
+			coins /= players.getSize();
+			Node pointer = playerInTurn;
+			for (int i = 0; i < players.getSize() - 1; i++) {
+				pointer.getPlayer().incrementCoins(coins);
+				pointer = pointer.getNext();
+
+			}
+			pathEvents = "images/giveCoins.png";
+			eventImages = true;
+
+		} else if (event.looseStar) {
+			System.out.println("looseStar");
+			player.decrementStar(1);
+			Player winCoinsPlayer = players.getNode(randomPlayer).getPlayer();
+			winCoinsPlayer.incremenentStar(1);
+			pathEvents = "images/looseStar.png";
+			eventImages = true;
+
+		} else if (event.winTwoStars) {
+			System.out.println("2 new stars");
+			player.incremenentStar(2);
+			pathEvents = "images/win2.png";
+			eventImages = true;
+
+		} else if (event.winFiveStars) {
+			System.out.println("5 new stars");
+			player.incremenentStar(5);
+			pathEvents = "images/win5.png";
+			eventImages = true;
+
+		} else if (event.stealStar) {
+			System.out.println("stealStar");
+			player.incremenentStar(1);
+			Player looseStar = players.getNode(randomPlayer).getPlayer();
+			looseStar.decrementStar(1);
+			pathEvents = "images/stealStar.png";
+			eventImages = true;
+
+		} else if (event.teleport) { // must change this
+			System.out.println("teleport");
+			pathEvents = "images/teleport.png";
+			eventImages = true;
+
+		} else if (event.switchPlaces) {
+			System.out.println("switchPlaces");
+			Node pos1 = player.getPointer();
+			Node pos2 = players.getNode(randomPlayer).getPlayer().getPointer();
+			player.setPointer(pos2);
+			players.getNode(randomPlayer).getPlayer().setPointer(pos1);
+			setPlayers(g);
+			pathEvents = "images/switch.png";
+			eventImages = true;
+		}
+
+		eventFlag = false;
 	}
 
 	/**
@@ -1218,7 +1321,7 @@ public class GameBoard extends JPanel implements ActionListener {
 																				// launch the minigame
 				duel = true;
 				System.out.println(duelPlayer1.getName() + " " + duelPlayer2.getName());
-				System.out.println("duel");
+				System.out.println("duelossss");
 			}
 
 		}

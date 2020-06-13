@@ -176,7 +176,13 @@ public class PongBoard extends JPanel {
     }
 
     public void closeGame(){
-
+    	int finalScore;
+		for (int i = 0; i < players.getSize(); i++) {
+			finalScore = players.getNode(i).getPlayer().getPoints();
+			players.getNode(i).getPlayer().incrementCoins(finalScore);
+		}
+		setPointstoCero(players);
+		
         GameBoardLauncher.window.setVisible(true);
         PongLauncher.pongWindow.dispose();
     }
@@ -303,7 +309,7 @@ public class PongBoard extends JPanel {
                 
             }
         	else {
-        		setPointstoCero(players);
+        		
         		closeGame();
 
         	}
@@ -321,26 +327,26 @@ public class PongBoard extends JPanel {
     public void setScoreP1(int score) {
     	int actualPoints = players.getNode(0).getPlayer().getPoints();
     	players.getNode(0).getPlayer().setPoints(actualPoints+score);
-    	players.getNode(0).getPlayer().incrementCoins(actualPoints+score);
+    	
     	
     }
     
     public void setScoreP2(int score) {
     	int actualPoints = players.getNode(1).getPlayer().getPoints();
     	players.getNode(1).getPlayer().setPoints(actualPoints+score);
-    	players.getNode(1).getPlayer().incrementCoins(actualPoints+score);
+    	
     }
     
     public void setScoreP3(int score) {
     	int actualPoints = players.getNode(2).getPlayer().getPoints();
     	players.getNode(2).getPlayer().setPoints(actualPoints+score);
-    	players.getNode(2).getPlayer().incrementCoins(actualPoints+score);
+    	
     }
     
     public void setScoreP4(int score) {
     	int actualPoints = players.getNode(3).getPlayer().getPoints();
     	players.getNode(3).getPlayer().setPoints(actualPoints+score);
-    	players.getNode(3).getPlayer().incrementCoins(actualPoints+score);
+    	
     }
     
     public void giveFinalResults(Graphics2D g2) {

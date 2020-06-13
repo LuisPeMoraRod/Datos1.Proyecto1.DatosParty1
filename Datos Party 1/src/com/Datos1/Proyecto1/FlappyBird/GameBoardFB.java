@@ -52,9 +52,10 @@ public class GameBoardFB extends JPanel implements ActionListener {
 	public int columnIndex = 0;
 
 	public int contTimer;
+	private int canvasNum;
 	Timer timer;
 
-	public GameBoardFB(Player player) {
+	public GameBoardFB(Player player, int canvasNum) {
 		this.player = player;
 
 		sprite = new Bird(player.getId());
@@ -77,6 +78,8 @@ public class GameBoardFB extends JPanel implements ActionListener {
 
 		gameOn = false;
 		gameOver = false;
+		
+		this.canvasNum = canvasNum;
 
 		timer = new Timer(20, this);
 		timer.start();
@@ -214,16 +217,16 @@ public class GameBoardFB extends JPanel implements ActionListener {
 		g.setColor(Color.white);
 		g.setFont(new Font("Arial", 1, 25));
 		if (!gameOn) {
-			if (player.getId() == 1) {
+			if (canvasNum == 1) {
 				g.drawString("Tap w to jump", 160, 50);
 			}
-			if (player.getId() == 2) {
+			if (canvasNum == 2) {
 				g.drawString("Tap space bar to jump", 100, 50);
 			}
-			if (player.getId() == 3) {
+			if (canvasNum == 3) {
 				g.drawString("Tap p to jump", 160, 50);
 			}
-			if (player.getId() == 4) {
+			if (canvasNum == 4) {
 				g.drawString("Tap up key to jump", 120, 50);
 			}
 

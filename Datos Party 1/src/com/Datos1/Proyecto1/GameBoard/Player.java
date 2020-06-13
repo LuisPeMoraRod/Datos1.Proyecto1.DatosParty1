@@ -20,7 +20,7 @@ public class Player extends Component {
 	private static final long serialVersionUID = 1L;
 	private String name;
 	private int coins;// coins earned along the whole game
-	private int stars;
+	private int stars = 1;//delete this!!!!!
 	private int minigamePoints; // points earned in an individual minigame match
 	private String path;
 	private int id;

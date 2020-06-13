@@ -99,7 +99,7 @@ public class WindowFB extends JFrame {
 			int y = frame1.getY();
 			internalFrameProps(frame1, x, y);
 			desk.add(frame1);
-			canvas1 = new GameBoardFB(players.getNode(player-1).getPlayer());
+			canvas1 = new GameBoardFB(players.getNode(player-1).getPlayer(),1);
 
 			// canvas.setFocusable(true);
 			// canvas.requestFocusInWindow();
@@ -114,7 +114,7 @@ public class WindowFB extends JFrame {
 			int y = frame2.getY();
 			internalFrameProps(frame2, x, y);
 			desk.add(frame2);
-			canvas2 = new GameBoardFB(players.getNode(player-1).getPlayer());
+			canvas2 = new GameBoardFB(players.getNode(player-1).getPlayer(),2);
 
 			frame2.add(canvas2);
 		}
@@ -132,7 +132,7 @@ public class WindowFB extends JFrame {
 			int y = frame3.getY();
 			internalFrameProps(frame3, x, y);
 			desk.add(frame3);
-			canvas3 = new GameBoardFB(players.getNode(player-1).getPlayer());
+			canvas3 = new GameBoardFB(players.getNode(player-1).getPlayer(),3);
 
 			frame3.add(canvas3);
 		}
@@ -146,7 +146,7 @@ public class WindowFB extends JFrame {
 			// frame4.setMaximizable(false);
 			internalFrameProps(frame4, x, y);
 			desk.add(frame4);
-			canvas4 = new GameBoardFB(players.getNode(player-1).getPlayer());
+			canvas4 = new GameBoardFB(players.getNode(player-1).getPlayer(),4);
 			frame4.add(canvas4);
 		}
 		add(desk);

@@ -48,9 +48,8 @@ public class Main implements Observer {
 	public static void main(String[] args) throws IOException {
 		main = new Main();
 		
-		
-		
 		main.startGame();
+		
 		while(true) {
 			System.out.println(".");
 			if (flappybird) {

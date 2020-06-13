@@ -140,6 +140,11 @@ public class SnakeBoard extends JPanel {
 					giveFinalResults(g2);
 					endGameTimer++;
 				} else {
+					int finalScore;
+					for (int i = 0; i < players.getSize(); i++) {
+						finalScore = players.getNode(i).getPlayer().getPoints();
+						players.getNode(i).getPlayer().incrementCoins(finalScore);
+					}
 					for (int i = 0; i < players.getSize(); i++) {
 						players.getNode(i).getPlayer().setPoints(0);
 					}
@@ -369,11 +374,7 @@ public class SnakeBoard extends JPanel {
 
 		}
 		
-		int finalScore;
-		for (int i = 0; i < players.getSize(); i++) {
-			finalScore = players.getNode(i).getPlayer().getPoints();
-			players.getNode(i).getPlayer().incrementCoins(finalScore);
-		}
+		
 
 	}
 

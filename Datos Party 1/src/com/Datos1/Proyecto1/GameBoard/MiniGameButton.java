@@ -130,7 +130,7 @@ public class MiniGameButton extends Component {
 		GameBoardLauncher.window.setVisible(false);
 		System.out.println(GameBoard.newMiniGame);
 		canvas.remove(this);
-		miniGameId = random.nextInt(6);
+		miniGameId = 4;//random.nextInt(6);
 		switch (miniGameId) {
 
 			case 0:
