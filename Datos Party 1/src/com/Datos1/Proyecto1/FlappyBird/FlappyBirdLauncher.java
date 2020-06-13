@@ -1,6 +1,6 @@
 package com.Datos1.Proyecto1.FlappyBird;
 
-import com.Datos1.Proyecto1.GameBoard.BubbleSort;
+import com.Datos1.Proyecto1.GameBoard.InsertionSort;
 import com.Datos1.Proyecto1.GameBoard.CircularDoublyLinkedList;
 import com.Datos1.Proyecto1.GameBoard.GameBoard;
 import com.Datos1.Proyecto1.GameBoard.LinkedList;
@@ -96,7 +96,7 @@ public class FlappyBirdLauncher {
 		window.dispose();
 		
 	
-		results= new BubbleSort(results).execute();
+		results= new InsertionSort(results).execute();
 		
 
 		ResultsFB resultBoard = new ResultsFB(results);

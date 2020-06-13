@@ -87,7 +87,6 @@ public class Main implements Observer {
 		namePlayer4 = startWindow.startBoard.getNamePlayer4();
 
 		numberPlayers = startWindow.startBoard.getNumberPlayers();
-
 		players = new CircularDoublyLinkedList();
 		System.out.println(numberPlayers);
 

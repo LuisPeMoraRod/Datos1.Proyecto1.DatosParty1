@@ -1,6 +1,6 @@
 package com.Datos1.Proyecto1.FourInLine;
 
-import com.Datos1.Proyecto1.GameBoard.BubbleSort;
+import com.Datos1.Proyecto1.GameBoard.InsertionSort;
 import com.Datos1.Proyecto1.GameBoard.CircularDoublyLinkedList;
 import com.Datos1.Proyecto1.GameBoard.GameBoard;
 import com.Datos1.Proyecto1.GameBoard.LinkedList;
@@ -43,7 +43,7 @@ public class FourInLineLauncher implements Observer {
 
 	public FourInLineLauncher(CircularDoublyLinkedList players) {
 		this.players = circularToSimple(players);// BubbleSort logic requires a simple linked list
-		this.players = new BubbleSort(this.players).execute2(); // bubble sorts the list considering the amount of
+		this.players = new InsertionSort(this.players).execute2(); // bubble sorts the list considering the amount of
 																// coins
 		observable = new EndObservable4IL(false);
 		observable.addObserver(this);
@@ -104,7 +104,7 @@ public class FourInLineLauncher implements Observer {
 				fourInLine.dispose();
 				observable.setEnd(false);
 				//sorts by mini game points
-				players= new BubbleSort(players).execute();
+				players= new InsertionSort(players).execute();
 				
 				
 				try {

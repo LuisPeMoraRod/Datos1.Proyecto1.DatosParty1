@@ -39,7 +39,7 @@ public class TicTacToeLauncher implements Observer {
 
 	public TicTacToeLauncher(CircularDoublyLinkedList players) {
 		this.players = circularToSimple(players);// BubbleSort logic requires a simple linked list
-		this.players = new BubbleSort(this.players).execute2(); // bubble sorts the list considering the amount of
+		this.players = new InsertionSort(this.players).execute2(); // bubble sorts the list considering the amount of
 																// coins
 		observable = new EndObservableTTT(false);
 		observable.addObserver(this);
@@ -100,7 +100,7 @@ public class TicTacToeLauncher implements Observer {
 				tictactoe.dispose();
 				observable.setEnd(false);
 				//sorts by mini game points
-				players= new BubbleSort(players).execute();
+				players= new InsertionSort(players).execute();
 				
 				
 				try {

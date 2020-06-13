@@ -3,7 +3,7 @@ package com.Datos1.Proyecto1.GameBoard;
 public class DoublyLinkedList {
 	protected Node start;
 	protected Node end;
-	public int size;
+	private int size;
 
 	/**
 	 * Constructor method
@@ -132,7 +132,7 @@ public class DoublyLinkedList {
 	 * @param i : int, index of the element of the list that is returned.
 	 * @return Square type object
 	 */
-	public Square get(int i) {
+	public Square getBox(int i) {
 		if (i >= 0 && i < size) {
 			Node pointer = start;
 			int cont = 0;
