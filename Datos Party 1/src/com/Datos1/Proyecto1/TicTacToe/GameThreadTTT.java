@@ -32,7 +32,7 @@ public class GameThreadTTT extends Thread {
 		int cont = 0;
 		while (cont <= 3) {
 			try {
-				hideShrow();
+				hideShow();
 			} catch (InterruptedException e) {
 				// TODO Auto-generated catch block
 				System.out.println("falla");

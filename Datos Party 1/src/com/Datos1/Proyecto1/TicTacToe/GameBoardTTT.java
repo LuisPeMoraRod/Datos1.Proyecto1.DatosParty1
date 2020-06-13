@@ -22,7 +22,7 @@ import javax.swing.JPanel;
 import com.Datos1.Proyecto1.GameBoard.Player;
 
 
-public class CuGameBoardTTT extends JPanel {
+public class GameBoardTTT extends JPanel {
 
 	/**
 	 * Public class that displays the canvas with all its needed components on the
