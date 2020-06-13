@@ -139,6 +139,8 @@ public class LinkedList {
 		return null;
 
 	}
+	
+	
 
 	/**
 	 * Public method. Returns the component of the list's square requested by its
@@ -147,7 +149,7 @@ public class LinkedList {
 	 * @param i : int, index of the element of the list that is returned.
 	 * @return Square type object
 	 */
-	public Square get(int i) {
+	public Square getBox(int i) {
 		if (i >= 0 && i < size) {
 			Node pointer = head;
 			int cont = 0;

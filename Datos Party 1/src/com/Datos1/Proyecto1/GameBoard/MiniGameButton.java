@@ -19,24 +19,23 @@ import javax.swing.JPanel;
 import com.Datos1.Proyecto1.Start.Main;
 
 
-public class miniGameButton extends Component {
+public class MiniGameButton extends Component {
 
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
 
-	private Point location;
+	protected Point location;
 	protected int transparency;
 	protected BufferedImage sprite;
-	private String path;
-	private JPanel canvas;
-	private int width, height;
-	private int miniGameId; //0=Flappy Bird, 1=Tic Tac Toe, 2= Four in Line
-	private Random random;
+	protected String path;
+	protected JPanel canvas;
+	protected int width, height;
+	protected int miniGameId; //0=Flappy Bird, 1=Tic Tac Toe, 2= Four in Line
+	protected Random random;
 	
-
-	public miniGameButton(JPanel canvas) {
+	public MiniGameButton(JPanel canvas) {
 		transparency = 10;
 		path = "images/letsGo.png";
 		this.canvas = canvas;
@@ -44,8 +43,10 @@ public class miniGameButton extends Component {
 		clickOnDice();
 		random = new Random();
 		
-		
 	}
+	
+	
+	
 	public void setLocation(Point location) {
 		this.location = location;
 	}
@@ -115,14 +116,19 @@ public class miniGameButton extends Component {
 		this.addMouseListener(new MouseAdapter() {
 			public void mouseClicked(MouseEvent e) {
 				transparency = 10;
+				
 				startMiniGame();
 			}
 		});
 	}
 	
+	/**
+	 * Sets observable's flags 
+	 */
 	public void startMiniGame() {
-		GameBoardLauncher.window.setVisible(false);
 		GameBoard.newMiniGame = false;
+		GameBoardLauncher.window.setVisible(false);
+		System.out.println(GameBoard.newMiniGame);
 		canvas.remove(this);
 		miniGameId = random.nextInt(6);
 		switch (miniGameId) {

@@ -1,6 +1,6 @@
 package com.Datos1.Proyecto1.GameBoard;
 
-public class BubbleSort {
+public class InsertionSort {
 	/**
 	 * Public class. Bubble sorting for a players object linked list
 	 * 
@@ -11,7 +11,7 @@ public class BubbleSort {
 	private Node first;
 	private LinkedList list;
 
-	public BubbleSort(LinkedList list) {
+	public InsertionSort(LinkedList list) {
 		this.list = list;
 		this.first = list.getHead();
 	}

@@ -13,7 +13,7 @@ public class Window extends JFrame{
 	public static int width = 1400;//1650
 	public static int height = 800;//1000
 	
-	protected static GameBoard canvas;
+	public static GameBoard canvas;
 
 	
 	/**
