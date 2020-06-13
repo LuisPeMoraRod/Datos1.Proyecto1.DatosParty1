@@ -20,7 +20,7 @@ public class Player extends Component {
 	private static final long serialVersionUID = 1L;
 	private String name;
 	private int coins;// coins earned along the whole game
-	private int stars = 1;//delete this!!!!!
+	private int stars ;
 	private int minigamePoints; // points earned in an individual minigame match
 	private String path;
 	private int id;
@@ -31,6 +31,7 @@ public class Player extends Component {
 	private boolean inTurn;
 	private boolean clockWise;
 	private Color playerColor;
+	private boolean teleport;
 
 	public Player(String name, int id) {
 		this.name = name;
@@ -40,7 +41,10 @@ public class Player extends Component {
 		spriteHeight = 20;
 		pointer = GameBoard.mainLinkedList.start;
 		clockWise = true;
+		teleport = false;
 	}
+	
+
 	
 	public int getStar() {
 		return this.stars;
@@ -155,6 +159,14 @@ public class Player extends Component {
 		this.pointer = pointer;
 	}
 
+	
+	public void setTeleport(boolean teleport) {
+		this.teleport = teleport;
+	}
+	
+	public boolean getTeleport() {
+		return this.teleport;
+	}
 	/**
 	 * Getter of the player's boolean value that indicates whether is its turn or
 	 * not
