@@ -434,6 +434,12 @@ public class GameBoard extends JPanel implements ActionListener {
 	 * @throws InterruptedException
 	 */
 	public void setImages(Graphics2D g, Graphics2D g2) throws InterruptedException {
+		imagesPos = mainLinkedList.getNode(39).getIndex();
+		imagesPos.x = (imagesPos.x * 80) + 80;
+		imagesPos.y = (imagesPos.y * 83) + 2;
+		BufferedImage star25 = getSprite("images/star25.png");
+		g.drawImage(star25, imagesPos.x, imagesPos.y, this);
+		
 		imagesPos = mainLinkedList.getNode(16).getIndex();
 		imagesPos.x = (imagesPos.x * 80) + 2;
 		imagesPos.y = (imagesPos.y * 83) + 2;
@@ -971,6 +977,8 @@ public class GameBoard extends JPanel implements ActionListener {
 							roundsCont++;
 							if (roundsCont == 1) {
 								newStar();
+							}else if (roundsCont == 15) {
+								GameBoardLauncher.window.dispose();
 							}
 							newMiniGame = true;
 						}
