@@ -77,8 +77,6 @@ public class GameBoard extends JPanel implements ActionListener {
 	public LeftRightArrow leftArrow, rightArrow;
 	public UpDownArrow upArrow, downArrow;
 
-	private LinkedList eventList = new LinkedList();
-
 	Timer timer;
 	private int transparencyPlayers;// sprites transparency (10 is completely solid)
 	private int transparencyStar;
@@ -86,11 +84,13 @@ public class GameBoard extends JPanel implements ActionListener {
 	private MiniGameButton minigameButton;
 	public static boolean newMiniGame;// flag to handle the appearance of new minigames
 
-	private boolean newEvent; // flag to handle the appearance of events
 	public static boolean duel;
 
 	private DuelButton duelButton; // button to go to minigames when thers a duel
-	private Player duelPlayer1, duelPlayer2; //players that fight the duel
+	private Player duelPlayer1, duelPlayer2; // players that fight the duel
+
+	private Events newEvent;
+	private EventQueue eventsQueue;
 
 	public GameBoard(CircularDoublyLinkedList players) {
 		random = new Random();
@@ -125,7 +125,6 @@ public class GameBoard extends JPanel implements ActionListener {
 		red = new RedBox();
 		yellow = new YellowBox();
 
-		
 		transparencyStar = 10;
 		timerStar = 6;
 
@@ -133,6 +132,9 @@ public class GameBoard extends JPanel implements ActionListener {
 
 		minigameButton = new MiniGameButton(this);
 		duelButton = new DuelButton(this);
+
+		// Events
+		eventsQueue = new EventQueue(null);
 
 		timer = new Timer(10, this);
 		timer.start();
@@ -531,97 +533,112 @@ public class GameBoard extends JPanel implements ActionListener {
 		setLayout(layout);
 		layout.setAutoCreateGaps(true);
 		layout.setAutoCreateContainerGaps(true);
-		layout.setHorizontalGroup(layout.createSequentialGroup()
-				.addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING).addComponent(mainLinkedList.getBox(0))
-						.addComponent(mainLinkedList.getBox(43)).addComponent(mainLinkedList.getBox(42))
-						.addComponent(mainLinkedList.getBox(41)).addComponent(mainLinkedList.getBox(40))
-						.addComponent(mainLinkedList.getBox(39)).addComponent(mainLinkedList.getBox(38))
-						.addComponent(mainLinkedList.getBox(37)).addComponent(mainLinkedList.getBox(36)))
-				.addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING).addComponent(mainLinkedList.getBox(1))
-						.addComponent(phaseC.getBox(0)).addComponent(phaseB.getBox(6)).addComponent(mainLinkedList.getBox(35)))
-				.addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING).addComponent(mainLinkedList.getBox(2))
-						.addComponent(phaseC.getBox(1)).addComponent(phaseB.getBox(5)).addComponent(mainLinkedList.getBox(34)))
-				.addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING).addComponent(mainLinkedList.getBox(3))
-						.addComponent(phaseC.getBox(2)).addComponent(phaseB.getBox(4)).addComponent(mainLinkedList.getBox(33)))
-				.addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING).addComponent(mainLinkedList.getBox(4))
-						.addComponent(mainLinkedList.getBox(16)).addComponent(mainLinkedList.getBox(17))
-						.addComponent(mainLinkedList.getBox(18)).addComponent(phaseB.getBox(3))
-						.addComponent(mainLinkedList.getBox(32)))
-				.addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING).addComponent(mainLinkedList.getBox(5))
-						.addComponent(mainLinkedList.getBox(15)).addComponent(mainLinkedList.getBox(19))
-						.addComponent(phaseB.getBox(2)).addComponent(mainLinkedList.getBox(31)))
-				.addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING).addComponent(mainLinkedList.getBox(6))
-						.addComponent(mainLinkedList.getBox(14)).addComponent(mainLinkedList.getBox(20))
-						.addComponent(phaseB.getBox(1)).addComponent(phaseB.getBox(0)).addComponent(mainLinkedList.getBox(30)))
-				.addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING).addComponent(mainLinkedList.getBox(7))
-						.addComponent(mainLinkedList.getBox(13)).addComponent(mainLinkedList.getBox(21))
-						.addComponent(mainLinkedList.getBox(29)))
-				.addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING).addComponent(mainLinkedList.getBox(8))
-						.addComponent(mainLinkedList.getBox(12)).addComponent(mainLinkedList.getBox(22))
-						.addComponent(mainLinkedList.getBox(28)))
-				.addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING).addComponent(mainLinkedList.getBox(9))
-						.addComponent(mainLinkedList.getBox(10)).addComponent(mainLinkedList.getBox(11))
-						.addComponent(mainLinkedList.getBox(23)).addComponent(mainLinkedList.getBox(24))
-						.addComponent(mainLinkedList.getBox(25)).addComponent(mainLinkedList.getBox(26))
-						.addComponent(mainLinkedList.getBox(27)))
-				.addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING).addComponent(phaseA.getBox(0))
-						.addComponent(phaseA.getBox(6)))
-				.addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING).addComponent(phaseA.getBox(1))
-						.addComponent(phaseA.getBox(5)).addComponent(phaseD.getBox(0)).addComponent(phaseD.getBox(13))
-						.addComponent(phaseD.getBox(12)))
-				.addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING).addComponent(phaseA.getBox(2))
-						.addComponent(phaseA.getBox(3)).addComponent(phaseA.getBox(4)).addComponent(phaseD.getBox(1))
-						.addComponent(phaseD.getBox(11)))
-				.addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING).addComponent(phaseD.getBox(2))
-						.addComponent(phaseD.getBox(10)))
-				.addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING).addComponent(phaseD.getBox(3))
-						.addComponent(phaseD.getBox(9)))
-				.addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING).addComponent(phaseD.getBox(4))
-						.addComponent(phaseD.getBox(8)))
-				.addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING).addComponent(phaseD.getBox(5))
-						.addComponent(phaseD.getBox(6)).addComponent(phaseD.getBox(7))));
+		layout.setHorizontalGroup(
+				layout.createSequentialGroup()
+						.addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
+								.addComponent(mainLinkedList.getBox(0)).addComponent(mainLinkedList.getBox(43))
+								.addComponent(mainLinkedList.getBox(42)).addComponent(mainLinkedList.getBox(41))
+								.addComponent(mainLinkedList.getBox(40)).addComponent(mainLinkedList.getBox(39))
+								.addComponent(mainLinkedList.getBox(38)).addComponent(mainLinkedList.getBox(37))
+								.addComponent(mainLinkedList.getBox(36)))
+						.addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
+								.addComponent(mainLinkedList.getBox(1)).addComponent(phaseC.getBox(0))
+								.addComponent(phaseB.getBox(6)).addComponent(mainLinkedList.getBox(35)))
+						.addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
+								.addComponent(mainLinkedList.getBox(2)).addComponent(phaseC.getBox(1))
+								.addComponent(phaseB.getBox(5)).addComponent(mainLinkedList.getBox(34)))
+						.addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
+								.addComponent(mainLinkedList.getBox(3)).addComponent(phaseC.getBox(2))
+								.addComponent(phaseB.getBox(4)).addComponent(mainLinkedList.getBox(33)))
+						.addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
+								.addComponent(mainLinkedList.getBox(4)).addComponent(mainLinkedList.getBox(16))
+								.addComponent(mainLinkedList.getBox(17)).addComponent(mainLinkedList.getBox(18))
+								.addComponent(phaseB.getBox(3)).addComponent(mainLinkedList.getBox(32)))
+						.addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
+								.addComponent(mainLinkedList.getBox(5)).addComponent(mainLinkedList.getBox(15))
+								.addComponent(mainLinkedList.getBox(19)).addComponent(phaseB.getBox(2))
+								.addComponent(mainLinkedList.getBox(31)))
+						.addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
+								.addComponent(mainLinkedList.getBox(6)).addComponent(mainLinkedList.getBox(14))
+								.addComponent(mainLinkedList.getBox(20)).addComponent(phaseB.getBox(1))
+								.addComponent(phaseB.getBox(0)).addComponent(mainLinkedList.getBox(30)))
+						.addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
+								.addComponent(mainLinkedList.getBox(7)).addComponent(mainLinkedList.getBox(13))
+								.addComponent(mainLinkedList.getBox(21)).addComponent(mainLinkedList.getBox(29)))
+						.addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
+								.addComponent(mainLinkedList.getBox(8)).addComponent(mainLinkedList.getBox(12))
+								.addComponent(mainLinkedList.getBox(22)).addComponent(mainLinkedList.getBox(28)))
+						.addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
+								.addComponent(mainLinkedList.getBox(9)).addComponent(mainLinkedList.getBox(10))
+								.addComponent(mainLinkedList.getBox(11)).addComponent(mainLinkedList.getBox(23))
+								.addComponent(mainLinkedList.getBox(24)).addComponent(mainLinkedList.getBox(25))
+								.addComponent(mainLinkedList.getBox(26)).addComponent(mainLinkedList.getBox(27)))
+						.addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
+								.addComponent(phaseA.getBox(0)).addComponent(phaseA.getBox(6)))
+						.addGroup(
+								layout.createParallelGroup(GroupLayout.Alignment.LEADING).addComponent(phaseA.getBox(1))
+										.addComponent(phaseA.getBox(5)).addComponent(phaseD.getBox(0))
+										.addComponent(phaseD.getBox(13)).addComponent(phaseD.getBox(12)))
+						.addGroup(
+								layout.createParallelGroup(GroupLayout.Alignment.LEADING).addComponent(phaseA.getBox(2))
+										.addComponent(phaseA.getBox(3)).addComponent(phaseA.getBox(4))
+										.addComponent(phaseD.getBox(1)).addComponent(phaseD.getBox(11)))
+						.addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
+								.addComponent(phaseD.getBox(2)).addComponent(phaseD.getBox(10)))
+						.addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
+								.addComponent(phaseD.getBox(3)).addComponent(phaseD.getBox(9)))
+						.addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
+								.addComponent(phaseD.getBox(4)).addComponent(phaseD.getBox(8)))
+						.addGroup(
+								layout.createParallelGroup(GroupLayout.Alignment.LEADING).addComponent(phaseD.getBox(5))
+										.addComponent(phaseD.getBox(6)).addComponent(phaseD.getBox(7))));
 
 		layout.setVerticalGroup(layout.createSequentialGroup()
-				.addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING).addComponent(mainLinkedList.getBox(0))
-						.addComponent(mainLinkedList.getBox(1)).addComponent(mainLinkedList.getBox(2))
-						.addComponent(mainLinkedList.getBox(3)).addComponent(mainLinkedList.getBox(4))
-						.addComponent(mainLinkedList.getBox(5)).addComponent(mainLinkedList.getBox(6))
-						.addComponent(mainLinkedList.getBox(7)).addComponent(mainLinkedList.getBox(8))
-						.addComponent(mainLinkedList.getBox(9)))
-				.addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING).addComponent(mainLinkedList.getBox(43))
-						.addComponent(mainLinkedList.getBox(10)))
-				.addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING).addComponent(mainLinkedList.getBox(42))
-						.addComponent(mainLinkedList.getBox(16)).addComponent(mainLinkedList.getBox(15))
-						.addComponent(mainLinkedList.getBox(14)).addComponent(mainLinkedList.getBox(13))
-						.addComponent(mainLinkedList.getBox(12)).addComponent(mainLinkedList.getBox(11))
-						.addComponent(phaseA.getBox(0)).addComponent(phaseA.getBox(1)).addComponent(phaseA.getBox(2)))
-				.addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING).addComponent(mainLinkedList.getBox(41))
-						.addComponent(mainLinkedList.getBox(17)).addComponent(phaseA.getBox(3)))
-				.addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING).addComponent(mainLinkedList.getBox(40))
-						.addComponent(phaseC.getBox(0)).addComponent(phaseC.getBox(1)).addComponent(phaseC.getBox(2))
+				.addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
+						.addComponent(mainLinkedList.getBox(0)).addComponent(mainLinkedList.getBox(1))
+						.addComponent(mainLinkedList.getBox(2)).addComponent(mainLinkedList.getBox(3))
+						.addComponent(mainLinkedList.getBox(4)).addComponent(mainLinkedList.getBox(5))
+						.addComponent(mainLinkedList.getBox(6)).addComponent(mainLinkedList.getBox(7))
+						.addComponent(mainLinkedList.getBox(8)).addComponent(mainLinkedList.getBox(9)))
+				.addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
+						.addComponent(mainLinkedList.getBox(43)).addComponent(mainLinkedList.getBox(10)))
+				.addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
+						.addComponent(mainLinkedList.getBox(42)).addComponent(mainLinkedList.getBox(16))
+						.addComponent(mainLinkedList.getBox(15)).addComponent(mainLinkedList.getBox(14))
+						.addComponent(mainLinkedList.getBox(13)).addComponent(mainLinkedList.getBox(12))
+						.addComponent(mainLinkedList.getBox(11)).addComponent(phaseA.getBox(0))
+						.addComponent(phaseA.getBox(1)).addComponent(phaseA.getBox(2)))
+				.addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
+						.addComponent(mainLinkedList.getBox(41)).addComponent(mainLinkedList.getBox(17))
+						.addComponent(phaseA.getBox(3)))
+				.addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
+						.addComponent(mainLinkedList.getBox(40)).addComponent(phaseC.getBox(0))
+						.addComponent(phaseC.getBox(1)).addComponent(phaseC.getBox(2))
 						.addComponent(mainLinkedList.getBox(18)).addComponent(mainLinkedList.getBox(19))
 						.addComponent(mainLinkedList.getBox(20)).addComponent(mainLinkedList.getBox(21))
 						.addComponent(mainLinkedList.getBox(22)).addComponent(mainLinkedList.getBox(23))
 						.addComponent(phaseA.getBox(6)).addComponent(phaseA.getBox(5)).addComponent(phaseA.getBox(4)))
-				.addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING).addComponent(mainLinkedList.getBox(39))
-						.addComponent(mainLinkedList.getBox(24)))
-				.addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING).addComponent(mainLinkedList.getBox(38))
-						.addComponent(phaseB.getBox(6)).addComponent(phaseB.getBox(5)).addComponent(phaseB.getBox(4))
-						.addComponent(phaseB.getBox(3)).addComponent(phaseB.getBox(2)).addComponent(phaseB.getBox(1))
-						.addComponent(mainLinkedList.getBox(25)).addComponent(phaseD.getBox(0)).addComponent(phaseD.getBox(1))
-						.addComponent(phaseD.getBox(2)).addComponent(phaseD.getBox(3)).addComponent(phaseD.getBox(4))
-						.addComponent(phaseD.getBox(5)))
-				.addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING).addComponent(mainLinkedList.getBox(37))
-						.addComponent(phaseB.getBox(0)).addComponent(mainLinkedList.getBox(26)).addComponent(phaseD.getBox(13))
+				.addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
+						.addComponent(mainLinkedList.getBox(39)).addComponent(mainLinkedList.getBox(24)))
+				.addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
+						.addComponent(mainLinkedList.getBox(38)).addComponent(phaseB.getBox(6))
+						.addComponent(phaseB.getBox(5)).addComponent(phaseB.getBox(4)).addComponent(phaseB.getBox(3))
+						.addComponent(phaseB.getBox(2)).addComponent(phaseB.getBox(1))
+						.addComponent(mainLinkedList.getBox(25)).addComponent(phaseD.getBox(0))
+						.addComponent(phaseD.getBox(1)).addComponent(phaseD.getBox(2)).addComponent(phaseD.getBox(3))
+						.addComponent(phaseD.getBox(4)).addComponent(phaseD.getBox(5)))
+				.addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
+						.addComponent(mainLinkedList.getBox(37)).addComponent(phaseB.getBox(0))
+						.addComponent(mainLinkedList.getBox(26)).addComponent(phaseD.getBox(13))
 						.addComponent(phaseD.getBox(6)))
-				.addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING).addComponent(mainLinkedList.getBox(27))
-						.addComponent(mainLinkedList.getBox(28)).addComponent(mainLinkedList.getBox(29))
-						.addComponent(mainLinkedList.getBox(30)).addComponent(mainLinkedList.getBox(31))
-						.addComponent(mainLinkedList.getBox(32)).addComponent(mainLinkedList.getBox(33))
-						.addComponent(mainLinkedList.getBox(34)).addComponent(mainLinkedList.getBox(35))
-						.addComponent(mainLinkedList.getBox(36)).addComponent(phaseD.getBox(12)).addComponent(phaseD.getBox(11))
-						.addComponent(phaseD.getBox(10)).addComponent(phaseD.getBox(9)).addComponent(phaseD.getBox(8))
-						.addComponent(phaseD.getBox(7)))
+				.addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
+						.addComponent(mainLinkedList.getBox(27)).addComponent(mainLinkedList.getBox(28))
+						.addComponent(mainLinkedList.getBox(29)).addComponent(mainLinkedList.getBox(30))
+						.addComponent(mainLinkedList.getBox(31)).addComponent(mainLinkedList.getBox(32))
+						.addComponent(mainLinkedList.getBox(33)).addComponent(mainLinkedList.getBox(34))
+						.addComponent(mainLinkedList.getBox(35)).addComponent(mainLinkedList.getBox(36))
+						.addComponent(phaseD.getBox(12)).addComponent(phaseD.getBox(11)).addComponent(phaseD.getBox(10))
+						.addComponent(phaseD.getBox(9)).addComponent(phaseD.getBox(8)).addComponent(phaseD.getBox(7)))
 
 		);
 	}
@@ -721,11 +738,11 @@ public class GameBoard extends JPanel implements ActionListener {
 			}
 		}
 
-		if (duel && !newEvent && !congrats && !drawCoins) {
+		if (duel && !congrats && !drawCoins) {
 			paintDuelButton(g2d);
 		}
 
-		if (newMiniGame && !newEvent && !congrats && !drawCoins && !duel) {
+		if (newMiniGame && !congrats && !drawCoins && !duel) {
 			paintMiniGameButton(g2d);
 		}
 
@@ -901,7 +918,7 @@ public class GameBoard extends JPanel implements ActionListener {
 
 						playerInTurn = playerInTurn.getNext();// pointer to the next player in turn
 						sorry = false;
-						if (playerInTurn.equals(players.getStart() )) { // increments counter when round finishes
+						if (playerInTurn.equals(players.getStart())) { // increments counter when round finishes
 							roundsCont++;
 							if (roundsCont == 1) {
 								newStar();
@@ -912,8 +929,6 @@ public class GameBoard extends JPanel implements ActionListener {
 							newStar();
 							newStarFlag = false;
 						}
-						
-						
 
 					}
 
@@ -1030,7 +1045,7 @@ public class GameBoard extends JPanel implements ActionListener {
 		this.add(minigameButton);
 		minigameButton.paintsButton(g);
 	}
-	
+
 	public void paintDuelButton(Graphics2D g) {
 		this.setLayout(null);
 		duelButton.setPlayers(duelPlayer1, duelPlayer2);
@@ -1038,7 +1053,7 @@ public class GameBoard extends JPanel implements ActionListener {
 		duelButton.setBounds(duelButton.getsLocation().x, duelButton.getsLocation().y, 171, 143);
 		this.add(duelButton);
 		duelButton.paintsButton(g);
-		
+
 	}
 
 	/**
@@ -1150,31 +1165,62 @@ public class GameBoard extends JPanel implements ActionListener {
 			drawCoins = true;
 
 		} else if (box.getClass().equals(yellow.getClass())) {
-			System.out.println("yellow");
+			newEvent = eventsQueue.dequeue();
+			launchEvent(newEvent);
+			
 		} else {
 			System.out.println("blue");
 
 		}
 	}
+	
+	/**
+	 * Handles the events 
+	 * @param event
+	 */
+	public void launchEvent(Events event) {
+		if (event.duel) {
+			
+		}else if (event.stealCoins) {
+			
+		}else if (event.giveCoins) {
+			
+		} else if (event.looseStar) {
+			
+		}else if (event.winTwoStars) {
+		
+		}else if (event.winFiveStars) {
+			
+		}else if (event.stealStar) {
+			
+		}else if (event.teleport) {
+			
+		}else if (event.switchPlaces) {
+			
+		}
+	}
 
 	/**
 	 * Checks if there's a duel and sets flag if necessary
+	 * 
 	 * @param playerNode : Node
 	 */
 	public void checksDuel(Node playerNode) {
 		Player player = playerNode.getPlayer();
 		Node pointer = playerNode;
-		for (int i = 0; i < players.getSize()-1; i++) {
+		for (int i = 0; i < players.getSize() - 1; i++) {
 			pointer = pointer.getNext();
 			if (pointer.getPlayer().getPointer().equals(player.getPointer())) { // if two players are in the same node
 				duelPlayer1 = player;
 				duelPlayer2 = pointer.getPlayer();
-				Main.minigamesObservable.setPlayers(duelPlayer1, duelPlayer2); //add players to duels circular doubly linked list that will be used to launch the minigame
+				Main.minigamesObservable.setPlayers(duelPlayer1, duelPlayer2); // add players to duels circular doubly
+																				// linked list that will be used to
+																				// launch the minigame
 				duel = true;
-				System.out.println(duelPlayer1.getName()+" "+duelPlayer2.getName());
+				System.out.println(duelPlayer1.getName() + " " + duelPlayer2.getName());
 				System.out.println("duel");
 			}
-			
+
 		}
 
 	}

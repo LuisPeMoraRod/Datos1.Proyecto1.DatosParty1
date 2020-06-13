@@ -35,9 +35,10 @@ public class EventQueue {
         this.eventsQueue.insertEnd(eventList.getNode(i).getEvent());
     }
 
-    public void dequeue(){
+    public Events dequeue(){
         Events event = eventsQueue.getHead().getEvent();
         eventsQueue.deleteFirst();
+        return event;
     }
 
 
