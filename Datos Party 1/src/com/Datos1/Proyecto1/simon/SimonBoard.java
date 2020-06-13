@@ -58,7 +58,7 @@ public class SimonBoard extends JPanel implements ActionListener, MouseListener 
     
     protected CircularDoublyLinkedList players;
 
-    Timer timer;
+    private Timer timer;
 
     BufferedImage imgBackground = ImageIO.read(new File("images/SimonBackground.png"));
     BufferedImage imgP1 = ImageIO.read(new File("images/P1.png"));
