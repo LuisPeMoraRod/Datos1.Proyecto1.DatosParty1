@@ -5,7 +5,7 @@ import java.util.Observable;
 /**
  * @author moniwaterhouse
  * @version 1.0
- * 
+ *
  */
 
 public class EndObservableSnake extends Observable {
