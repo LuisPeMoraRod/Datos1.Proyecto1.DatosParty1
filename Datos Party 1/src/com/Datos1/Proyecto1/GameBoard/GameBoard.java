@@ -96,6 +96,8 @@ public class GameBoard extends JPanel implements ActionListener {
 	private boolean eventImages;
 	private String pathEvents;
 
+	private Node newTeleportPos;
+
 	public GameBoard(CircularDoublyLinkedList players) {
 		random = new Random();
 
@@ -141,6 +143,8 @@ public class GameBoard extends JPanel implements ActionListener {
 		queue = new EventQueue();
 		queue.createEventList();
 		queue.shuffleEvents();
+
+		newTeleportPos = mainLinkedList.getNode(0);
 
 		timer = new Timer(10, this);
 		timer.start();
@@ -707,7 +711,12 @@ public class GameBoard extends JPanel implements ActionListener {
 		} else if (disappears) {
 			for (int i = 0; i < players.getSize(); i++) {// paints all players
 				playerInTurn = playerInTurn.getPrev();
-				if (playerInTurn.getPlayer().getPointer().equals(phaseD.getNode(13))) {
+				if (playerInTurn.getPlayer().getTeleport()) {
+					Point actualPos = playerInTurn.getPlayer().getPointer().getIndex();
+					actualPos.x = (actualPos.x * 80) + 20;
+					actualPos.y = (actualPos.y * 83) + 25;
+					spriteDisappears(g2d, actualPos);
+				} else if (playerInTurn.getPlayer().getPointer().equals(phaseD.getNode(13))) {
 					imagesPos = mainLinkedList.getNode(16).getIndex(); // change for 16
 					imagesPos.x = (imagesPos.x * 80) + 20;
 					imagesPos.y = (imagesPos.y * 83) + 25;
@@ -718,16 +727,27 @@ public class GameBoard extends JPanel implements ActionListener {
 					actualPos.y = (actualPos.y * 83) + 25;
 					spriteDisappears(g2d, actualPos);
 
-				} else {
+				}
+
+				else {
 					imagesPos = playerInTurn.getPlayer().getLocation();
 					g2d.drawImage(playerInTurn.getPlayer().getSprite(), imagesPos.x, imagesPos.y, this);
 				}
 			}
 
-		} else if (appears) {
+		} else if (appears)
+
+		{
 			for (int i = 0; i < players.getSize(); i++) {// paints all players
 				playerInTurn = playerInTurn.getPrev();
-				if (playerInTurn.getPlayer().getPointer().equals(phaseD.getNode(13))) {
+				if (playerInTurn.getPlayer().getTeleport()) {
+					Point actualPos = newTeleportPos.getIndex();
+					actualPos.x = (actualPos.x * 80) + 20;
+					actualPos.y = (actualPos.y * 83) + 25;
+					playerInTurn.getPlayer().setPointer(newTeleportPos);
+					spriteAppears(g2d, actualPos);
+					
+				} else if (playerInTurn.getPlayer().getPointer().equals(phaseD.getNode(13))) {
 					imagesPos = phaseD.getNode(13).getIndex();
 					imagesPos.x = (imagesPos.x * 80) + 20;
 					imagesPos.y = (imagesPos.y * 83) + 25;
@@ -767,11 +787,11 @@ public class GameBoard extends JPanel implements ActionListener {
 			}
 		}
 
-		if (duel && !eventFlag && !congrats && !drawCoins) {
+		if (duel && !eventFlag && !congrats && !drawCoins &&  !disappears && !appears) {
 			paintDuelButton(g2d);
 		}
 
-		if (newMiniGame && !eventFlag && !congrats && !drawCoins && !duel) {
+		if (newMiniGame && !eventFlag && !congrats && !drawCoins && !duel && !disappears && !appears) {
 			paintMiniGameButton(g2d);
 		}
 
@@ -1133,7 +1153,10 @@ public class GameBoard extends JPanel implements ActionListener {
 		if (transparencyPlayers == 11) {
 			transparencyPlayers = 10;
 			appears = false;
-			throwAgain = true;
+			if (!playerInTurn.getPlayer().getTeleport()) {
+				throwAgain = true;
+			}
+			playerInTurn.getPlayer().setTeleport(false);
 		}
 	}
 
@@ -1199,7 +1222,6 @@ public class GameBoard extends JPanel implements ActionListener {
 			dyCoins = 120;
 			drawCoins = true;
 
-			
 		} else if (box.getClass().equals(yellow.getClass())) {
 			if (!duel) {
 				eventFlag = true;
@@ -1207,7 +1229,7 @@ public class GameBoard extends JPanel implements ActionListener {
 
 		} else {
 			System.out.println("blue");
-			
+			eventFlag = true;
 		}
 	}
 
@@ -1223,84 +1245,129 @@ public class GameBoard extends JPanel implements ActionListener {
 		while (randomPlayer == player.getId() - 1) { // must be different than itself
 			randomPlayer = random.nextInt(players.getSize());
 		}
-		System.out.println("launch event");
-		if (event.duel) {
-			duelPlayer1 = player;
-			duelPlayer2 = players.getNode(randomPlayer).getPlayer();
-			Main.minigamesObservable.setPlayers(duelPlayer1, duelPlayer2); // add players to duels circular doubly
-																			// linked list that will be used to
-																			// launch the minigame
-			duel = true;
-			System.out.println(duelPlayer1.getName() + " " + duelPlayer2.getName());
-			System.out.println("duel");
-
-		} else if (event.stealCoins) {
-			System.out.println("stealCoins");
-			pathEvents = "images/stealCoins.png";
-			eventImages = true;
-
-		} else if (event.giveCoins) {
-			System.out.println("give coins");
-			int coins = random.nextInt(player.getCoins() + players.getSize());
-			while (!(coins % players.getSize() == 0)) { // numbers of coins should be able to divide into the amount of
-														// players
-				coins = random.nextInt(player.getCoins() + players.getSize());
-			}
-			coins /= players.getSize();
-			Node pointer = playerInTurn;
-			for (int i = 0; i < players.getSize() - 1; i++) {
-				pointer.getPlayer().incrementCoins(coins);
-				pointer = pointer.getNext();
-
-			}
-			pathEvents = "images/giveCoins.png";
-			eventImages = true;
-
-		} else if (event.looseStar) {
-			System.out.println("looseStar");
-			player.decrementStar(1);
-			Player winCoinsPlayer = players.getNode(randomPlayer).getPlayer();
-			winCoinsPlayer.incremenentStar(1);
-			pathEvents = "images/looseStar.png";
-			eventImages = true;
-
-		} else if (event.winTwoStars) {
-			System.out.println("2 new stars");
-			player.incremenentStar(2);
-			pathEvents = "images/win2.png";
-			eventImages = true;
-
-		} else if (event.winFiveStars) {
-			System.out.println("5 new stars");
-			player.incremenentStar(5);
-			pathEvents = "images/win5.png";
-			eventImages = true;
-
-		} else if (event.stealStar) {
-			System.out.println("stealStar");
-			player.incremenentStar(1);
-			Player looseStar = players.getNode(randomPlayer).getPlayer();
-			looseStar.decrementStar(1);
-			pathEvents = "images/stealStar.png";
-			eventImages = true;
-
-		} else if (event.teleport) { // must change this
-			System.out.println("teleport");
-			pathEvents = "images/teleport.png";
-			eventImages = true;
-
-		} else if (event.switchPlaces) {
-			System.out.println("switchPlaces");
-			Node pos1 = player.getPointer();
-			Node pos2 = players.getNode(randomPlayer).getPlayer().getPointer();
-			player.setPointer(pos2);
-			players.getNode(randomPlayer).getPlayer().setPointer(pos1);
-			setPlayers(g);
-			pathEvents = "images/switch.png";
-			eventImages = true;
-		}
-
+		/**
+		 * if (event.duel) { duelPlayer1 = player; duelPlayer2 =
+		 * players.getNode(randomPlayer).getPlayer();
+		 * Main.minigamesObservable.setPlayers(duelPlayer1, duelPlayer2); // add players
+		 * to duels circular doubly // linked list that will be used to // launch the
+		 * minigame duel = true; System.out.println(duelPlayer1.getName() + " " +
+		 * duelPlayer2.getName()); System.out.println("duel");
+		 * 
+		 * } else if (event.stealCoins) { System.out.println("stealCoins"); pathEvents =
+		 * "images/stealCoins.png"; eventImages = true;
+		 * 
+		 * } else if (event.giveCoins) { System.out.println("give coins"); int coins =
+		 * random.nextInt(player.getCoins() + players.getSize()); while (!(coins %
+		 * players.getSize() == 0)) { // numbers of coins should be able to divide into
+		 * the amount of // players coins = random.nextInt(player.getCoins() +
+		 * players.getSize()); } coins /= players.getSize(); Node pointer =
+		 * playerInTurn; for (int i = 0; i < players.getSize() - 1; i++) {
+		 * pointer.getPlayer().incrementCoins(coins); pointer = pointer.getNext();
+		 * 
+		 * } pathEvents = "images/giveCoins.png"; eventImages = true;
+		 * 
+		 * } else if (event.looseStar) { System.out.println("looseStar");
+		 * player.decrementStar(1); Player winCoinsPlayer =
+		 * players.getNode(randomPlayer).getPlayer(); winCoinsPlayer.incremenentStar(1);
+		 * pathEvents = "images/looseStar.png"; eventImages = true;
+		 * 
+		 * } else if (event.winTwoStars) { System.out.println("2 new stars");
+		 * player.incremenentStar(2); pathEvents = "images/win2.png"; eventImages =
+		 * true;
+		 * 
+		 * } else if (event.winFiveStars) { System.out.println("5 new stars");
+		 * player.incremenentStar(5); pathEvents = "images/win5.png"; eventImages =
+		 * true;
+		 * 
+		 * } else if (event.stealStar) { System.out.println("stealStar");
+		 * player.incremenentStar(1); Player looseStar =
+		 * players.getNode(randomPlayer).getPlayer(); looseStar.decrementStar(1);
+		 * pathEvents = "images/stealStar.png"; eventImages = true;
+		 * 
+		 * } else if (event.teleport) { System.out.println("teleport");
+		 * player.setTeleport(true); newTeleportPos = newRandomPos(newTeleportPos,
+		 * player); disappears = true; pathEvents = "images/teleport.png"; eventImages =
+		 * true;
+		 * 
+		 * } else if (event.switchPlaces) { System.out.println("switchPlaces"); Node
+		 * pos1 = player.getPointer(); Node pos2 =
+		 * players.getNode(randomPlayer).getPlayer().getPointer();
+		 * player.setPointer(pos2);
+		 * players.getNode(randomPlayer).getPlayer().setPointer(pos1); setPlayers(g);
+		 * pathEvents = "images/switch.png"; eventImages = true; }
+		 */
+		System.out.println("teleport");
+		player.setTeleport(true);
+		newTeleportPos = newRandomPos(newTeleportPos, player);
+		disappears = true;
+		pathEvents = "images/teleport.png";
+		eventImages = true;
 		eventFlag = false;
+	}
+
+	public Node newRandomPos(Node pointer, Player player) {
+		int newNodeId;
+		Node lastPos = player.getPointer();
+		boolean correctPosition = false;
+		while (!correctPosition) {
+			correctPosition = true;
+			newNodeId = random.nextInt(75);
+			System.out.println(newNodeId);
+
+			if (newNodeId < 44) {
+				switch (newNodeId) { // not allowed positions for star
+				case 0:
+					correctPosition = false;
+					break;
+				case 11:
+					correctPosition = false;
+					break;
+				case 16:
+					correctPosition = false;
+					break;
+				case 18:
+					correctPosition = false;
+					break;
+				case 30:
+					correctPosition = false;
+					break;
+				case 40:
+					correctPosition = false;
+					break;
+				default:
+					break;
+				}
+				pointer = mainLinkedList.getNode(newNodeId);
+			} else if (newNodeId < 51) {
+				newNodeId -= 44;
+				pointer = phaseA.getNode(newNodeId);
+			} else if (newNodeId < 58) {
+				newNodeId -= 51;
+				pointer = phaseB.getNode(newNodeId);
+			} else if (newNodeId < 61) {
+				newNodeId -= 58;
+				pointer = phaseC.getNode(newNodeId);
+			} else {
+				newNodeId -= 61;
+				if (newNodeId == 13) {// not allowed position for star
+					correctPosition = false;
+				}
+				pointer = phaseD.getNode(newNodeId);
+			}
+			System.out.println(newNodeId);
+			Node ptr = players.getNode(0);
+			for (int i = 0; i < players.getSize(); i++) {// checks if the position isn't occupied by a player
+				if (player.getPointer().equals(pointer)) {
+					correctPosition = false;
+				}
+				ptr = ptr.getNext();
+			}
+
+			if (pointer.equals(lastPos)) { // must be a different node than the last one
+				correctPosition = false;
+			}
+		}
+		return pointer;
 	}
 
 	/**
