@@ -4,6 +4,7 @@ import javax.imageio.ImageIO;
 import javax.swing.*;
 
 import com.Datos1.Proyecto1.GameBoard.CircularDoublyLinkedList;
+import com.Datos1.Proyecto1.GameBoard.GameBoardLauncher;
 
 import java.awt.*;
 import java.awt.geom.Rectangle2D;
@@ -145,6 +146,7 @@ public class SnakeBoard extends JPanel {
             		endGameTimer++;
             	}
             	else {
+                    GameBoardLauncher.window.setVisible(true);
             		SnakeLauncher.snakeWindow.dispose();
             	}
             

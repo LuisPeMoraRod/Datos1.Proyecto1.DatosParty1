@@ -13,12 +13,12 @@ public class SimonWindow extends JFrame {
 	 */
 	private static final long serialVersionUID = 1L;
 
-	SimonBoard simonBoard;
+	protected SimonBoard simonBoard;
 
     public static final int width =1000,height=600;
     
-    CircularDoublyLinkedList players;
-    
+    protected CircularDoublyLinkedList players;
+
     protected static SimonThread simonThread;
 
     public SimonWindow(CircularDoublyLinkedList players) throws IOException {

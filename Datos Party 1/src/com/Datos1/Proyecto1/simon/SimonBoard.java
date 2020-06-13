@@ -4,6 +4,7 @@ import javax.imageio.ImageIO;
 import javax.swing.*;
 
 import com.Datos1.Proyecto1.GameBoard.CircularDoublyLinkedList;
+import com.Datos1.Proyecto1.GameBoard.GameBoardLauncher;
 import com.Datos1.Proyecto1.GameBoard.LinkedList;
 
 import java.awt.*;
@@ -57,7 +58,7 @@ public class SimonBoard extends JPanel implements ActionListener, MouseListener 
     
     protected CircularDoublyLinkedList players;
 
-    Timer timer;
+    private Timer timer;
 
     BufferedImage imgBackground = ImageIO.read(new File("images/SimonBackground.png"));
     BufferedImage imgP1 = ImageIO.read(new File("images/P1.png"));
@@ -432,6 +433,7 @@ public class SimonBoard extends JPanel implements ActionListener, MouseListener 
     public void endgame(){
         timer.stop();
         SimonLauncher.simonWindow.dispose();
+        GameBoardLauncher.window.setVisible(true);
 
     }
     

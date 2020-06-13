@@ -19,7 +19,7 @@ public class SimonLauncher implements Observer {
     protected String pathSpacePress;
     protected String pathInstructions;
     protected String pathBackground;
-    CircularDoublyLinkedList players;
+    protected CircularDoublyLinkedList players;
 
     public SimonLauncher(CircularDoublyLinkedList players) throws IOException {
 
