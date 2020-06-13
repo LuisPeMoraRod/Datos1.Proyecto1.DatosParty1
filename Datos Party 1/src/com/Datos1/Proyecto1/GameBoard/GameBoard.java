@@ -1237,7 +1237,6 @@ public class GameBoard extends JPanel implements ActionListener {
 
 		} else {
 			System.out.println("blue");
-			eventFlag = true;
 		}
 	}
 
